@@ -2,7 +2,7 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
 
-config({path:"../.env"});
+config({path:"./backend/.env"});
 
 // Create a connection to the sql server
 const connection = createConnection({
@@ -18,34 +18,58 @@ function process_query(query) {
     })
 }
 
-const createAccount = `CREATE TABLE IF NOT EXISTS account (
+const create_account = `CREATE TABLE IF NOT EXISTS account (
     Account_ID INT AUTO_INCREMENT,
     Account_Type VARCHAR(15),
-    Email VARCHAR(50),
-    Password VARCHAR(50),
+    Email VARCHAR(25),
+    Password VARCHAR(25),
     PRIMARY KEY (Account_ID)
 )`
 
-const createPatient = `CREATE TABLE IF NOT EXISTS patient (
+const create_patient = `CREATE TABLE IF NOT EXISTS patient (
     Account_ID INT,
-    First_Name VARCHAR(50),
-    Last_Name VARCHAR(50),
+    First_Name VARCHAR(25),
+    Last_Name VARCHAR(25),
     PRIMARY KEY (Account_ID)
 )`
 
-const createDoctor = `CREATE TABLE IF NOT EXISTS doctor (
+const create_doctor = `CREATE TABLE IF NOT EXISTS doctor (
     Account_ID INT,
-    First_Name VARCHAR(50),
-    Last_Name VARCHAR(50),
+    First_Name VARCHAR(25),
+    Last_Name VARCHAR(25),
+    Specialization VARCHAR(25),
+    City VARCHAR(25),
+    Address VARCHAR(50),
+    Timings VARCHAR(25),
+    Personal_Bio VARCHAR(500),
+    Online_Availability INT,
+    Charges INT,
     PRIMARY KEY (Account_ID)
 )`
 
-const createHospital = `CREATE TABLE IF NOT EXISTS hospital (
+const create_hospital = `CREATE TABLE IF NOT EXISTS hospital (
     Account_ID INT,
     Name VARCHAR(50),
     City VARCHAR(50),
     Address VARCHAR(50),
     PRIMARY KEY (Account_ID)
+)`
+
+const create_doctor_hospital = `CREATE TABLE IF NOT EXISTS doctor_hospital (
+    Doctor_ID INT,
+    Hospital_ID INT,
+    PRIMARY KEY (Doctor_ID, Hospital_ID)
+)`
+
+const create_booking = `CREATE TABLE IF NOT EXISTS booking (
+    Booking_ID INT AUTO_INCREMENT,
+    Patient_ID INT,
+    Doctor_ID INT,
+    Year INT,
+    Month INT,
+    Day INT,
+    Hour INT,
+    PRIMARY KEY (Booking_ID)
 )`
 
 connection.connect((err) => {
@@ -64,10 +88,12 @@ connection.connect((err) => {
         process_query(`USE dhd`)
 
         // Create all of the required tables
-        process_query(createAccount)
-        process_query(createPatient)
-        process_query(createDoctor)
-        process_query(createHospital)
+        process_query(create_account)
+        process_query(create_patient)
+        process_query(create_doctor)
+        process_query(create_hospital)
+        process_query(create_doctor_hospital)
+        process_query(create_booking)
 
         connection.end()
     }
