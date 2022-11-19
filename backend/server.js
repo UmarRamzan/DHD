@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 app.post('/api/general/signup_post', router)
 app.post('/api/general/login_post', router)
 app.post('/api/general/search', router)
+app.post('/api/general/search_specialization', router)
 app.post('/api/general/associate_doctor_hospital', router)
 app.post('/api/general/create_booking', router)
 

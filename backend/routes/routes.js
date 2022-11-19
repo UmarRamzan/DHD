@@ -15,6 +15,7 @@ const router = Router()
 router.post('/api/general/signup_post', general_controller.signup_post)
 router.post('/api/general/login_post', general_controller.login_post)
 router.post('/api/general/search', general_controller.search)
+router.post('/api/general/search_specialization', general_controller.search_specialization)
 router.post('/api/general/associate_doctor_hospital', general_controller.associate_doctor_hospital)
 router.post('/api/general/create_booking', general_controller.create_booking)
 

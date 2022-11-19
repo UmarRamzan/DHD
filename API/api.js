@@ -56,7 +56,6 @@ export async function doctor_add_entry(account_ID, first_name, last_name, specia
         "first_name": first_name,
         "last_name": last_name,
         "specialization": specialization,
-        "associated_hospitals": associated_hospitals,
         "city": city,
         "address": address,
         "timings": timings,
@@ -121,3 +120,18 @@ export async function search(search_string, city) {
 
     return await axios.post(`${url}/general/search`, request)
 }
+
+// find all doctors specializing in a particular field
+// returns a json object containing a list of doctors
+export async function search_specialization(specialization) {
+
+    const request = {
+        "specialization": specialization,
+    }
+
+    return await axios.post(`${url}/general/search_specialization`, request)
+}
+
+//doctor_add_entry(1, "a", "b", "spec", "Lahore", "addr", "1-2", "bio", 1, 300)
+let res = await search_specialization("spec")
+console.log(res.data)
