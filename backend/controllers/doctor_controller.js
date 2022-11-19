@@ -26,22 +26,15 @@ function create_connection() {
     return connection
 }
 
-function query_promise(connection, query) {
-    return new Promise((resolve, reject) =>{
-        connection.query(query, (err, result) => {
-            if (err)
-                return reject(err);
-            resolve(result);
-        });
-    });
-}
-
-export async function doctor_seed_info(req, response) {
+// add a new entry into the doctors table
+export async function doctor_add_entry(req, response) {
 
     let account_ID = req.body.account_ID
     let first_name = req.body.first_name
     let last_name = req.body.last_name
     let specialization = req.body.specialization
+    let city = req.body.city
+    let address = req.body.address
     let timings = req.body.timings
     let online_Availability = req.body.online_Availability
     let charges = req.body.charges
@@ -51,8 +44,8 @@ export async function doctor_seed_info(req, response) {
     
     let connection = create_connection()
 
-    let seed_query = `INSERT INTO doctor (Account_ID, First_name, Last_name, Specialization, Timings, Online_Availability, Charges, Personal_bio) VALUES (?)`
-    let values = [account_ID, first_name, last_name, specialization, timings, online_Availability, charges, personal_bio]
+    let seed_query = `INSERT INTO doctor (Account_ID, First_name, Last_name, Specialization, City, Address, Timings, Personal_bio, Online_Availability, Charges) VALUES (?)`
+    let values = [account_ID, first_name, last_name, specialization, city, address, timings, personal_bio, online_Availability, charges]
 
     connection.query(seed_query, [values], (err, res) => {
 
@@ -77,3 +70,6 @@ export async function doctor_seed_info(req, response) {
 
     connection.end()
 }
+
+// update an existing entry within the doctors table
+export async function doctor_update_entry(req, response) {}

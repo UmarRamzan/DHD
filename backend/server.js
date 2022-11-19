@@ -4,8 +4,10 @@ import router from './routes/routes.js'
 
 config({path:".env"});
 
+// create the server
 const app = express()
 
+// listen for any requests made to the server
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`)
 })
@@ -19,7 +21,9 @@ app.use((req, res, next) => {
     next()
 })
 
+// route requests to the server using the router specified in routes/routes.js
 app.post('/api/general/signup_post', router)
 app.post('/api/general/login_post', router)
-app.post('/api/doctor/doctor_seed_info', router)
-app.get('/api/general/search', router)
+app.post('/api/general/search', router)
+
+app.post('/api/doctor/doctor_add_entry', router)

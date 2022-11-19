@@ -38,6 +38,8 @@ const createDoctor = `CREATE TABLE IF NOT EXISTS doctor (
     First_Name VARCHAR(25),
     Last_Name VARCHAR(25),
     Specialization VARCHAR(25),
+    City VARCHAR(25),
+    Address VARCHAR(50),
     Timings VARCHAR(25),
     Personal_Bio VARCHAR(500),
     Online_Availability INT,

@@ -25,16 +25,6 @@ function create_connection() {
     return connection
 }
 
-function query_promise(connection, query) {
-    return new Promise((resolve, reject) =>{
-        connection.query(query, (err, result) => {
-            if (err)
-                return reject(err);
-            resolve(result);
-        });
-    });
-}
-
 export async function signup_post(req, response) {
 
     let email = req.body.email
@@ -64,10 +54,34 @@ export async function signup_post(req, response) {
     connection.end()
 }
 
-export async function login_post(req, res) {
+export async function login_post(req, response) {
     console.log("Login")
 }
 
-export async function search(req, res) {
-    console.log("Search")
+export async function search(req, response) {
+
+    let search_string = req.body.search_string
+    let city = req.body.city
+
+    console.log(search_string)
+
+    let search_query = `SELECT * FROM doctor WHERE City = ? AND (First_Name = ? OR Last_Name = ? OR Specialization = ?) `
+    let values = [city, search_string, search_string, search_string]
+
+    let connection = create_connection()
+
+    connection.query(search_query, values, (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log("Result")
+            console.log(res)
+
+            let return_message = {
+                "doctor_list": res
+            }
+
+            response.send(return_message)
+        }
+    })
 }
