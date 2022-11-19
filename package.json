@@ -1,0 +1,22 @@
+{
+  "name": "dhd",
+  "version": "1.0.0",
+  "description": "Doctors and Hospital Directory (18)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UmarRamzan/DHD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UmarRamzan/DHD/issues"
+  },
+  "homepage": "https://github.com/UmarRamzan/DHD#readme"
+}

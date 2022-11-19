@@ -39,8 +39,6 @@ export async function doctor_add_entry(req, response) {
     let online_Availability = req.body.online_Availability
     let charges = req.body.charges
     let personal_bio = req.body.personal_bio
-
-    let associated_hospitals = req.body.associated_hospitals
     
     let connection = create_connection()
 

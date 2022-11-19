@@ -26,5 +26,38 @@ function create_connection() {
 }
 
 export async function hospital_add_entry(req, response) {
-    console.log("None")
+
+    let account_ID = req.body.account_ID
+    let name = req.body.name
+    let city = req.body.city
+    let address = req.body.address
+    
+    let connection = create_connection()
+
+    let seed_query = `INSERT INTO hospital (Account_ID, Name, City, Address) VALUES (?)`
+    let values = [account_ID, name, city, address]
+
+    connection.query(seed_query, [values], (err, res) => {
+
+        if (err) {
+
+            let return_message = {
+                "is_successful": false,
+                "error_message": "Could not create a new hospital entry",
+            }
+
+            response.send(return_message)
+            console.log(err)
+
+        } else {
+
+            let return_message = {
+                "is_successful": true,
+            }
+
+            response.send(return_message)
+        }
+    })
+
+    connection.end()
 }

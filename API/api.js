@@ -49,7 +49,7 @@ export async function patient_add_entry(account_ID, first_name, last_name) {
 // add a row containing the specified values into the doctor table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function doctor_add_entry(account_ID, first_name, last_name, specialization, city, address, timings, personal_bio, online_Availability, charges, associated_hospitals) {
+export async function doctor_add_entry(account_ID, first_name, last_name, specialization, city, address, timings, personal_bio, online_Availability, charges) {
 
     const request = {
         "account_ID": account_ID,
@@ -80,6 +80,34 @@ export async function hospital_add_entry(account_ID, name, city, address) {
     }
 
     return await axios.post(`${url}/hospital/hospital_add_entry`, request)
+}
+
+// associate the specified doctor and hospital by adding an entry to the doctor_hospital table
+// returns a json object containing "is_successful" and any possible "error_message"
+export async function associate_doctor_hospital(doctor_ID, hospital_ID) {
+
+    const request = {
+        "doctor_ID": doctor_ID,
+        "hospital_ID": hospital_ID
+    }
+
+    return await axios.post(`${url}/general/associate_doctor_hospital`, request)
+}
+
+// create a new booking for the specified patient and doctor at the specified time
+// returns a json object containing "is_successful" and any possible "error_message"
+export async function create_booking(patient_ID, doctor_ID, year, month, day, hour) {
+
+    const request = {
+        "patient_ID": patient_ID,
+        "doctor_ID": doctor_ID,
+        "year": year,
+        "month": month,
+        "day": day,
+        "hour": hour
+    }
+
+    return await axios.post(`${url}/general/create_booking`, request)
 }
 
 // search for relevant doctors and hospitals using search_string and the specified city
