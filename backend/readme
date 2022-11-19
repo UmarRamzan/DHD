@@ -1,0 +1,4 @@
+All functions to be used by the front end components are initially defined within the api.js file
+Functions inside the api.js file send get/post/delete/patch requests to the server
+These requests are handled in the server.js file
+Requests are routed using the routes.js file into functions defined within the controller folder
