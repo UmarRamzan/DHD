@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./backend/server.js"
+    "server": "nodemon ./backend/server.js",
+    "api": "node ./API/api.js",
+    "create": "node ./backend/scripts/create_db.js"
   },
   "repository": {
     "type": "git",

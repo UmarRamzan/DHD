@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { config } from 'dotenv'
 
-config({path:"../backend/.env"})
+config({path:"./backend/.env"});
 
 let url = `http://localhost:${process.env.PORT}/api`
 

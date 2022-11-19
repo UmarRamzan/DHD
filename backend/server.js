@@ -2,7 +2,7 @@ import express, { json } from 'express'
 import { config } from 'dotenv';
 import router from './routes/routes.js'
 
-config({path:".env"});
+config({path:"./backend/.env"});
 
 // create the server
 const app = express()

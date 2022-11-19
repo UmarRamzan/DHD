@@ -2,7 +2,7 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
 
-config({path:"../.env"});
+config({path:"./backend/.env"});
 
 // Create a connection to the sql server
 const connection = createConnection({
