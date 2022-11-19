@@ -60,6 +60,8 @@ async function signup_post(req, response) {
             response.send(return_message)
         }
     })
+
+    connection.end()
 }
 
 function login_post(req, res) {

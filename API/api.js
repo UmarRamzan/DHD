@@ -1,12 +1,12 @@
-const axios = require('axios')
-const dotenv = require('dotenv')
+import axios from 'axios'
+import { config } from 'dotenv'
 
-dotenv.config({path:"../backend/.env"})
+config({path:"../backend/.env"})
 
-url = `http://localhost:${process.env.PORT}/api`
+let url = `http://localhost:${process.env.PORT}/api`
 
 // returns a json object containing "is_succesful" and "account_ID"
-async function signup_post(account_type, email, password) {
+export async function signup_post(account_type, email, password) {
 
     const request = {
         "account_type": account_type,
@@ -18,7 +18,7 @@ async function signup_post(account_type, email, password) {
 }
 
 // return a json object containing "is_succesful" and "account_ID"
-async function login_post(email, password) {
+export async function login_post(email, password) {
 
     const request = {
         "email": email,
