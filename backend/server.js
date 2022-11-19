@@ -10,7 +10,7 @@ app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`)
 })
 
-// convert any json data within the request into a javascript object
+// parse incoming JSON requests and place parsed data within req.body
 app.use(json())
 
 // print any requests made to the server
@@ -21,4 +21,5 @@ app.use((req, res, next) => {
 
 app.post('/api/general/signup_post', router)
 app.post('/api/general/login_post', router)
+app.post('/api/doctor/doctor_seed_info', router)
 app.get('/api/general/search', router)

@@ -1,5 +1,6 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
+import first from 'ee-first';
 
 config({path:"../.env"});
 
@@ -35,26 +36,39 @@ function query_promise(connection, query) {
     });
 }
 
-export async function signup_post(req, response) {
+export async function doctor_seed_info(req, response) {
 
-    let email = req.body.email
-    let password = req.body.password
-    let account_type = req.body.account_type
+    let account_ID = req.body.account_ID
+    let first_name = req.body.first_name
+    let last_name = req.body.last_name
+    let specialization = req.body.specialization
+    let timings = req.body.timings
+    let online_Availability = req.body.online_Availability
+    let charges = req.body.charges
+    let personal_bio = req.body.personal_bio
 
+    let associated_hospitals = req.body.associated_hospitals
+    
     let connection = create_connection()
 
-    let create_account = `INSERT INTO account (Account_Type, Email, Password) VALUES ("${account_type}", "${email}", "${password}")`
+    let seed_query = `INSERT INTO doctor (Account_ID, First_name, Last_name, Specialization, Timings, Online_Availability, Charges, Personal_bio) VALUES (?)`
+    let values = [account_ID, first_name, last_name, specialization, timings, online_Availability, charges, personal_bio]
 
-    connection.query(create_account, (err, res) => {
+    connection.query(seed_query, [values], (err, res) => {
+
         if (err) {
+            let return_message = {
+                "is_successful": false,
+                "error_message": "Could not create a new doctor entry"
+            }
+
+            response.send(return_message)
             console.log(err)
-            console.log("Account Creation Failed")
+
         } else {
-            let account_ID = res.insertId
 
             let return_message = {
                 "is_successful": true,
-                "account_ID": account_ID
             }
 
             response.send(return_message)
@@ -62,12 +76,4 @@ export async function signup_post(req, response) {
     })
 
     connection.end()
-}
-
-export async function login_post(req, res) {
-    console.log("Login")
-}
-
-export async function search(req, res) {
-    console.log("Search")
 }
