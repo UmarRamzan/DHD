@@ -1,6 +1,5 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
-import { query } from 'express';
 
 config({path:"../.env"});
 
@@ -35,7 +34,7 @@ function query_promise(connection, query) {
     });
 }
 
-async function signup_post(req, response) {
+export async function signup_post(req, response) {
 
     let email = req.body.email
     let password = req.body.password
@@ -64,11 +63,10 @@ async function signup_post(req, response) {
     connection.end()
 }
 
-function login_post(req, res) {
+export async function login_post(req, res) {
     console.log("Login")
 }
 
-export {
-    signup_post,
-    login_post
+export async function search(req, res) {
+    console.log("Search")
 }

@@ -28,4 +28,15 @@ export async function login_post(email, password) {
     return await axios.post(`${url}/general/login_post`, request)
 }
 
-signup_post("Doctor", "abc", "pass")
+// return a json object containing a list of relevant results
+export async function search(search_string, city) {
+
+    const request = {
+        "search_string": search_string,
+        "city": city
+    }
+
+    return await axios.get(`${url}/general/search`, request)
+}
+
+search("Hello", "Lahore")
