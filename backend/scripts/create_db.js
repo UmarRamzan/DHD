@@ -6,9 +6,9 @@ config({path:".env"});
 
 // Create a connection to the sql server
 const connection = createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
+    host: "localhost",
+    user: "root",
+    password: "pass",
 });
 
 // Process a general sql query and throw any resulting errors
@@ -19,28 +19,28 @@ function process_query(query) {
 }
 
 const create_account = `CREATE TABLE IF NOT EXISTS account (
-    Account_ID INT AUTO_INCREMENT,
+    Account_ID INT,
     Account_Type VARCHAR(15),
-    Email VARCHAR(25),
-    Password VARCHAR(25),
+    Email VARCHAR(50),
+    Password VARCHAR(50),
     PRIMARY KEY (Account_ID)
 )`
 
 const create_patient = `CREATE TABLE IF NOT EXISTS patient (
     Account_ID INT,
-    First_Name VARCHAR(25),
-    Last_Name VARCHAR(25),
+    First_Name VARCHAR(50),
+    Last_Name VARCHAR(50),
     PRIMARY KEY (Account_ID)
 )`
 
 const create_doctor = `CREATE TABLE IF NOT EXISTS doctor (
     Account_ID INT,
-    First_Name VARCHAR(25),
-    Last_Name VARCHAR(25),
-    Specialization VARCHAR(25),
-    City VARCHAR(25),
+    First_Name VARCHAR(50),
+    Last_Name VARCHAR(50),
+    Specialization VARCHAR(50),
+    City VARCHAR(50),
     Address VARCHAR(50),
-    Timings VARCHAR(25),
+    Timings VARCHAR(50),
     Personal_Bio VARCHAR(500),
     Online_Availability INT,
     Charges INT,
