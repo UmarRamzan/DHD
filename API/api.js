@@ -131,7 +131,3 @@ export async function search_specialization(specialization) {
 
     return await axios.post(`${url}/general/search_specialization`, request)
 }
-
-//doctor_add_entry(1, "a", "b", "spec", "Lahore", "addr", "1-2", "bio", 1, 300)
-let res = await search_specialization("spec")
-console.log(res.data)
