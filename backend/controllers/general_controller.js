@@ -96,6 +96,29 @@ export async function search(req, response) {
     })
 }
 
+export async function search_specialization(req, response) {
+    let specialization = req.body.specialization
+
+    let search_query = `SELECT * FROM doctor WHERE Specialization = ?`
+    let values = [specialization]
+
+    let connection = create_connection()
+
+    connection.query(search_query, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+            let doctor_list = res
+
+            let return_message = {
+                "doctor_list": doctor_list,
+            }
+        
+            response.send(return_message)
+        }
+    })
+}
+
 export async function associate_doctor_hospital(req, response) {
 
     let doctor_ID = req.body.doctor_ID
