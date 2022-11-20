@@ -6,12 +6,9 @@ If your code is working and you want to merge it with main, create a pull reques
 
 Scripts: <br />
 
-In the backend folder: <br />
-npm run server (Starts server.js using nodemon) <br />
-npm run create (Creates the database) <br />
-npm run seed (Seeds the database) <br />
-
-In the frontend folder: <br />
-npm run start (Starts the browser application) <br />
+In the main directory: <br />
+npm run init_db (Creates and seeds the database)
+npm run start_server (Starts server.js using nodemon) <br />
+npm run start_app (Starts the web application) <br />
 
 To run a file without using scripts, make sure the dotenv path specified within the file is correct and that you run node {filename} inside the directory containing the file

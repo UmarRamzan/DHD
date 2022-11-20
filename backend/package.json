@@ -115,8 +115,8 @@
   },
   "scripts": {
     "server": "nodemon server.js",
-    "create": "node ./scripts/create_db.js",
-    "seed": "node ./scripts/seed_db.js",
+    "create_db": "node ./scripts/create_db.js",
+    "seed_db": "node ./scripts/seed_db.js",
     "api": "node ../API/api.js"
   },
   "keywords": [],
