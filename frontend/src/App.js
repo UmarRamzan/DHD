@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import { Login } from './pages/login.js'
-import { Signup } from './pages/signup.js'
+//import { Login } from './pages/login.js'
+//import { Signup } from './pages/signup.js'
 import { Home } from './pages/home.js'
 
 function App() {
@@ -10,8 +10,6 @@ function App() {
       <BrowserRouter>
         <div className="pages">
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
             <Route path="/home" element={<Home />} />
           </Routes>
         </div>
@@ -19,5 +17,8 @@ function App() {
     </div>
   );
 }
+
+//<Route path="/" element={<Login />} />
+//<Route path="/signup" element={<Signup />} />
 
 export default App;
