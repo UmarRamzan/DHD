@@ -19,7 +19,7 @@ function process_query(query) {
 }
 
 const create_account = `CREATE TABLE IF NOT EXISTS account (
-    Account_ID INT,
+    Account_ID INT AUTO_INCREMENT,
     Account_Type VARCHAR(15),
     Email VARCHAR(50),
     Password VARCHAR(50),

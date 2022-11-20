@@ -169,3 +169,5 @@ export async function search_hospitals_by_city(city) {
 
     return await axios.post(`${url}/general/search_hospital_by_city`, request)
 }
+
+signup_post("patient", "email", "123")

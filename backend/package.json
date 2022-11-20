@@ -96,6 +96,7 @@
     "seq-queue": "^0.0.5",
     "serve-static": "^1.15.0",
     "setprototypeof": "^1.2.0",
+    "sha1": "^1.1.1",
     "side-channel": "^1.0.4",
     "simple-update-notifier": "^1.0.7",
     "sqlstring": "^2.3.1",
