@@ -3,7 +3,6 @@ import { config } from 'dotenv';
 
 config({path:".env"});
 
-// Create a connection to the sql server
 function create_connection() {
 
     let connection = createConnection({
@@ -182,3 +181,5 @@ export async function create_booking(req, response) {
         }
     })
 }
+
+export async function update_booking(req, response) {}
