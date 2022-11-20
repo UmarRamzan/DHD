@@ -10,6 +10,7 @@ In the backend folder: <br />
 npm run server (Starts server.js using nodemon) <br />
 npm run create (Creates the database) <br />
 npm run seed (Seeds the database) <br />
+npm run api (Runs the API file) <br />
 
 In the frontend folder: <br />
 npm run start (Starts the browser application) <br />
