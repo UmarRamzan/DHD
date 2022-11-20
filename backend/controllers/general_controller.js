@@ -1,5 +1,6 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
+import sha1 from 'sha1';
 
 config({path:".env"});
 
@@ -27,7 +28,7 @@ function create_connection() {
 export async function signup_post(req, response) {
 
     let email = req.body.email
-    let password = req.body.password
+    let password = sha1(req.body.password)
     let account_type = req.body.account_type
 
     let connection = create_connection()
@@ -63,7 +64,7 @@ export async function signup_post(req, response) {
 export async function login_post(req, response) {
 
     let email = req.body.email
-    let password = req.body.password
+    let password = sha1(req.body.password)
 
     let connection = create_connection()
 
