@@ -32,12 +32,20 @@ export async function signup_post(req, response) {
 
     let connection = create_connection()
 
-    let create_account = `INSERT INTO account (Account_Type, Email, Password) VALUES ("${account_type}", "${email}", "${password}")`
+    let insert_query = `INSERT INTO account (Account_Type, Email, Password) VALUES (?)`
+    let values = [account_type, email, password]
 
-    connection.query(create_account, (err, res) => {
+    connection.query(insert_query, [values], (err, res) => {
+
         if (err) {
+            let return_message = {
+                "is_successful": false,
+                "error": "Could not process signup request"
+            }
+            response.send(return_message)
+
             console.log(err)
-            console.log("Account Creation Failed")
+            
         } else {
             let account_ID = res.insertId
 
@@ -54,23 +62,35 @@ export async function signup_post(req, response) {
 }
 
 export async function login_post(req, response) {
+
     let email = req.body.email
     let password = req.body.password
 
     let connection = create_connection()
-    let check_acc = `SELECT * FROM account WHERE Email="${email}" AND Password="${password}"`
 
-    connection.query(check_acc, (err, res) => {
+    let select_query = `SELECT * FROM account WHERE Email = ? AND Password = ?`
+    let values = [email, password]
+
+    connection.query(select_query, [values], (err, res) => {
+
         if (err) {
+            let return_message = {
+                "is_successful": false,
+                "error": "Could not process login request"
+            }
+            response.send(return_message)
+
             console.log(err)
-            console.log("Login Failed")
+
         } else {
 
             if (res === undefined || res.length == 0){
                 let return_message = {
                     "is_successful": false,
+                    "error": "Email or Password is incorrect"
                 }
                 response.send(return_message)
+
             } else {
                 let return_message = {
                     "is_successful": true,

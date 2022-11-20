@@ -61,3 +61,7 @@ export async function hospital_add_entry(req, response) {
 
     connection.end()
 }
+
+export async function search_hospital_by_city(req, response) {
+
+}
