@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { config } from 'dotenv'
 
-config({path:"./backend/.env"});
+config({path:".env"});
 
 let url = `http://localhost:${process.env.PORT}/api`
 
@@ -131,3 +131,7 @@ export async function search_specialization(specialization) {
 
     return await axios.post(`${url}/general/search_specialization`, request)
 }
+
+let res = await search("first", "Lahore")
+let x = await res.json()
+console.log(x)
