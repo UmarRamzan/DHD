@@ -62,9 +62,9 @@ export async function signup_post(req, response) {
 }
 
 export async function login_post(req, response) {
-
     let email = req.body.email
-    let password = sha1(req.body.password)
+    let password = sha1(req.body.password) 
+    //Encryption
 
     let connection = create_connection()
 
@@ -76,25 +76,26 @@ export async function login_post(req, response) {
         if (err) {
             let return_message = {
                 "is_successful": false,
-                "error": "Could not process login request"
+                "error": "Login request invalid"
             }
             response.send(return_message)
 
             console.log(err)
 
         } else {
-
             if (res === undefined || res.length == 0){
-                let return_message = {
-                    "is_successful": false,
-                    "error": "Email or Password is incorrect"
-                }
-                response.send(return_message)
 
-            } else {
                 let return_message = {
                     "is_successful": true,
                     "account_ID": res[0].Account_ID
+                }
+                response.send(return_message)
+
+            } 
+            else {
+                let return_message = {
+                    "is_successful": false,
+                    "error": "Email or Password is incorrect"
                 }
                 response.send(return_message)
             }
