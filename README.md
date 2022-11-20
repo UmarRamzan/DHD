@@ -7,7 +7,7 @@ If your code is working and you want to merge it with main, create a pull reques
 Scripts: <br />
 
 In the main directory: <br />
-npm run init_db (Creates and seeds the database)
+npm run init_db (Creates and seeds the database) <br />
 npm run start_server (Starts server.js using nodemon) <br />
 npm run start_app (Starts the web application) <br />
 
