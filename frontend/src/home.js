@@ -64,12 +64,12 @@ Sign In
 <br/>
 
 <div class="text-center">
-<button class="login100-form-btn">
+<u>
 <Link  to="sign_up" spy={true} smooth={true}>
 Sign Up
     </Link>
 
-</button>
+</u>
 </div>
 
 <br/>
@@ -235,10 +235,11 @@ Sign Up
 <br/>
 
 <div class="text-center">
+  <u>
 <Link  to="sign_in" spy={true} smooth={true}>
 Back to sign in
     </Link>
-        
+ </u>       
 
 </div>
 <form/>
@@ -316,9 +317,12 @@ Sign Up
 <br/>
 
 <div class="text-center">
+  <u>
 <Link  to="sign_in" spy={true} smooth={true}>
+  
 Back to sign in
     </Link>
+    </u>
 </div>
 <form/>
 <br/>
@@ -400,11 +404,13 @@ Sign Up
 <br/>
 <br/>
 
-<div class="text-center">
+<div class="text-center"/>
+  <u>
 <Link  to="sign_in" spy={true} smooth={true}>
 Back to sign in
     </Link>
-</div>
+    </u>
+<div/>
 <form/>
 <br/>
 <br/>
