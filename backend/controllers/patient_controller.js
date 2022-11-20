@@ -71,5 +71,13 @@ export async function patient_update_entry(req, response) {
     let values = [column_name, new_value, patient_ID]
 
     let connection = create_connection()
+    connection.query(update_query, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(res)
+        }
+    })
+
     connection.end()
 }

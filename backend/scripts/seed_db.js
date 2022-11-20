@@ -1,6 +1,5 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
-import express from 'express';
 import { createReadStream } from 'fs';
 import csv from 'csv-parser';
 
@@ -30,10 +29,6 @@ async function reader(file)
 
 function seedData(query)
 {
-    /*
-    Call this fuction to  insert a record into your db to the respective table using 
-    the query.The variable query corresponds to the sql query you will write to accomplish this. 
-     */
     return new Promise ((resolve, reject) => {
         connectionString.query(query, (err2, result) => {
             if (err2) {
@@ -51,7 +46,7 @@ function seedData(query)
 
 connectionString.connect(async (err)=>
 {
-    // delete all data within all of the tables
+    // delete all data within the specified tables
     await seedData("TRUNCATE account")
     await seedData("TRUNCATE hospital")
     await seedData("TRUNCATE doctor")
@@ -103,7 +98,6 @@ connectionString.connect(async (err)=>
             var Q5 = "INSERT INTO doctor_hospital";
             Q5 = Q5 + " VALUES ("+ row.docotor_ID+ "," + row.hospital_ID+")";
             let p5 = await seedData(Q5);
-
         }
         
         console.log("Seeding Complete");
