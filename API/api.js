@@ -47,6 +47,7 @@ export async function patient_add_entry(account_ID, first_name, last_name) {
 }
 
 // update column_name to new_value for patient_ID in the patient table
+// returns a json object containing "is_successful" and any possible "error_message"
 export async function patient_update_entry(patient_ID, column_name, new_value) {
 
     const request = {
@@ -159,4 +160,12 @@ export async function search_specialization(specialization) {
     return await axios.post(`${url}/general/search_specialization`, request)
 }
 
-let res = await patient_update_entry(1, "id", "5")
+// final all hospitals within a certain city
+// returns a json object containing a list of hospitals
+export async function search_hospitals_by_city(city) {
+    const request = {
+        "city": city,
+    }
+
+    return await axios.post(`${url}/general/search_hospital_by_city`, request)
+}

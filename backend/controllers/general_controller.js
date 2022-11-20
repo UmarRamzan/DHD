@@ -54,16 +54,25 @@ export async function signup_post(req, response) {
 }
 
 export async function login_post(req, response) {
+
     let email = req.body.email
     let password = req.body.password
 
     let connection = create_connection()
-    let check_acc = `SELECT * FROM account WHERE Email="${email}" AND Password="${password}"`
 
-    connection.query(check_acc, (err, res) => {
+    let select_query = `SELECT * FROM account WHERE Email = ? AND Password = ?`
+    let values = [email, password]
+
+    connection.query(select_query, [values], (err, res) => {
+
         if (err) {
             console.log(err)
+            let return_message = {
+                "is_successful": false,
+            }
+            response.send(return_message)
             console.log("Login Failed")
+
         } else {
 
             if (res === undefined || res.length == 0){
@@ -71,6 +80,7 @@ export async function login_post(req, response) {
                     "is_successful": false,
                 }
                 response.send(return_message)
+                
             } else {
                 let return_message = {
                     "is_successful": true,

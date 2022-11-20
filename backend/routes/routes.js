@@ -24,5 +24,6 @@ router.post('/api/patient/patient_update_entry', patient_controller.patient_upda
 router.post('/api/doctor/doctor_add_entry', doctor_controller.doctor_add_entry)
 
 router.post('/api/hospital/hospital_add_entry', hospital_controller.hospital_add_entry)
+router.post('/api/hospital/search_hospital_by_city', hospital_controller.search_hospital_by_city)
 
 export default router
