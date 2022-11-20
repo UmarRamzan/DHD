@@ -229,4 +229,32 @@ export async function create_booking(req, response) {
     connection.end()
 }
 
-export async function update_booking(req, response) {}
+export async function update_booking(req, response) {
+    let patient_ID = req.body.patient_ID
+    let new_doctor_ID = req.body.new_doctor_ID
+    let new_year = req.body.new_year
+    let new_month = req.body.new_month
+    let new_day = req.body.new_day
+    let new_hour = req.body.new_hour
+    
+    let insert_query = `UPDATE booking (Doctor_ID, Year, Month, Day, Hour) WHERE patient_ID = patient_ID (?)`
+    if (err) {
+
+        let return_message = {
+            "is_successful": false,
+            "error_message": "Could not update booking at this time",
+        }
+
+        response.send(return_message)
+        console.log(err)
+
+    } else {
+
+        let return_message = {
+            "is_successful": true,
+        }
+
+        response.send(return_message)
+    }
+
+}
