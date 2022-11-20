@@ -25,6 +25,7 @@
     "cookie-signature": "^1.0.6",
     "core-util-is": "^1.0.3",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "debug": "^3.2.7",
     "denque": "^2.1.0",
     "depd": "^2.0.0",
@@ -115,6 +116,7 @@
   "scripts": {
     "server": "nodemon server.js",
     "create": "node ./scripts/create_db.js",
+    "seed": "node ./scripts/seed_db.js",
     "api": "node ../API/api.js"
   },
   "keywords": [],
