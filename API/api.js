@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { config } from 'dotenv'
 
-config({path:"./backend/.env"});
+config({path:".env"});
 
 let url = `http://localhost:${process.env.PORT}/api`
 
@@ -44,6 +44,18 @@ export async function patient_add_entry(account_ID, first_name, last_name) {
     }
 
     return await axios.post(`${url}/patient/patient_add_entry`, request)
+}
+
+// update column_name to new_value for patient_ID in the patient table
+export async function patient_update_entry(patient_ID, column_name, new_value) {
+
+    const request = {
+        "patient_ID": patient_ID,
+        "column_name": column_name,
+        "new_value": new_value
+    }
+
+    return await axios.post(`${url}/patient/patient_update_entry`, request)
 }
 
 // add a row containing the specified values into the doctor table
@@ -109,6 +121,21 @@ export async function create_booking(patient_ID, doctor_ID, year, month, day, ho
     return await axios.post(`${url}/general/create_booking`, request)
 }
 
+// reschedule the booking with booking_ID to the new time parameters
+// returns a json object containing "is_successful" and any possible "error_message"
+export async function update_booking(booking_ID, new_year, new_month, new_day, new_hour) {
+
+    const request = {
+        "booking_ID": booking_ID,
+        "new_year": year,
+        "new_month": month,
+        "new_day": day,
+        "new_hour": hour
+    }
+
+    return await axios.post(`${url}/general/update_booking`, request)
+}
+
 // search for relevant doctors and hospitals using search_string and the specified city
 // returns a json object containing two lists: "doctor_list" and "hospital_list"
 export async function search(search_string, city) {
@@ -131,3 +158,5 @@ export async function search_specialization(specialization) {
 
     return await axios.post(`${url}/general/search_specialization`, request)
 }
+
+let res = await patient_update_entry(1, "id", "5")
