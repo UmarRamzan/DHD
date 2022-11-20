@@ -53,7 +53,6 @@ export async function signup_post(req, response) {
                 "is_successful": true,
                 "account_ID": account_ID
             }
-
             response.send(return_message)
         }
     })
@@ -227,6 +226,7 @@ export async function create_booking(req, response) {
             response.send(return_message)
         }
     })
+    connection.end()
 }
 
 export async function update_booking(req, response) {}
