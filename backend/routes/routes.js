@@ -5,8 +5,6 @@ import * as patient_controller from '../controllers/patient_controller.js'
 import * as doctor_controller from '../controllers/doctor_controller.js'
 import * as hospital_controller from '../controllers/hospital_controller.js'
 
-import { login_post } from '../controllers/general_controller.js'
-
 // create the router
 const router = Router()
 

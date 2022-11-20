@@ -1,7 +1,7 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
 
-config({path:"../.env"});
+config({path:".env"});
 
 // Create a connection to the sql server
 function create_connection() {

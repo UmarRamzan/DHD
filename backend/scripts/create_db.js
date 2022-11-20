@@ -2,7 +2,7 @@
 import { createConnection } from 'mysql2';
 import { config } from 'dotenv';
 
-config({path:"./backend/.env"});
+config({path:".env"});
 
 // Create a connection to the sql server
 const connection = createConnection({
@@ -72,6 +72,15 @@ const create_booking = `CREATE TABLE IF NOT EXISTS booking (
     PRIMARY KEY (Booking_ID)
 )`
 
+const create_review = `CREATE TABLE IF NOT EXISTS review (
+    Review_ID INT AUTO_INCREMENT,
+    Patient_ID INT,
+    Doctor_ID INT,
+    Rating INT,
+    Review_Text VARCHAR(500),
+    PRIMARY KEY (Review_ID)
+)`
+
 connection.connect((err) => {
     if (err) {
         console.log("Could not connect to the mysql server")
@@ -94,6 +103,7 @@ connection.connect((err) => {
         process_query(create_hospital)
         process_query(create_doctor_hospital)
         process_query(create_booking)
+        process_query(create_review)
 
         connection.end()
     }
