@@ -61,3 +61,15 @@ export async function patient_add_entry(req, response) {
 
     connection.end()
 }
+
+export async function patient_update_entry(req, response) {
+    let patient_ID = req.body.patient_ID
+    let column_name = req.body.column_name
+    let new_value = req.body.new_value
+
+    let update_query = `UPDATE patient SET ? = ? WHERE Patient_ID = ?`
+    let values = [column_name, new_value, patient_ID]
+
+    let connection = create_connection()
+    connection.end()
+}
