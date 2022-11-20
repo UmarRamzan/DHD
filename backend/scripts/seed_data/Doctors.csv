@@ -1,4 +1,4 @@
-account_ID,first_name,last_name,specialization,city,address,timings,perosnal_bio,online_availability,charges
+account_ID,first_name,last_name,specialization,city,address,timings,personal_bio,online_availability,charges
 500,Demetria,Golden,Department3,Karachi,622-2132 Libero. Road,20:00 - 6:00,Nam interdum enim non nisi. Aenean eget metus. In nec,1,44
 501,Bethany,Valentine,Department2,Quetta,170-4467 Lobortis Street,20:00 - 6:00,tempor augue ac ipsum. Phasellus vitae mauris sit amet lorem,1,239
 502,Naida,Butler,Department5,Quetta,540-2920 Faucibus. Rd.,13:00 - 20:00,a neque. Nullam ut nisi a odio semper cursus. Integer,0,50
