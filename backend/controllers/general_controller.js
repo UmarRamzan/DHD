@@ -88,8 +88,9 @@ export async function search(req, response) {
                         "doctor_list": doctor_list,
                         "hospital_list": hospital_list
                     }
-                
-                    response.send(return_message)
+
+                    response.status(200).json(return_message)
+                    //response.send(return_message)
                 }
             })
         }

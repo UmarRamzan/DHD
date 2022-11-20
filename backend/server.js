@@ -1,5 +1,7 @@
 import express, { json } from 'express'
 import { config } from 'dotenv';
+import cors from 'cors'
+
 import router from './routes/routes.js'
 
 config({path:".env"});
@@ -7,13 +9,16 @@ config({path:".env"});
 // create the server
 const app = express()
 
+// enable cors to allow for communication between different server
+app.use(cors());
+
+// parse incoming JSON requests and place parsed data within req.body
+app.use(json())
+
 // listen for any requests made to the server
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`)
 })
-
-// parse incoming JSON requests and place parsed data within req.body
-app.use(json())
 
 // print any requests made to the server
 app.use((req, res, next) => {
