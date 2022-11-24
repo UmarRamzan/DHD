@@ -20,8 +20,6 @@ const Login = () => {
                 <label>Email:</label>
                 <input 
                     type="text"
-                    name="username"
-                    floatingLabelText="user name"
                     required
                     value={email}
                     onChange={(e)=>{setEmail(e.target.value)}}
