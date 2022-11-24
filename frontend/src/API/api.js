@@ -6,20 +6,21 @@ let url = `http://localhost:3000/api`
 
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function signup_post(email, password, account_type) {
+export async function signup(email, password, account_type) {
 
     const request = {
-        "account_type": account_type,
         "email": email,
-        "password": password
+        "password": password,
+        "account_type": account_type
     }
 
     return await axios.post(`${url}/general/signup_post`, request)
+
 }
 
 // login to an existing account with the specified email and password
 // return a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function login_post(email, password) {
+export async function login(email, password) {
 
     const request = {
         "email": email,
@@ -54,6 +55,17 @@ export async function patient_update_entry(patient_ID, column_name, new_value) {
     }
 
     return await axios.post(`${url}/patient/patient_update_entry`, request)
+}
+
+export async function get_patient_info(account_ID) {
+
+    const request = {
+        "account_ID":account_ID
+    }
+
+    console.log(request)
+
+    return await axios.post(`${url}/patient/patient_get_info`, request)
 }
 
 // add a row containing the specified values into the doctor table
@@ -166,5 +178,3 @@ export async function search_hospitals_by_city(city) {
 
     return await axios.post(`${url}/general/search_hospital_by_city`, request)
 }
-
-signup_post("patient", "email", "123")

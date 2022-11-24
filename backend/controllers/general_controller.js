@@ -33,32 +33,61 @@ export async function signup_post(req, response) {
 
     let connection = create_connection()
 
-    let insert_query = `INSERT INTO account (Account_Type, Email, Password) VALUES (?)`
-    let values = [account_type, email, password]
+    let email_check = `SELECT * FROM account WHERE Email = ?`
+    let check_values = [email]
 
-    connection.query(insert_query, [values], (err, res) => {
-
+    connection.query(email_check, check_values, (err, res) => {
         if (err) {
+
             let return_message = {
                 "is_successful": false,
-                "error": "Could not process signup request"
+                "error_message": "Could not process signup request"
             }
             response.send(return_message)
+            connection.end()
 
-            console.log(err)
-            
         } else {
-            let account_ID = res.insertId
 
-            let return_message = {
-                "is_successful": true,
-                "account_ID": account_ID
+            if (res.length != 0) {
+                let return_message = {
+                    "is_successful": false,
+                    "error_message": "Email already exists"
+                }
+                response.send(return_message)
+                connection.end()
+
+            } else {
+
+                let insert_query = `INSERT INTO account (Account_Type, Email, Password) VALUES (?)`
+                let values = [account_type, email, password]
+            
+                connection.query(insert_query, [values], (err, res) => {
+            
+                    if (err) {
+                        let return_message = {
+                            "is_successful": false,
+                            "error_message": "Could not process signup request"
+                        }
+                        response.send(return_message)
+                        connection.end()
+            
+                        console.log(err)
+                        
+                    } else {
+                        let account_ID = res.insertId
+            
+                        let return_message = {
+                            "is_successful": true,
+                            "account_ID": account_ID
+                        }
+                        response.send(return_message)
+                        connection.end()
+                    }
+                })
+
             }
-            response.send(return_message)
         }
     })
-
-    connection.end()
 }
 
 export async function login_post(req, response) {
@@ -113,7 +142,7 @@ export async function search(req, response) {
     let values_doctor = [city, search_string, search_string, search_string]
 
     let query_hospital = `SELECT * FROM hospital WHERE City = ? AND Name LIKE ?`
-    let values_hospital = [city, `%${search_string}%`]
+    let values_hospital = [city, `${search_string}%`]
 
     let connection = create_connection()
 
@@ -134,13 +163,14 @@ export async function search(req, response) {
                         "doctor_list": doctor_list,
                         "hospital_list": hospital_list
                     }
-
-                    response.status(200).json(return_message)
-                    //response.send(return_message)
+                    
+                    response.send(return_message)
+                    connection.end()
                 }
             })
         }
     })
+
 }
 
 export async function search_specialization(req, response) {
@@ -164,6 +194,8 @@ export async function search_specialization(req, response) {
             response.send(return_message)
         }
     })
+
+    connection.end()
 }
 
 export async function associate_doctor_hospital(req, response) {

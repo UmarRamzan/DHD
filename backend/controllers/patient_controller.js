@@ -81,3 +81,30 @@ export async function patient_update_entry(req, response) {
 
     connection.end()
 }
+
+export async function get_patient_info(req, response) {
+    let account_ID = req.body.account_ID
+
+    let select_query = `SELECT * FROM patient WHERE Account_ID = ?`
+    let values = [account_ID]
+
+    let connection = create_connection()
+    connection.query(select_query, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            let return_message = {
+                "first_name": res.First_Name,
+                "last_name": res.Last_Name,
+                "year": res.Year,
+                "month": res.Month,
+                "day": res.Day,
+                "gender": res.Gender
+            }
+
+            response.send(return_message)
+        }
+    })
+
+}

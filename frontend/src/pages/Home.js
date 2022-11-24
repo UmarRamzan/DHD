@@ -7,8 +7,12 @@ const Home = () => {
     const [results, setResults] = useState(null)
 
     const handleSearch = async () => {
-        let res = await search(searchString, 'Lahore')
-        setResults(res.data.hospital_list)
+        if (searchString == '') {
+            setResults('')
+        } else {
+            let res = await search(searchString, 'Lahore')
+            setResults(res.data.hospital_list)
+        }
     }
 
     useEffect(() => {
@@ -17,7 +21,9 @@ const Home = () => {
 
     return ( 
         <div className="home">
+            
             <h1>Home</h1>
+
             <div className="search">
                 <input
                     type="text" 
@@ -34,7 +40,7 @@ const Home = () => {
                         <p>{res.Name + " " + res.Address}</p>
                     </div>
                 ))}
-            </div> 
+            </div>     
         </div>  
      );
 }
