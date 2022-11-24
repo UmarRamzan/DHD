@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { login_post } from "../API/api";
+import { login } from "../API/api";
 
 
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        login_post(email, password)
+        login(email, password)
     }
 
     return ( 

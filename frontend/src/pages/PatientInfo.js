@@ -11,6 +11,9 @@ const PatientInfo = () => {
     const [gender, setGender] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    //{accountType == 'patient' && <PatientInfo/>}
+            
     
     const handleSubmit = (e) => {
         e.preventDefault()
