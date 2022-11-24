@@ -112,8 +112,8 @@ export async function search(req, response) {
     let query_doctor = `SELECT * FROM doctor WHERE City = ? AND (First_Name = ? OR Last_Name = ? OR Specialization = ?) `
     let values_doctor = [city, search_string, search_string, search_string]
 
-    let query_hospital = `SELECT * FROM hospital WHERE City = ? AND Name = ?`
-    let values_hospital = [city, search_string]
+    let query_hospital = `SELECT * FROM hospital WHERE City = ? AND Name LIKE ?`
+    let values_hospital = [city, `%${search_string}%`]
 
     let connection = create_connection()
 

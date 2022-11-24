@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { search } from "../API/api";
+import { useEffect } from "react";
 
 const Home = () => {
     const [searchString, setSearchString] = useState('')
+    const [results, setResults] = useState(null)
 
-    const handleSearch = () => {
-        console.log("Searching", searchString)
-        search(searchString)
-        .then((res) => {
-            console.log(res)
-        })
+    const handleSearch = async () => {
+        let res = await search(searchString, 'Lahore')
+        setResults(res.data.hospital_list)
     }
+
+    useEffect(() => {
+        handleSearch()
+    }, [searchString])
 
     return ( 
         <div className="home">
@@ -25,8 +27,16 @@ const Home = () => {
                 />
                 <button onClick={handleSearch}>Search</button>
             </div>
+
+            <div className="results">
+                {results && results.map((res) => (
+                    <div key={res.Account_ID}>
+                        <p>{res.Name + " " + res.Address}</p>
+                    </div>
+                ))}
+            </div> 
         </div>  
      );
 }
  
-export default Home;
+export default Home

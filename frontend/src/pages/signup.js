@@ -4,15 +4,7 @@ import { signup_post } from "../API/api";
 import PatientInfo from "./PatientInfo";
 
 const Signup = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
     const [accountType, setAccountType] = useState('patient')
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        signup_post(email, password, accountType)
-        .then((res) => {console.log(res)})
-    }
 
     return ( 
         <div className="signup">
