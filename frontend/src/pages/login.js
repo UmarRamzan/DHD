@@ -1,13 +1,45 @@
-import React from 'react';
-//import "./login.css";
-import Form from '../../components/form/form';
-import Header from '../components/header/header';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { login_post } from "../API/api";
 
-export function Login() {
-    return (
-        <div>
-            <Header/>
-            <Form/>
-        </div>
-    )
+
+const Login = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        login_post(email, password)
+    }
+
+    return ( 
+        <div className="login">
+            <h1>Login</h1>
+
+            <form onSubmit={handleSubmit}>
+                <label>Email:</label>
+                <input 
+                    type="text"
+                    name="username"
+                    floatingLabelText="user name"
+                    required
+                    value={email}
+                    onChange={(e)=>{setEmail(e.target.value)}}
+                />
+
+                <label>Password:</label>
+                <input 
+                    type="text"
+                    required
+                    value={password}
+                    onChange={(e)=>{setPassword(e.target.value)}}
+                />
+
+                <button>Submit</button>
+            </form>
+        <Link to="/signup">Signup</Link>
+        </div>  
+     );
 }
+ 
+export default Login;

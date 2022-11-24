@@ -1,15 +1,12 @@
 import axios from 'axios'
-import { config } from 'dotenv'
 
-config({path:".env"});
-
-let url = `http://localhost:${process.env.PORT}/api`
+let url = `http://localhost:3000/api`
 
 // for all functions the resulting data can be accessed by using .data on the returned object
 
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function signup_post(account_type, email, password) {
+export async function signup_post(email, password, account_type) {
 
     const request = {
         "account_type": account_type,
@@ -128,10 +125,10 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
 
     const request = {
         "booking_ID": booking_ID,
-        "new_year": year,
-        "new_month": month,
-        "new_day": day,
-        "new_hour": hour
+        "new_year": new_year,
+        "new_month": new_month,
+        "new_day": new_day,
+        "new_hour": new_hour
     }
 
     return await axios.post(`${url}/general/update_booking`, request)

@@ -4,10 +4,9 @@
   "description": "Doctors and Hospital Directory",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "init_db": "cd backend && npm run create_db && npm run seed_db",
-    "start_server": "cd backend && npm run server",
-    "start_app": "cd frontend && npm run start"
+    "server": "cd backend && npm run server",
+    "app": "cd frontend && npm run start"
   },
   "repository": {
     "type": "git",

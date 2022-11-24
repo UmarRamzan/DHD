@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.signup, .login{
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.signup label, .signup select, .login label, .login select{
+  text-align: left;
+  display: block;
+}
+
+.signup input, .login input {
+  text-align: center;
+  display: block;
+}
+
+.signup button, .login button {
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
