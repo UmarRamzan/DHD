@@ -8,7 +8,7 @@ Scripts: <br />
 
 In the main directory: <br />
 npm run init_db (Creates and seeds the database) <br />
-npm run start_server (Starts server.js using nodemon) <br />
-npm run start_app (Starts the web application) <br />
+npm run server (Starts server.js using nodemon) <br />
+npm run app (Starts the web application) <br />
 
 To run a file without using scripts, make sure the dotenv path specified within the file is correct and that you run node {filename} inside the directory containing the file
