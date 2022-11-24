@@ -33,12 +33,18 @@ const Signup = () => {
             setError('Incorrect Email')
         } else if (password.length <= 8) {
             setError('Password must be atleast 8 characters long')
+
         } else {
+
             let res = await signup(email, password, accountType)
 
             if (res.data.is_successful) {
                 setUserID(res.data.account_ID)
-                navigate("/home");
+                localStorage.setItem('userID', res.data.account_ID)
+                if (accountType == 'patient') {navigate("/signup/patient")}
+                else if (accountType == 'doctor') {navigate("/signup/doctor")}
+                else if (accountType == 'hospital') {navigate("/signup/hospital")}
+                
             } else {
                 setError(res.data.error_message)
             }

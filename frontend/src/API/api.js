@@ -33,12 +33,14 @@ export async function login(email, password) {
 // add a row containing the specified values into the patient table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function patient_add_entry(account_ID, first_name, last_name) {
+export async function patient_add_entry(account_ID, first_name, last_name, date_of_birth, gender) {
 
     const request = {
         "account_ID": account_ID,
         "first_name": first_name,
-        "last_name": last_name
+        "last_name": last_name,
+        "date_of_birth": date_of_birth,
+        "gender": gender
     }
 
     return await axios.post(`${url}/patient/patient_add_entry`, request)

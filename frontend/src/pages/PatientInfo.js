@@ -1,24 +1,38 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { patient_add_entry, signup_post } from "../API/api";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { patient_add_entry } from "../API/api";
 
 const PatientInfo = () => {
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [year, setYear] = useState('')
     const [month, setMonth] = useState('')
     const [day, setDay] = useState('')
-    const [gender, setGender] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [gender, setGender] = useState('male')
 
-    //{accountType == 'patient' && <PatientInfo/>}
-            
-    
-    const handleSubmit = (e) => {
+    const [error, setError] = useState('')
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setError('')
+    }, [firstName, lastName, year, month, day, gender])
+
+    const handleSubmit = async (e) => {
+
         e.preventDefault()
-        signup_post(email, password, 'patient')
-        .then((res) => {console.log(res);patient_add_entry(res.data.account_ID, firstName, lastName)})
+        let userID = localStorage.getItem("userID")
+        let date_of_birth = `${year}-${month}-${day}`
+        let res = await patient_add_entry(userID, firstName, lastName, date_of_birth, gender)
+        console.log(res)
+
+        if (res.data.is_successful) {
+            navigate("/home")
+            
+        } else {
+            setError(res.data.error_message)
+        }
     }
 
     return ( 
@@ -67,26 +81,17 @@ const PatientInfo = () => {
                     onChange={(e)=>{setDay(e.target.value)}}
                 />
 
-                <label>Email:</label>
-                <input 
-                    type="text"
-                    required
-                    value={email}
-                    onChange={(e)=>{setEmail(e.target.value)}}
-                />
-
-                <label>Password:</label>
-                <input 
-                    type="text"
-                    required
-                    value={password}
-                    onChange={(e)=>{setPassword(e.target.value)}}
-                />
+                <label>Gender</label>
+                <select value={gender} onChange={(e)=>{setGender(e.target.value)}}>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
 
                 <button>Submit</button>
             </form>
-        </div>  
-     );
+            <p>{ error }</p>
+        </div>
+    )
 }
  
 export default PatientInfo;

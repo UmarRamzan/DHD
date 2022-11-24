@@ -31,11 +31,13 @@ export async function patient_add_entry(req, response) {
     let account_ID = req.body.account_ID
     let first_name = req.body.first_name
     let last_name = req.body.last_name
+    let date_of_birth = req.body.date_of_birth
+    let gender = req.body.gender
     
     let connection = create_connection()
 
-    let seed_query = `INSERT INTO patient (Account_ID, First_Name, Last_Name) VALUES (?)`
-    let values = [account_ID, first_name, last_name]
+    let seed_query = `INSERT INTO patient VALUES (?)`
+    let values = [account_ID, first_name, last_name, date_of_birth, gender]
 
     connection.query(seed_query, [values], (err, res) => {
 
@@ -47,6 +49,8 @@ export async function patient_add_entry(req, response) {
             }
 
             response.send(return_message)
+            connection.end()
+
             console.log(err)
 
         } else {
@@ -56,10 +60,9 @@ export async function patient_add_entry(req, response) {
             }
 
             response.send(return_message)
+            connection.end()
         }
     })
-
-    connection.end()
 }
 
 export async function patient_update_entry(req, response) {

@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { search } from "../API/api";
-import { useEffect } from "react";
+import { UserContext } from "../UserContext";
 
 const Home = () => {
+
+    const {userID, setUserID} = useContext(UserContext)
+
     const [searchString, setSearchString] = useState('')
     const [results, setResults] = useState(null)
 
@@ -14,6 +18,8 @@ const Home = () => {
             setResults(res.data.hospital_list)
         }
     }
+
+    setUserID(localStorage.getItem("userID"))
 
     useEffect(() => {
         handleSearch()
@@ -40,7 +46,8 @@ const Home = () => {
                         <p>{res.Name + " " + res.Address}</p>
                     </div>
                 ))}
-            </div>     
+            </div>    
+            {userID? (<div>Loggin in as User {userID}</div>) : <Link to="/login">Login</Link>} 
         </div>  
      );
 }
