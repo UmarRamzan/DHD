@@ -1,15 +1,31 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../API/api";
+import { UserContext } from "../UserContext";
 
 
 const Login = () => {
+
+    const {userID, setUserID} = useContext(UserContext)
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        login(email, password)
+        let res = await login(email, password)
+        
+        if (res.data.is_successful) {
+            localStorage.setItem('userID', res.data.account_ID)
+            setUserID(res.data.account_ID)
+            navigate("/home")
+
+        } else {
+            setError(res.data.error_message)
+        }
     }
 
     return ( 
@@ -35,7 +51,8 @@ const Login = () => {
 
                 <button>Submit</button>
             </form>
-        <Link to="/signup">Signup</Link>
+            <p>{ error }</p>
+            <Link to="/signup">Signup</Link>
         </div>  
      );
 }

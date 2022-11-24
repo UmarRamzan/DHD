@@ -1,6 +1,5 @@
-const handleLogout = () => {
-    setUser({});
-    setUsername("");
-    setPassword("");
-    localStorage.clear();
-  };
+const Logout = () => {
+  localStorage.clear();
+}
+
+export default Logout

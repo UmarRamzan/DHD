@@ -19,6 +19,11 @@ const Home = () => {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.clear()
+        setUserID(null)
+    }
+
     setUserID(localStorage.getItem("userID"))
 
     useEffect(() => {
@@ -48,6 +53,7 @@ const Home = () => {
                 ))}
             </div>    
             {userID? (<div>Loggin in as User {userID}</div>) : <Link to="/login">Login</Link>} 
+            {userID? (<button onClick={handleLogout}>Logout</button>) : null}
         </div>  
      );
 }

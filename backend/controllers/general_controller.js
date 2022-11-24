@@ -100,12 +100,12 @@ export async function login_post(req, response) {
     let select_query = `SELECT * FROM account WHERE Email = ? AND Password = ?`
     let values = [email, password]
 
-    connection.query(select_query, [values], (err, res) => {
+    connection.query(select_query, values, (err, res) => {
 
         if (err) {
             let return_message = {
                 "is_successful": false,
-                "error": "Could not process login request"
+                "error_message": "Could not process login request"
             }
             response.send(return_message)
 
@@ -113,18 +113,21 @@ export async function login_post(req, response) {
 
         } else {
 
-            if (res === undefined || res.length == 0){
+            if (res.length == 0){
                 let return_message = {
                     "is_successful": false,
-                    "error": "Email or Password is incorrect"
+                    "error_message": "Email or Password is incorrect"
                 }
+
                 response.send(return_message)
+                connection.end()
 
             } else {
                 let return_message = {
                     "is_successful": true,
                     "account_ID": res[0].Account_ID
                 }
+                console.log(res)
                 response.send(return_message)
             }
         }
