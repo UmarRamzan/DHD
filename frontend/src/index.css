@@ -56,3 +56,15 @@ code {
   border-radius: 8px;
   cursor: pointer;
 }
+
+.profileTile {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 300px;
+  padding: 20px;
+  border-style: solid;
+  border-width: thin;
+}

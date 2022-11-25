@@ -2,19 +2,21 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { search } from "../API/api";
 import { UserContext } from "../UserContext";
+import Select from 'react-select';
 
 const Home = () => {
 
     const {userID, setUserID} = useContext(UserContext)
 
     const [searchString, setSearchString] = useState('')
+    const [city, setCity] = useState('lahore')
     const [results, setResults] = useState(null)
 
     const handleSearch = async () => {
         if (searchString == '') {
             setResults('')
         } else {
-            let res = await search(searchString, 'Lahore')
+            let res = await search(searchString, city)
             setResults(res.data.hospital_list)
         }
     }
@@ -26,14 +28,32 @@ const Home = () => {
 
     setUserID(localStorage.getItem("userID"))
 
+    const cities = [
+        { label: 'Lahore', value: 'lahore' },
+        { label: 'Karachi', value: 'karachi' },
+        { label: 'Islamabad', value: 'islamabad' },
+        { label: 'Multan', value: 'multan' },
+        { label: 'Peshawar', value: 'peshawar' }
+      ];
+
     useEffect(() => {
         handleSearch()
-    }, [searchString])
+    }, [searchString, city])
 
     return ( 
         <div className="home">
             
             <h1>Home</h1>
+
+            <label>City</label>
+            <select value={city} onChange={(e)=>{setCity(e.target.value)}}>
+                <option value="lahore">Lahore</option>
+                <option value="islamabad">Islamabad</option>
+                <option value="karachi">Karachi</option>
+                <option value="peshawar">Peshawar</option>
+                <option value="quetta">Quetta</option>
+            </select>
+            
 
             <div className="search">
                 <input
@@ -47,9 +67,13 @@ const Home = () => {
 
             <div className="results">
                 {results && results.map((res) => (
-                    <div key={res.Account_ID}>
-                        <p>{res.Name + " " + res.Address}</p>
+                    <Link to="/signup">
+                        <div className="profileTile">
+                        <div key={res.Account_ID}>
+                            <p>{res.Name + " " + res.Address + " " + res.Account_ID }</p>
+                        </div>
                     </div>
+                    </Link>
                 ))}
             </div>    
             {userID? (<div>Loggin in as User {userID}</div>) : <Link to="/login">Login</Link>} 
