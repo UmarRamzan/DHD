@@ -16,6 +16,6 @@ npm run app (Starts the web application) <br />
 To run a file without using scripts, make sure the dotenv path specified within the file is correct and that you run node {filename} inside the directory containing the file
 
 ## Backend
-All functions provided by the backend are listed in frontend/API/api.js
-These functions send requests to the server, which routes all requests using route.js
-Actual function code is defined within the controller files
+All functions provided by the backend are listed in frontend/API/api.js <br />
+These functions send requests to the server, which routes all requests using route.js <br />
+Actual function code is defined within the controller files <br />
