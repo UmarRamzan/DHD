@@ -28,14 +28,6 @@ const Home = () => {
 
     setUserID(localStorage.getItem("userID"))
 
-    const cities = [
-        { label: 'Lahore', value: 'lahore' },
-        { label: 'Karachi', value: 'karachi' },
-        { label: 'Islamabad', value: 'islamabad' },
-        { label: 'Multan', value: 'multan' },
-        { label: 'Peshawar', value: 'peshawar' }
-      ];
-
     useEffect(() => {
         handleSearch()
     }, [searchString, city])
@@ -62,7 +54,7 @@ const Home = () => {
                     value={searchString} 
                     onChange={(e)=>{setSearchString(e.target.value)}}
                 />
-                <button onClick={handleSearch}>Search</button>
+                
             </div>
 
             <div className="results">
