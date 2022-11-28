@@ -4,6 +4,8 @@
   "description": "Doctors and Hospital Directory",
   "main": "index.js",
   "scripts": {
+    "create_db": "cd backend && npm run create_db",
+    "seed_db": "cd backend && npm run seed_db",
     "init_db": "cd backend && npm run create_db && npm run seed_db",
     "server": "cd backend && npm run server",
     "app": "cd frontend && npm run start"

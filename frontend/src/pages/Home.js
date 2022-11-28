@@ -10,14 +10,18 @@ const Home = () => {
 
     const [searchString, setSearchString] = useState('')
     const [city, setCity] = useState('lahore')
-    const [results, setResults] = useState(null)
+    const [hospitalResults, setHospitalResults] = useState(null)
+    const [doctorResults, setDoctorResults] = useState(null)
 
     const handleSearch = async () => {
         if (searchString == '') {
-            setResults('')
+            setHospitalResults('')
+            setDoctorResults('')
         } else {
             let res = await search(searchString, city)
-            setResults(res.data.hospital_list)
+            console.log(res.data)
+            setDoctorResults(res.data.doctor_list)
+            setHospitalResults(res.data.hospital_list)
         }
     }
 
@@ -58,8 +62,18 @@ const Home = () => {
             </div>
 
             <div className="results">
-                {results && results.map((res) => (
-                    <Link to="/signup">
+                {doctorResults && doctorResults.map((res) => (
+                    <Link to="/doctorPublic">
+                        <div className="profileTile">
+                        <div key={res.Account_ID}>
+                            <p>{res.First_Name + " " + res.Last_Name + " " + res.Account_ID }</p>
+                        </div>
+                    </div>
+                    </Link>
+                ))}
+
+                {hospitalResults && hospitalResults.map((res) => (
+                    <Link to="/doctorPublic">
                         <div className="profileTile">
                         <div key={res.Account_ID}>
                             <p>{res.Name + " " + res.Address + " " + res.Account_ID }</p>

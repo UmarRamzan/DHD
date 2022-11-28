@@ -19,12 +19,14 @@ router.post('/api/general/create_booking', general_controller.create_booking)
 router.post('/api/general/update_booking', general_controller.create_booking)
 
 router.post('/api/patient/patient_add_entry', patient_controller.patient_add_entry)
-router.post('/api/patient/patient_get_info', patient_controller.get_patient_info)
+router.post('/api/patient/patient_get_info', patient_controller.patient_get_info)
 router.post('/api/patient/patient_update_entry', patient_controller.patient_update_entry)
 
 router.post('/api/doctor/doctor_add_entry', doctor_controller.doctor_add_entry)
+router.post('/api/doctor/doctor_get_info', doctor_controller.doctor_get_info)
 
 router.post('/api/hospital/hospital_add_entry', hospital_controller.hospital_add_entry)
+
 router.post('/api/hospital/search_hospital_by_city', hospital_controller.search_hospital_by_city)
 
 export default router

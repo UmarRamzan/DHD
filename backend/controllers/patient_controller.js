@@ -85,7 +85,7 @@ export async function patient_update_entry(req, response) {
     connection.end()
 }
 
-export async function get_patient_info(req, response) {
+export async function patient_get_info(req, response) {
     let account_ID = req.body.account_ID
 
     let select_query = `SELECT * FROM patient WHERE Account_ID = ?`

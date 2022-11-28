@@ -10,6 +10,7 @@ import NavBar from './pages/NavBar'
 import { UserContext } from './UserContext';
 import PatientInfo from './pages/PatientInfo';
 import HospitalInfo from './pages/HospitalInfo';
+import DoctorPublic from './pages/DoctorPublic';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                 <Route exact path="/signup/patient" element={<PatientInfo/>}></Route>
                 <Route exact path="/signup/doctor" element={<Signup/>}></Route>
                 <Route exact path="/signup/hospital" element={<HospitalInfo/>}></Route>
+                <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
                 <Route exact path="/login" element={<Login/>}></Route>
                 <Route exact path="/home" element={<Home/>}></Route>
                 <Route path="*" element={<NotFound/>}></Route>

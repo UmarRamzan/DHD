@@ -141,8 +141,8 @@ export async function search(req, response) {
     let search_string = req.body.search_string
     let city = req.body.city
 
-    let query_doctor = `SELECT * FROM doctor WHERE City = ? AND (First_Name = ? OR Last_Name = ? OR Specialization = ?) `
-    let values_doctor = [city, search_string, search_string, search_string]
+    let query_doctor = `SELECT * FROM doctor WHERE City = ? AND (First_Name LIKE ? OR Last_Name LIKE ? OR Specialization LIKE ?) `
+    let values_doctor = [city, `${search_string}%`, `${search_string}%`, `${search_string}%`]
 
     let query_hospital = `SELECT * FROM hospital WHERE City = ? AND Name LIKE ?`
     let values_hospital = [city, `${search_string}%`]
@@ -156,6 +156,7 @@ export async function search(req, response) {
         } else {
             let doctor_list = res
             connection.query(query_hospital, values_hospital, (err, res) => {
+                
                 if (err) {
                     console.log(err)
         

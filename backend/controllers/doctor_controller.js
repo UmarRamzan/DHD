@@ -69,5 +69,38 @@ export async function doctor_add_entry(req, response) {
     connection.end()
 }
 
+export async function doctor_get_info(req, response) {
+
+    let account_ID = req.body.account_ID
+
+    let select_query = `SELECT * FROM doctor WHERE Account_ID = ?`
+    let values = [account_ID]
+
+    let connection = create_connection()
+    connection.query(select_query, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+            let data = res[0]
+
+            let return_message = {
+                "firstName": data.First_Name,
+                "lastName": data.Last_Name,
+                "specialization": data.Specialization,
+                "city": data.City,
+                "address": data.Address,
+                "timings": data.Timings,
+                "personalBio": data.Personal_Bio,
+                "onlineAvailability": data.Online_Availability,
+                "charges": data.Charges,
+            }
+
+            response.send(return_message)
+            connection.end()
+        }
+    })
+
+}
+
 // update an existing entry within the doctors table
 export async function doctor_update_entry(req, response) {}

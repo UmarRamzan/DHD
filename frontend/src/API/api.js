@@ -46,30 +46,6 @@ export async function patient_add_entry(account_ID, first_name, last_name, date_
     return await axios.post(`${url}/patient/patient_add_entry`, request)
 }
 
-// update column_name to new_value for patient_ID in the patient table
-// returns a json object containing "is_successful" and any possible "error_message"
-export async function patient_update_entry(patient_ID, column_name, new_value) {
-
-    const request = {
-        "patient_ID": patient_ID,
-        "column_name": column_name,
-        "new_value": new_value
-    }
-
-    return await axios.post(`${url}/patient/patient_update_entry`, request)
-}
-
-export async function get_patient_info(account_ID) {
-
-    const request = {
-        "account_ID":account_ID
-    }
-
-    console.log(request)
-
-    return await axios.post(`${url}/patient/patient_get_info`, request)
-}
-
 // add a row containing the specified values into the doctor table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
@@ -103,6 +79,39 @@ export async function hospital_add_entry(account_ID, name, city, address) {
     }
 
     return await axios.post(`${url}/hospital/hospital_add_entry`, request)
+}
+
+// update column_name to new_value for patient_ID in the patient table
+// returns a json object containing "is_successful" and any possible "error_message"
+export async function patient_update_entry(patient_ID, column_name, new_value) {
+
+    const request = {
+        "patient_ID": patient_ID,
+        "column_name": column_name,
+        "new_value": new_value
+    }
+
+    return await axios.post(`${url}/patient/patient_update_entry`, request)
+}
+
+export async function patient_get_info(account_ID) {
+
+    const request = {
+        "account_ID": account_ID
+    }
+
+    console.log(request)
+
+    return await axios.post(`${url}/patient/patient_get_info`, request)
+}
+
+export async function doctor_get_info(account_ID) {
+
+    const request = {
+        "account_ID": account_ID
+    }
+
+    return await axios.post(`${url}/doctor/doctor_get_info`, request)
 }
 
 // associate the specified doctor and hospital by adding an entry to the doctor_hospital table
