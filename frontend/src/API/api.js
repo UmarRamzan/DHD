@@ -185,6 +185,15 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
     return await axios.post(`${url}/general/update_booking`, request)
 }
 
+export async function getBookings(accountID, accountType) {
+    const request = {
+        "accountID": accountID,
+        "accountType": accountType
+    }
+
+    return await axios.post(`${url}/general/getBookings`, request)
+}
+
 // search for relevant doctors and hospitals using search_string and the specified city
 // returns a json object containing two lists: "doctor_list" and "hospital_list"
 export async function search(searchString, city) {

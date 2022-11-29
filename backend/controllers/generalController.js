@@ -320,6 +320,8 @@ export async function createBooking(req, response) {
             }
 
             response.send(returnMessage)
+            connection.end()
+
             console.log(err)
         } else {
 
@@ -328,9 +330,46 @@ export async function createBooking(req, response) {
             }
 
             response.send(returnMessage)
+            connection.end()
         }
     })
-    connection.end()
 }
 
 export async function updateBooking(req, response) {}
+
+export async function getBookings(req, response) {
+
+    let accountID = req.body.accountID
+    let accountType = req.body.accountType
+
+    let findBookings = ``
+    if (accountType == 'patient') {findBookings = `SELECT * FROM Booking WHERE patientID = ?`}
+    else if (accountType == 'doctor') {findBookings = `SELECT * FROM Booking WHERE doctorID = ?`}
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(findBookings, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not find bookings"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+            
+            console.log(err)
+        } else {
+
+            console.log(res)
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "bookings": res
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}

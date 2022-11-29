@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { search } from "../API/api";
+import { UserContext } from "../UserContext";
 
-const Home = () => {
+const NavBar = () => {
+
+    const {accountID, setAccountID} = useContext(UserContext)
 
     const handleLogout = () => {
-        localStorage.setItem('accountID', 0)
+        setAccountID(null)
     }
 
     return ( 
@@ -15,8 +18,11 @@ const Home = () => {
             <Link to="/login">Login</Link>
             <Link to="/patientSettings">Settings</Link>
             <Link to="/bookings">Bookings</Link>
+            
+            <p>{accountID && `User ${accountID}`}</p>
+            {accountID && (<button onClick={handleLogout}>Log Out</button>)}
         </div>  
      );
 }
  
-export default Home;
+export default NavBar;
