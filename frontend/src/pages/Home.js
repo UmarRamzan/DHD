@@ -5,8 +5,6 @@ import { UserContext } from "../UserContext";
 
 const Home = () => {
 
-    const {userID, setUserID} = useContext(UserContext)
-
     const [searchString, setSearchString] = useState('')
     const [city, setCity] = useState('lahore')
     const [doctorResults, setDoctorResults] = useState(null)
@@ -18,22 +16,14 @@ const Home = () => {
         if (searchString == '') {
             setHospitalResults('')
             setDoctorResults('')
+
         } else {
             let res = await search(searchString, city)
-
             setDoctorResults(res.data.doctorList)
             setHospitalResults(res.data.hospitalList)
         }
     }
 
-    const handleLogout = () => {
-        localStorage.clear()
-        setUserID(null)
-    }
-
-    useEffect(() => {
-        setUserID(localStorage.getItem('accountID'))
-    })
     useEffect(() => {
         handleSearch()
     }, [searchString, city])
@@ -79,7 +69,7 @@ const Home = () => {
 
             <div className="results">
                 {showDoctors && doctorResults && doctorResults.map((res) => (
-                    <Link to="/doctorPublic">
+                    <Link to="/doctorPublic" state={{doctorID: res.accountID}}>
                         <div className="profileTile">
                         <div key={res.accountID}>
                             <p>{res.firstName + " " + res.lastName + " " + res.specialization }</p>
@@ -89,7 +79,7 @@ const Home = () => {
                 ))}
 
                 {showHospitals && hospitalResults && hospitalResults.map((res) => (
-                    <Link to="/doctorPublic">
+                    <Link to="/hospitalPublic" state={{hospitalID: res.accountID}}>
                         <div className="profileTile">
                         <div key={res.accountID}>
                             <p>{res.name + " " + res.address }</p>
@@ -98,8 +88,7 @@ const Home = () => {
                     </Link>
                 ))}
             </div>    
-            {userID? (<div>Loggin in as User {userID}</div>) : <Link to="/login">Login</Link>} 
-            {userID? (<button onClick={handleLogout}>Logout</button>) : null}
+
         </div>  
      );
 }

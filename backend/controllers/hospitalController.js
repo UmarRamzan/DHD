@@ -62,6 +62,33 @@ export async function hospitalAddEntry(req, response) {
     connection.end()
 }
 
+export async function hospitalGetInfo(req, response) {
+
+    let accountID = req.body.accountID
+
+    let getInfo = `SELECT * FROM hospital WHERE accountID = ?`
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(getInfo, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                "name": data.name,
+                "city": data.city,
+                "address": data.address,
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function searchHospitalByCity(req, response) {
 
 }

@@ -115,7 +115,7 @@ export async function patient_update_entry(patient_ID, column_name, new_value) {
     return await axios.post(`${url}/patient/patient_update_entry`, request)
 }
 
-export async function patient_get_info(account_ID) {
+export async function patientGetInfo(account_ID) {
 
     const request = {
         "account_ID": account_ID
@@ -126,13 +126,22 @@ export async function patient_get_info(account_ID) {
     return await axios.post(`${url}/patient/patient_get_info`, request)
 }
 
-export async function doctor_get_info(account_ID) {
+export async function doctorGetInfo(accountID) {
 
     const request = {
-        "account_ID": account_ID
+        "accountID": accountID
     }
 
-    return await axios.post(`${url}/doctor/doctor_get_info`, request)
+    return await axios.post(`${url}/doctor/doctorGetInfo`, request)
+}
+
+export async function hospitalGetInfo(accountID) {
+
+    const request = {
+        "accountID": accountID
+    }
+
+    return await axios.post(`${url}/hospital/hospitalGetInfo`, request)
 }
 
 // associate the specified doctor and hospital by adding an entry to the doctor_hospital table

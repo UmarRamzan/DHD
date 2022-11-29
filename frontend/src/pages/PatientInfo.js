@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { patientAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";

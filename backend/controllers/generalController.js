@@ -191,10 +191,11 @@ export async function login(req, response) {
             } else {
                 let returnMessage = {
                     "isSuccessful": true,
-                    "accountID": res[0].AccountID
+                    "accountID": res[0].accountID
                 }
-                console.log(res)
+
                 response.send(returnMessage)
+                connection.end()
             }
         }
     })

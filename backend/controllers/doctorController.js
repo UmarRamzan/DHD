@@ -76,31 +76,33 @@ export async function doctorAddEntry(req, response) {
 
 export async function doctorGetInfo(req, response) {
 
-    let account_ID = req.body.account_ID
+    let accountID = req.body.accountID
 
-    let select_query = `SELECT * FROM doctor WHERE Account_ID = ?`
-    let values = [account_ID]
+    let getInfo = `SELECT * FROM doctor WHERE accountID = ?`
+    let values = [accountID]
 
-    let connection = create_connection()
-    connection.query(select_query, [values], (err, res) => {
+    let connection = validateConnection()
+    connection.query(getInfo, [values], (err, res) => {
         if (err) {
             console.log(err)
         } else {
             let data = res[0]
 
-            let return_message = {
-                "firstName": data.First_Name,
-                "lastName": data.Last_Name,
-                "specialization": data.Specialization,
-                "city": data.City,
-                "address": data.Address,
-                "timings": data.Timings,
-                "personalBio": data.Personal_Bio,
-                "onlineAvailability": data.Online_Availability,
-                "charges": data.Charges,
+            let returnMessage = {
+                "firstName": data.firstName,
+                "lastName": data.lastName,
+                "dateOfBirth": data.dateOfBirth,
+                "gender": data.gender,
+                "specialization": data.specialization,
+                "city": data.city,
+                "address": data.address,
+                "timings": data.timings,
+                "personalBio": data.personalBio,
+                "onlineAvailability": data.onlineAvailability,
+                "charges": data.charges,
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
             connection.end()
         }
     })

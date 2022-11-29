@@ -32,6 +32,7 @@ router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
+router.post('/api/hospital/hospitalGetInfo', hospitalController.hospitalGetInfo)
 router.post('/api/hospital/searchHospitalByCity', hospitalController.searchHospitalByCity)
 
 export default router

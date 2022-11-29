@@ -12,6 +12,7 @@ import PatientInfo from './pages/PatientInfo';
 import DoctorInfo from './pages/DoctorInfo'
 import HospitalInfo from './pages/HospitalInfo';
 import DoctorPublic from './pages/DoctorPublic';
+import HospitalPublic from './pages/HospitalPublic';
 import PatientSettings from './pages/PatientSettings';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                 <Route exact path="/signup/hospital" element={<HospitalInfo/>}></Route>
 
                 <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
+                <Route exact path="/hospitalPublic" element={<HospitalPublic/>}></Route>
                 <Route exact path="/login" element={<Login/>}></Route>
                 <Route exact path="/home" element={<Home/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
