@@ -37,8 +37,10 @@ app.post('/api/general/update_booking', router)
 
 app.post('/api/patient/patient_add_entry', router)
 app.post('/api/patient/patient_update_entry', router)
+app.post('/api/patient/patient_get_info', router)
 
 app.post('/api/doctor/doctor_add_entry', router)
+app.post('/api/doctor/doctor_get_info', router)
 
 app.post('/api/hospital/hospital_add_entry', router)
 app.post('/api/hospital/search_hospital_by_city', router)

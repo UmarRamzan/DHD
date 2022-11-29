@@ -1,28 +1,26 @@
 import axios from 'axios'
-import { config } from 'dotenv'
 
-config({path:".env"});
-
-let url = `http://localhost:${process.env.PORT}/api`
+let url = `http://localhost:3000/api`
 
 // for all functions the resulting data can be accessed by using .data on the returned object
 
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function signup_post(account_type, email, password) {
+export async function signup(email, password, account_type) {
 
     const request = {
-        "account_type": account_type,
         "email": email,
-        "password": password
+        "password": password,
+        "account_type": account_type
     }
 
     return await axios.post(`${url}/general/signup_post`, request)
+
 }
 
 // login to an existing account with the specified email and password
 // return a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function login_post(email, password) {
+export async function login(email, password) {
 
     const request = {
         "email": email,
@@ -35,28 +33,17 @@ export async function login_post(email, password) {
 // add a row containing the specified values into the patient table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function patient_add_entry(account_ID, first_name, last_name) {
+export async function patient_add_entry(account_ID, first_name, last_name, date_of_birth, gender) {
 
     const request = {
         "account_ID": account_ID,
         "first_name": first_name,
-        "last_name": last_name
+        "last_name": last_name,
+        "date_of_birth": date_of_birth,
+        "gender": gender
     }
 
     return await axios.post(`${url}/patient/patient_add_entry`, request)
-}
-
-// update column_name to new_value for patient_ID in the patient table
-// returns a json object containing "is_successful" and any possible "error_message"
-export async function patient_update_entry(patient_ID, column_name, new_value) {
-
-    const request = {
-        "patient_ID": patient_ID,
-        "column_name": column_name,
-        "new_value": new_value
-    }
-
-    return await axios.post(`${url}/patient/patient_update_entry`, request)
 }
 
 // add a row containing the specified values into the doctor table
@@ -94,6 +81,39 @@ export async function hospital_add_entry(account_ID, name, city, address) {
     return await axios.post(`${url}/hospital/hospital_add_entry`, request)
 }
 
+// update column_name to new_value for patient_ID in the patient table
+// returns a json object containing "is_successful" and any possible "error_message"
+export async function patient_update_entry(patient_ID, column_name, new_value) {
+
+    const request = {
+        "patient_ID": patient_ID,
+        "column_name": column_name,
+        "new_value": new_value
+    }
+
+    return await axios.post(`${url}/patient/patient_update_entry`, request)
+}
+
+export async function patient_get_info(account_ID) {
+
+    const request = {
+        "account_ID": account_ID
+    }
+
+    console.log(request)
+
+    return await axios.post(`${url}/patient/patient_get_info`, request)
+}
+
+export async function doctor_get_info(account_ID) {
+
+    const request = {
+        "account_ID": account_ID
+    }
+
+    return await axios.post(`${url}/doctor/doctor_get_info`, request)
+}
+
 // associate the specified doctor and hospital by adding an entry to the doctor_hospital table
 // returns a json object containing "is_successful" and any possible "error_message"
 export async function associate_doctor_hospital(doctor_ID, hospital_ID) {
@@ -128,10 +148,10 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
 
     const request = {
         "booking_ID": booking_ID,
-        "new_year": year,
-        "new_month": month,
-        "new_day": day,
-        "new_hour": hour
+        "new_year": new_year,
+        "new_month": new_month,
+        "new_day": new_day,
+        "new_hour": new_hour
     }
 
     return await axios.post(`${url}/general/update_booking`, request)
@@ -169,5 +189,3 @@ export async function search_hospitals_by_city(city) {
 
     return await axios.post(`${url}/general/search_hospital_by_city`, request)
 }
-
-signup_post("patient", "email", "123")

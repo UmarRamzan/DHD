@@ -31,11 +31,13 @@ export async function patient_add_entry(req, response) {
     let account_ID = req.body.account_ID
     let first_name = req.body.first_name
     let last_name = req.body.last_name
+    let date_of_birth = req.body.date_of_birth
+    let gender = req.body.gender
     
     let connection = create_connection()
 
-    let seed_query = `INSERT INTO patient (Account_ID, First_Name, Last_Name) VALUES (?)`
-    let values = [account_ID, first_name, last_name]
+    let seed_query = `INSERT INTO patient VALUES (?)`
+    let values = [account_ID, first_name, last_name, date_of_birth, gender]
 
     connection.query(seed_query, [values], (err, res) => {
 
@@ -47,6 +49,8 @@ export async function patient_add_entry(req, response) {
             }
 
             response.send(return_message)
+            connection.end()
+
             console.log(err)
 
         } else {
@@ -56,10 +60,9 @@ export async function patient_add_entry(req, response) {
             }
 
             response.send(return_message)
+            connection.end()
         }
     })
-
-    connection.end()
 }
 
 export async function patient_update_entry(req, response) {
@@ -80,4 +83,31 @@ export async function patient_update_entry(req, response) {
     })
 
     connection.end()
+}
+
+export async function patient_get_info(req, response) {
+    let account_ID = req.body.account_ID
+
+    let select_query = `SELECT * FROM patient WHERE Account_ID = ?`
+    let values = [account_ID]
+
+    let connection = create_connection()
+    connection.query(select_query, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            let return_message = {
+                "first_name": res.First_Name,
+                "last_name": res.Last_Name,
+                "year": res.Year,
+                "month": res.Month,
+                "day": res.Day,
+                "gender": res.Gender
+            }
+
+            response.send(return_message)
+        }
+    })
+
 }

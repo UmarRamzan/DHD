@@ -30,6 +30,8 @@ const create_patient = `CREATE TABLE IF NOT EXISTS patient (
     Account_ID INT,
     First_Name VARCHAR(50),
     Last_Name VARCHAR(50),
+    Date_of_Birth DATE,
+    Gender VARCHAR(10),
     PRIMARY KEY (Account_ID)
 )`
 
