@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/UmarRamzan/DHD/issues"
   },
-  "homepage": "https://github.com/UmarRamzan/DHD#readme"
+  "homepage": "https://github.com/UmarRamzan/DHD#readme",
+  "dependencies": {
+    "react-time-picker": "^5.1.0"
+  }
 }

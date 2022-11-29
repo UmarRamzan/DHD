@@ -12,75 +12,73 @@ const connection = createConnection({
 });
 
 // Process a general sql query and throw any resulting errors
-function process_query(query) {
+function processQuery(query) {
     connection.query(query, (err, res) => {
         if (err) {throw err} else {console.log("Query Processed")}
     })
 }
 
-const create_account = `CREATE TABLE IF NOT EXISTS account (
-    Account_ID INT AUTO_INCREMENT,
-    Account_Type VARCHAR(15),
-    Email VARCHAR(50),
-    Password VARCHAR(50),
-    PRIMARY KEY (Account_ID)
+const createAccount = `CREATE TABLE IF NOT EXISTS Account (
+    accountID INT AUTO_INCREMENT,
+    accountType VARCHAR(15),
+    email VARCHAR(50),
+    password VARCHAR(50),
+    PRIMARY KEY (accountID)
 )`
 
-const create_patient = `CREATE TABLE IF NOT EXISTS patient (
-    Account_ID INT,
-    First_Name VARCHAR(50),
-    Last_Name VARCHAR(50),
-    Date_of_Birth DATE,
-    Gender VARCHAR(10),
-    PRIMARY KEY (Account_ID)
+const createPatient = `CREATE TABLE IF NOT EXISTS Patient (
+    accountID INT,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    dateOfBirth DATE,
+    gender VARCHAR(10),
+    PRIMARY KEY (accountID)
 )`
 
-const create_doctor = `CREATE TABLE IF NOT EXISTS doctor (
-    Account_ID INT,
-    First_Name VARCHAR(50),
-    Last_Name VARCHAR(50),
-    Specialization VARCHAR(50),
-    City VARCHAR(50),
-    Address VARCHAR(50),
-    Timings VARCHAR(50),
-    Personal_Bio VARCHAR(500),
-    Online_Availability INT,
-    Charges INT,
-    PRIMARY KEY (Account_ID)
+const createDoctor = `CREATE TABLE IF NOT EXISTS Doctor (
+    accountID INT,
+    firstName VARCHAR(50),
+    lastName VARCHAR(50),
+    specialization VARCHAR(50),
+    city VARCHAR(50),
+    address VARCHAR(50),
+    timings VARCHAR(50),
+    personal_Bio VARCHAR(500),
+    online_Availability INT,
+    charges INT,
+    PRIMARY KEY (accountID)
 )`
 
-const create_hospital = `CREATE TABLE IF NOT EXISTS hospital (
-    Account_ID INT,
-    Name VARCHAR(50),
-    City VARCHAR(50),
-    Address VARCHAR(50),
-    PRIMARY KEY (Account_ID)
+const createHospital = `CREATE TABLE IF NOT EXISTS Hospital (
+    accountID INT,
+    name VARCHAR(50),
+    city VARCHAR(50),
+    address VARCHAR(50),
+    PRIMARY KEY (accountID)
 )`
 
-const create_doctor_hospital = `CREATE TABLE IF NOT EXISTS doctor_hospital (
-    Doctor_ID INT,
-    Hospital_ID INT,
-    PRIMARY KEY (Doctor_ID, Hospital_ID)
+const createDoctorHospital = `CREATE TABLE IF NOT EXISTS DoctorHospital (
+    doctorID INT,
+    hospitalID INT,
+    PRIMARY KEY (doctorID, hospitalID)
 )`
 
-const create_booking = `CREATE TABLE IF NOT EXISTS booking (
-    Booking_ID INT AUTO_INCREMENT,
-    Patient_ID INT,
-    Doctor_ID INT,
-    Year INT,
-    Month INT,
-    Day INT,
-    Hour INT,
-    PRIMARY KEY (Booking_ID)
+const createBooking = `CREATE TABLE IF NOT EXISTS Booking (
+    bookingID INT AUTO_INCREMENT,
+    patientID INT,
+    doctorID INT,
+    bookingDate DATE,
+    bookingTime TIME,
+    PRIMARY KEY (bookingID)
 )`
 
-const create_review = `CREATE TABLE IF NOT EXISTS review (
-    Review_ID INT AUTO_INCREMENT,
-    Patient_ID INT,
-    Doctor_ID INT,
-    Rating INT,
-    Review_Text VARCHAR(500),
-    PRIMARY KEY (Review_ID)
+const createReview = `CREATE TABLE IF NOT EXISTS Review (
+    reviewID INT AUTO_INCREMENT,
+    patientID INT,
+    doctorID INT,
+    rating INT,
+    reviewText VARCHAR(500),
+    PRIMARY KEY (reviewID)
 )`
 
 connection.connect((err) => {
@@ -92,20 +90,20 @@ connection.connect((err) => {
         console.log("Connected to the mysql server")
 
         // delete the database for testing
-        process_query(`DROP DATABASE dhd`)
+        processQuery(`DROP DATABASE dhd`)
         
         // create and use the dhd database
-        process_query(`CREATE DATABASE IF NOT EXISTS dhd`)
-        process_query(`USE dhd`)
+        processQuery(`CREATE DATABASE IF NOT EXISTS dhd`)
+        processQuery(`USE dhd`)
 
         // Create all of the required tables
-        process_query(create_account)
-        process_query(create_patient)
-        process_query(create_doctor)
-        process_query(create_hospital)
-        process_query(create_doctor_hospital)
-        process_query(create_booking)
-        process_query(create_review)
+        processQuery(createAccount)
+        processQuery(createPatient)
+        processQuery(createDoctor)
+        processQuery(createHospital)
+        processQuery(createDoctorHospital)
+        processQuery(createBooking)
+        processQuery(createReview)
 
         connection.end()
     }

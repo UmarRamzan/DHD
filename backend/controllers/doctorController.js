@@ -26,31 +26,34 @@ function create_connection() {
     return connection
 }
 
-export async function patient_add_entry(req, response) {
+// add a new entry into the doctors table
+export async function doctorAddEntry(req, response) {
 
     let account_ID = req.body.account_ID
     let first_name = req.body.first_name
     let last_name = req.body.last_name
-    let date_of_birth = req.body.date_of_birth
-    let gender = req.body.gender
+    let specialization = req.body.specialization
+    let city = req.body.city
+    let address = req.body.address
+    let timings = req.body.timings
+    let online_Availability = req.body.online_Availability
+    let charges = req.body.charges
+    let personal_bio = req.body.personal_bio
     
     let connection = create_connection()
 
-    let seed_query = `INSERT INTO patient VALUES (?)`
-    let values = [account_ID, first_name, last_name, date_of_birth, gender]
+    let seed_query = `INSERT INTO doctor (Account_ID, First_name, Last_name, Specialization, City, Address, Timings, Personal_bio, Online_Availability, Charges) VALUES (?)`
+    let values = [account_ID, first_name, last_name, specialization, city, address, timings, personal_bio, online_Availability, charges]
 
     connection.query(seed_query, [values], (err, res) => {
 
         if (err) {
-
             let return_message = {
                 "is_successful": false,
-                "error_message": "Could not create a new patient entry",
+                "error_message": "Could not create a new doctor entry"
             }
 
             response.send(return_message)
-            connection.end()
-
             console.log(err)
 
         } else {
@@ -60,35 +63,17 @@ export async function patient_add_entry(req, response) {
             }
 
             response.send(return_message)
-            connection.end()
-        }
-    })
-}
-
-export async function patient_update_entry(req, response) {
-    let patient_ID = req.body.patient_ID
-    let column_name = req.body.column_name
-    let new_value = req.body.new_value
-
-    let update_query = `UPDATE patient SET ? = ? WHERE Patient_ID = ?`
-    let values = [column_name, new_value, patient_ID]
-
-    let connection = create_connection()
-    connection.query(update_query, [values], (err, res) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(res)
         }
     })
 
     connection.end()
 }
 
-export async function patient_get_info(req, response) {
+export async function doctorGetInfo(req, response) {
+
     let account_ID = req.body.account_ID
 
-    let select_query = `SELECT * FROM patient WHERE Account_ID = ?`
+    let select_query = `SELECT * FROM doctor WHERE Account_ID = ?`
     let values = [account_ID]
 
     let connection = create_connection()
@@ -96,18 +81,26 @@ export async function patient_get_info(req, response) {
         if (err) {
             console.log(err)
         } else {
+            let data = res[0]
 
             let return_message = {
-                "first_name": res.First_Name,
-                "last_name": res.Last_Name,
-                "year": res.Year,
-                "month": res.Month,
-                "day": res.Day,
-                "gender": res.Gender
+                "firstName": data.First_Name,
+                "lastName": data.Last_Name,
+                "specialization": data.Specialization,
+                "city": data.City,
+                "address": data.Address,
+                "timings": data.Timings,
+                "personalBio": data.Personal_Bio,
+                "onlineAvailability": data.Online_Availability,
+                "charges": data.Charges,
             }
 
             response.send(return_message)
+            connection.end()
         }
     })
 
 }
+
+// update an existing entry within the doctors table
+export async function doctorUpdateEntry(req, response) {}

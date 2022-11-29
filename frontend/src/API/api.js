@@ -6,15 +6,15 @@ let url = `http://localhost:3000/api`
 
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
-export async function signup(email, password, account_type) {
+export async function signup(email, password, accountType) {
 
     const request = {
         "email": email,
         "password": password,
-        "account_type": account_type
+        "accountType": accountType
     }
 
-    return await axios.post(`${url}/general/signup_post`, request)
+    return await axios.post(`${url}/general/signup`, request)
 
 }
 
@@ -27,23 +27,23 @@ export async function login(email, password) {
         "password": password
     }
 
-    return await axios.post(`${url}/general/login_post`, request)
+    return await axios.post(`${url}/general/login`, request)
 }
 
 // add a row containing the specified values into the patient table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function patient_add_entry(account_ID, first_name, last_name, date_of_birth, gender) {
+export async function patientAddEntry(accountID, firstName, lastName, dateOfBirth, gender) {
 
     const request = {
-        "account_ID": account_ID,
-        "first_name": first_name,
-        "last_name": last_name,
-        "date_of_birth": date_of_birth,
+        "accountID": accountID,
+        "firstName": firstName,
+        "lastName": lastName,
+        "dateOfBirth": dateOfBirth,
         "gender": gender
     }
 
-    return await axios.post(`${url}/patient/patient_add_entry`, request)
+    return await axios.post(`${url}/patient/patientAddEntry`, request)
 }
 
 // add a row containing the specified values into the doctor table

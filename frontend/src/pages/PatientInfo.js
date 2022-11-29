@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { patient_add_entry } from "../API/api";
+import { patientAddEntry } from "../API/api";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 const PatientInfo = () => {
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [year, setYear] = useState('')
-    const [month, setMonth] = useState('')
-    const [day, setDay] = useState('')
+    const [dateOfBirth, setDateOfBirth] = useState(new Date())
     const [gender, setGender] = useState('male')
 
     const [error, setError] = useState('')
@@ -17,21 +17,19 @@ const PatientInfo = () => {
 
     useEffect(() => {
         setError('')
-    }, [firstName, lastName, year, month, day, gender])
+    }, [firstName, lastName, dateOfBirth, gender])
 
     const handleSubmit = async (e) => {
 
         e.preventDefault()
         let userID = localStorage.getItem("userID")
-        let date_of_birth = `${year}-${month}-${day}`
-        let res = await patient_add_entry(userID, firstName, lastName, date_of_birth, gender)
-        console.log(res)
+        let res = await patientAddEntry(userID, firstName, lastName, dateOfBirth, gender)
 
-        if (res.data.is_successful) {
+        if (res.data.isSuccessful) {
             navigate("/home")
             
         } else {
-            setError(res.data.error_message)
+            setError(res.data.errorMessage)
         }
     }
 
@@ -56,30 +54,7 @@ const PatientInfo = () => {
                 />
 
                 <label>Date of Birth</label>
-
-                <label>Year:</label>
-                <input 
-                    type="text"
-                    required
-                    value={year}
-                    onChange={(e)=>{setYear(e.target.value)}}
-                />
-
-                <label>Month:</label>
-                <input 
-                    type="text"
-                    required
-                    value={month}
-                    onChange={(e)=>{setMonth(e.target.value)}}
-                />
-
-                <label>Day:</label>
-                <input 
-                    type="text"
-                    required
-                    value={day}
-                    onChange={(e)=>{setDay(e.target.value)}}
-                />
+                <DatePicker onChange={(date) => {setDateOfBirth(date)}} selected={dateOfBirth}/>
 
                 <label>Gender</label>
                 <select value={gender} onChange={(e)=>{setGender(e.target.value)}}>

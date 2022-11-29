@@ -25,7 +25,7 @@ function create_connection() {
     return connection
 }
 
-export async function hospital_add_entry(req, response) {
+export async function hospitalAddEntry(req, response) {
 
     let account_ID = req.body.account_ID
     let name = req.body.name
@@ -62,6 +62,6 @@ export async function hospital_add_entry(req, response) {
     connection.end()
 }
 
-export async function search_hospital_by_city(req, response) {
+export async function searchHospitalByCity(req, response) {
 
 }

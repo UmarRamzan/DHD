@@ -38,15 +38,16 @@ const Signup = () => {
 
             let res = await signup(email, password, accountType)
 
-            if (res.data.is_successful) {
-                setUserID(res.data.account_ID)
-                localStorage.setItem('userID', res.data.account_ID)
+            if (res.data.isSuccessful) {
+                setUserID(res.data.accountID)
+                localStorage.setItem('userID', res.data.accountID)
+
                 if (accountType == 'patient') {navigate("/signup/patient")}
                 else if (accountType == 'doctor') {navigate("/signup/doctor")}
                 else if (accountType == 'hospital') {navigate("/signup/hospital")}
                 
             } else {
-                setError(res.data.error_message)
+                setError(res.data.errorMessage)
             }
         }
     }
