@@ -69,8 +69,8 @@ const createBooking = `CREATE TABLE IF NOT EXISTS Booking (
     bookingID INT AUTO_INCREMENT,
     patientID INT,
     doctorID INT,
-    bookingDate DATE,
-    bookingTime TIME,
+    date DATE,
+    time TIME,
     PRIMARY KEY (bookingID)
 )`
 

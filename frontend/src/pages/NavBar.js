@@ -4,12 +4,6 @@ import { search } from "../API/api";
 
 const Home = () => {
 
-    const [accountID, setAccountID] = useState(0)
-    
-    useEffect(() => {
-        setAccountID(localStorage.getItem('accountID'))
-    }, [])
-
     const handleLogout = () => {
         localStorage.setItem('accountID', 0)
     }
@@ -20,8 +14,7 @@ const Home = () => {
             <Link to="/signup">Signup</Link>
             <Link to="/login">Login</Link>
             <Link to="/patientSettings">Settings</Link>
-            <p>{accountID && "[ID " + accountID + "]"}</p>
-            <button onClick={handleLogout}>Log Out</button>
+            <Link to="/bookings">Bookings</Link>
         </div>  
      );
 }

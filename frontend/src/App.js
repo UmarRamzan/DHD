@@ -14,6 +14,7 @@ import HospitalInfo from './pages/HospitalInfo';
 import DoctorPublic from './pages/DoctorPublic';
 import HospitalPublic from './pages/HospitalPublic';
 import PatientSettings from './pages/PatientSettings';
+import Bookings from './pages/Bookings';
 
 function App() {
 
@@ -27,17 +28,22 @@ function App() {
           <UserContext.Provider value={{userID, setUserID}}>
             <Routes>
                 <Route exact path="/" element={<Home/>}></Route>
+                <Route exact path="/home" element={<Home/>}></Route>
 
                 <Route exact path="/signup" element={<Signup/>}></Route>
                 <Route exact path="/signup/patient" element={<PatientInfo/>}></Route>
                 <Route exact path="/signup/doctor" element={<DoctorInfo/>}></Route>
                 <Route exact path="/signup/hospital" element={<HospitalInfo/>}></Route>
 
+                <Route exact path="/login" element={<Login/>}></Route>
+
+                <Route exact path="/bookings" element={<Bookings/>}></Route>
+
                 <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
                 <Route exact path="/hospitalPublic" element={<HospitalPublic/>}></Route>
-                <Route exact path="/login" element={<Login/>}></Route>
-                <Route exact path="/home" element={<Home/>}></Route>
+
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
+                
                 <Route path="*" element={<NotFound/>}></Route>
             </Routes>
           </UserContext.Provider>

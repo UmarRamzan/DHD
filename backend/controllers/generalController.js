@@ -305,17 +305,18 @@ export async function createBooking(req, response) {
 
     let patientID = req.body.patientID
     let doctorID = req.body.doctorID
-    let bookingDate = req.body.bookingDate
-    let bookingTime = req.body.bookingTime
+    let date = req.body.date
+    let time = req.body.time
 
-    let insertQuery = `INSERT INTO Booking (patientID, doctorID, bookingDate, bookingTime) VALUES (?)`
-    let values = [patientID, doctorID, bookingDate, bookingTime]
+    let insertQuery = `INSERT INTO Booking (patientID, doctorID, date, time) VALUES (?)`
+    let values = [patientID, doctorID, date, time]
 
     let connection = validateConnection()
     connection.query(insertQuery, [values], (err, res) => {
         if (err) {
             let returnMessage = {
-                "isSuccessful": false
+                "isSuccessful": false,
+                "errorMessage": "Could not create booking"
             }
 
             response.send(returnMessage)
