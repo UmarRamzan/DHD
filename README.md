@@ -19,3 +19,4 @@ To run a file without using scripts, make sure the dotenv path specified within 
 All functions provided by the backend are listed in frontend/API/api.js <br />
 These functions send requests to the server, which routes all requests using route.js <br />
 Actual function code is defined within the controller files <br />
+
