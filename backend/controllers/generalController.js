@@ -25,6 +25,45 @@ function validateConnection() {
     return connection
 }
 
+export async function validateEmail(req, response) {
+
+    let email = req.body.email
+
+    let connection = validateConnection()
+
+    let emailValidation = `SELECT * FROM Account WHERE email = ?`
+    let values = [email]
+
+    connection.query(emailValidation, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process validation request"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            if (res.length != 0) {
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "Email already exists"
+                }
+                response.send(returnMessage)
+                connection.end()
+
+            } else {    
+                let returnMessage = {
+                    "isSuccessful": true
+                }
+                response.send(returnMessage)
+                connection.end()
+            }
+        }
+    })
+}
+
 export async function signup(req, response) {
 
     let email = req.body.email

@@ -4,7 +4,7 @@ import { config } from 'dotenv';
 config({path:".env"});
 
 // Create a connection to the sql server
-function create_connection() {
+function validateConnection() {
 
     let connection = createConnection({
         host: process.env.HOST,
@@ -27,35 +27,35 @@ function create_connection() {
 
 export async function hospitalAddEntry(req, response) {
 
-    let account_ID = req.body.account_ID
+    let accountID = req.body.accountID
     let name = req.body.name
     let city = req.body.city
     let address = req.body.address
     
-    let connection = create_connection()
+    let connection = validateConnection()
 
-    let seed_query = `INSERT INTO hospital (Account_ID, Name, City, Address) VALUES (?)`
-    let values = [account_ID, name, city, address]
+    let seedQuery = `INSERT INTO hospital (accountID, name, city, address) VALUES (?)`
+    let values = [accountID, name, city, address]
 
-    connection.query(seed_query, [values], (err, res) => {
+    connection.query(seedQuery, [values], (err, res) => {
 
         if (err) {
 
-            let return_message = {
-                "is_successful": false,
-                "error_message": "Could not create a new hospital entry",
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not create a new hospital entry",
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
             console.log(err)
 
         } else {
 
-            let return_message = {
-                "is_successful": true,
+            let returnMessage = {
+                "isSuccessful": true,
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
         }
     })
 

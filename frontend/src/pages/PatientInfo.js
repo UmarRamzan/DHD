@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { signup } from "../API/api";
 import { patientAddEntry } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -13,7 +14,8 @@ const PatientInfo = () => {
 
     const [error, setError] = useState('')
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         setError('')
@@ -22,14 +24,35 @@ const PatientInfo = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault()
-        let userID = localStorage.getItem("userID")
-        let res = await patientAddEntry(userID, firstName, lastName, dateOfBirth, gender)
+        let email = location.state.email
+        let password = location.state.password
 
-        if (res.data.isSuccessful) {
-            navigate("/home")
+        let accountRes = await signup(email, password, 'patient')
+
+        console.log(accountRes.data)
+
+        if (accountRes.data.isSuccessful) {
+    
+            let accountID = accountRes.data.accountID
+            localStorage.setItem('accountID', accountID)
+
+            let year = dateOfBirth.getFullYear()
+            let month = dateOfBirth.getMonth()
+            let day = dateOfBirth.getDay()
+
+            let date = `${year}-${month}-${day}`
+
+            let res = await patientAddEntry(accountID, firstName, lastName, date, gender)
+
+            if (res.data.isSuccessful) {
+                navigate("/home")
+                
+            } else {
+                setError(res.data.errorMessage)
+            }
             
         } else {
-            setError(res.data.errorMessage)
+            setError(accountRes.data.errorMessage)
         }
     }
 
@@ -37,6 +60,7 @@ const PatientInfo = () => {
         <div className="signup">
 
             <form onSubmit={handleSubmit}>
+
                 <label>First Name:</label>
                 <input 
                     type="text"

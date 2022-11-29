@@ -1,10 +1,12 @@
 import { useRef, useEffect, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signup } from "../API/api";
 import { UserContext } from "../UserContext";
+import { validateEmail } from "../API/api";
 
 
 const Signup = () => {
+
+    const navigate = useNavigate()
 
     const {userID, setUserID} = useContext(UserContext)
 
@@ -14,8 +16,6 @@ const Signup = () => {
     const [error, setError] = useState('')
 
     const userRef = useRef()
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         userRef.current.focus()
@@ -33,19 +33,10 @@ const Signup = () => {
             setError('Incorrect Email')
         } else if (password.length <= 8) {
             setError('Password must be atleast 8 characters long')
-
         } else {
-
-            let res = await signup(email, password, accountType)
-
+            let res = await validateEmail(email)
             if (res.data.isSuccessful) {
-                setUserID(res.data.accountID)
-                localStorage.setItem('userID', res.data.accountID)
-
-                if (accountType == 'patient') {navigate("/signup/patient")}
-                else if (accountType == 'doctor') {navigate("/signup/doctor")}
-                else if (accountType == 'hospital') {navigate("/signup/hospital")}
-                
+                navigate(`/signup/${accountType}`, { state: { email: email, password: password } })
             } else {
                 setError(res.data.errorMessage)
             }

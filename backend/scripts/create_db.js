@@ -39,12 +39,14 @@ const createDoctor = `CREATE TABLE IF NOT EXISTS Doctor (
     accountID INT,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
+    dateOfBirth DATE,
+    gender VARCHAR(10),
     specialization VARCHAR(50),
     city VARCHAR(50),
     address VARCHAR(50),
     timings VARCHAR(50),
-    personal_Bio VARCHAR(500),
-    online_Availability INT,
+    personalBio VARCHAR(500),
+    onlineAvailability INT,
     charges INT,
     PRIMARY KEY (accountID)
 )`

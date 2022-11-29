@@ -19,7 +19,6 @@ const Home = () => {
             setDoctorResults('')
         } else {
             let res = await search(searchString, city)
-            console.log(res.data)
             setDoctorResults(res.data.doctor_list)
             setHospitalResults(res.data.hospital_list)
         }
@@ -30,8 +29,9 @@ const Home = () => {
         setUserID(null)
     }
 
-    setUserID(localStorage.getItem("userID"))
-
+    useEffect(() => {
+        setUserID(localStorage.getItem('accountID'))
+    })
     useEffect(() => {
         handleSearch()
     }, [searchString, city])

@@ -5,7 +5,7 @@ import first from 'ee-first';
 config({path:".env"});
 
 // Create a connection to the sql server
-function create_connection() {
+function validateConnection() {
 
     let connection = createConnection({
         host: process.env.HOST,
@@ -29,44 +29,49 @@ function create_connection() {
 // add a new entry into the doctors table
 export async function doctorAddEntry(req, response) {
 
-    let account_ID = req.body.account_ID
-    let first_name = req.body.first_name
-    let last_name = req.body.last_name
+    let accountID = req.body.accountID
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let dateOfBirth = req.body.dateOfBirth
+    let gender = req.body.gender
     let specialization = req.body.specialization
     let city = req.body.city
     let address = req.body.address
     let timings = req.body.timings
-    let online_Availability = req.body.online_Availability
+    let onlineAvailability = req.body.onlineAvailability
     let charges = req.body.charges
-    let personal_bio = req.body.personal_bio
+    let personalBio = req.body.personalBio
     
-    let connection = create_connection()
+    let connection = validateConnection()
 
-    let seed_query = `INSERT INTO doctor (Account_ID, First_name, Last_name, Specialization, City, Address, Timings, Personal_bio, Online_Availability, Charges) VALUES (?)`
-    let values = [account_ID, first_name, last_name, specialization, city, address, timings, personal_bio, online_Availability, charges]
+    let seedQuery = `INSERT INTO Doctor VALUES (?)`
+    let values = [accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, timings, personalBio, onlineAvailability, charges]
 
-    connection.query(seed_query, [values], (err, res) => {
+    connection.query(seedQuery, [values], (err, res) => {
 
         if (err) {
-            let return_message = {
-                "is_successful": false,
-                "error_message": "Could not create a new doctor entry"
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not create a new doctor entry"
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
+            connection.end()
+            
             console.log(err)
 
         } else {
 
-            let return_message = {
-                "is_successful": true,
+            let returnMessage = {
+                "isSuccessful": true,
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
+            connection.end()
         }
     })
 
-    connection.end()
+    
 }
 
 export async function doctorGetInfo(req, response) {

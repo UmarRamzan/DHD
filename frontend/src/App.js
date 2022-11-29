@@ -24,7 +24,7 @@ function App() {
         <NavBar/>
         <div className="content">
           <UserContext.Provider value={{userID, setUserID}}>
-            <Routes>   
+            <Routes>
                 <Route exact path="/" element={<Home/>}></Route>
 
                 <Route exact path="/signup" element={<Signup/>}></Route>
