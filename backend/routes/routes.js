@@ -14,6 +14,8 @@ const router = Router()
 router.post('/api/general/signup', generalController.signup)
 router.post('/api/general/login', generalController.login)
 router.post('/api/general/search', generalController.search)
+router.post('/api/general/validateEmail', generalController.validateEmail)
+router.post('/api/general/removeAccount', generalController.removeAccount)
 router.post('/api/general/searchSpecialization', generalController.searchSpecialization)
 router.post('/api/general/associateDoctorHospital', generalController.associateDoctorHospital)
 router.post('/api/general/createBooking', generalController.createBooking)
@@ -30,6 +32,7 @@ router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
+router.post('/api/hospital/hospitalGetInfo', hospitalController.hospitalGetInfo)
 router.post('/api/hospital/searchHospitalByCity', hospitalController.searchHospitalByCity)
 
 export default router

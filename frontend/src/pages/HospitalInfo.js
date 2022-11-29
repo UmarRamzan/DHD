@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { hospital_add_entry } from "../API/api";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { signup } from "../API/api";
+import { hospitalAddEntry } from "../API/api";
+import { removeAccount } from "../API/api";
 
 const HospitalInfo = () => {
 
@@ -10,7 +12,8 @@ const HospitalInfo = () => {
 
     const [error, setError] = useState('')
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         setError('')
@@ -19,15 +22,28 @@ const HospitalInfo = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault()
-        let userID = localStorage.getItem("userID")
-        let res = await hospital_add_entry(userID, name, city, address)
-        console.log(res)
+        let email = location.state.email
+        let password = location.state.password
 
-        if (res.data.is_successful) {
-            navigate("/home")
+        let accountRes = await signup(email, password, 'hospital')
+
+        if (accountRes.data.isSuccessful) {
+    
+            let accountID = accountRes.data.accountID
+            localStorage.setItem('accountID', accountID)
+
+            let res = await hospitalAddEntry(accountID, name, city, address)
+
+            if (res.data.isSuccessful) {
+                navigate("/home")
+                
+            } else {
+                removeAccount(accountID)
+                setError(res.data.errorMessage)
+            }
             
         } else {
-            setError(res.data.error_message)
+            setError(accountRes.data.errorMessage)
         }
     }
 
@@ -35,6 +51,7 @@ const HospitalInfo = () => {
         <div className="signup">
 
             <form onSubmit={handleSubmit}>
+
                 <label>Name:</label>
                 <input 
                     type="text"
@@ -60,8 +77,11 @@ const HospitalInfo = () => {
                 />
 
                 <button>Submit</button>
+
             </form>
+
             <p>{ error }</p>
+            
         </div>
     )
 }

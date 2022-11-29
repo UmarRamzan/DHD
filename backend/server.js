@@ -29,6 +29,8 @@ app.use((req, res, next) => {
 // route requests to the server using the router specified in routes/routes.js
 app.post('/api/general/signup', router)
 app.post('/api/general/login', router)
+app.post('/api/general/validateEmail', router)
+app.post('/api/general/removeAccount', router)
 app.post('/api/general/search', router)
 app.post('/api/general/searchSpecialization', router)
 app.post('/api/general/associateDoctorHospital', router)
@@ -43,4 +45,5 @@ app.post('/api/doctor/doctorAddEntry', router)
 app.post('/api/doctor/doctorGetInfo', router)
 
 app.post('/api/hospital/hospitalAddEntry', router)
+app.post('/api/hospital/hospitalGetInfo', router)
 app.post('/api/hospital/searchHospitalByCity', router)

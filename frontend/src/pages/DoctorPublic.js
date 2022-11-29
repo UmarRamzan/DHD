@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
-import { doctor_get_info } from "../API/api";
+import { useLocation } from "react-router-dom";
+import { doctorGetInfo } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import TimePicker from 'react-time-picker'
@@ -10,16 +11,17 @@ const DoctorPublic = () => {
     const [bookingDate, setBookingDate] = useState(new Date())
     const [bookingTime, setBookingTime] = useState(new Date())
 
+    const location = useLocation()
+
     useEffect(() => {
-        let data = doctor_get_info(1)
+        let doctorID = location.state.doctorID
+        let data = doctorGetInfo(doctorID)
         data.then((res) => {setData(res.data)})
     }, [])
 
     return ( 
         <div className="doctorPublic">
-            <h1>Doctor Public</h1>
-            <p>{ data.firstName }</p>
-            <p>{ data.lastName }</p>
+            <h1>{ data.firstName + ' ' + data.lastName }</h1>
             <p>{ data.specialization }</p>
             <p>{ data.city }</p>
             <p>{ data.address }</p>

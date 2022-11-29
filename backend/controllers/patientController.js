@@ -28,38 +28,38 @@ function create_connection() {
 
 export async function patientAddEntry(req, response) {
 
-    let account_ID = req.body.account_ID
-    let first_name = req.body.first_name
-    let last_name = req.body.last_name
-    let date_of_birth = req.body.date_of_birth
+    let accountID = req.body.accountID
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let dateOfBirth = req.body.dateOfBirth
     let gender = req.body.gender
     
     let connection = create_connection()
 
-    let seed_query = `INSERT INTO patient VALUES (?)`
-    let values = [account_ID, first_name, last_name, date_of_birth, gender]
+    let seedQuery = `INSERT INTO patient VALUES (?)`
+    let values = [accountID, firstName, lastName, dateOfBirth, gender]
 
-    connection.query(seed_query, [values], (err, res) => {
+    connection.query(seedQuery, [values], (err, res) => {
 
         if (err) {
 
-            let return_message = {
-                "is_successful": false,
-                "error_message": "Could not create a new patient entry",
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not create a new patient entry",
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
             connection.end()
 
             console.log(err)
 
         } else {
 
-            let return_message = {
-                "is_successful": true,
+            let returnMessage = {
+                "isSuccessful": true,
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
             connection.end()
         }
     })

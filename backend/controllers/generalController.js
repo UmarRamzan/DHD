@@ -25,6 +25,74 @@ function validateConnection() {
     return connection
 }
 
+export async function validateEmail(req, response) {
+
+    let email = req.body.email
+
+    let connection = validateConnection()
+
+    let emailValidation = `SELECT * FROM Account WHERE email = ?`
+    let values = [email]
+
+    connection.query(emailValidation, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process validation request"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            if (res.length != 0) {
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "Email already exists"
+                }
+                response.send(returnMessage)
+                connection.end()
+
+            } else {    
+                let returnMessage = {
+                    "isSuccessful": true
+                }
+                response.send(returnMessage)
+                connection.end()
+            }
+        }
+    })
+}
+
+export async function removeAccount(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Account WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function signup(req, response) {
 
     let email = req.body.email
@@ -123,10 +191,11 @@ export async function login(req, response) {
             } else {
                 let returnMessage = {
                     "isSuccessful": true,
-                    "accountID": res[0].AccountID
+                    "accountID": res[0].accountID
                 }
-                console.log(res)
+
                 response.send(returnMessage)
+                connection.end()
             }
         }
     })
@@ -139,7 +208,7 @@ export async function search(req, response) {
     let searchString = req.body.searchString
     let city = req.body.city
 
-    let queryDoctor = `SELECT * FROM Doctor WHERE city = ? AND (firstName LIKE ? OR lastName LIKE ? OR specialization LIKE ?) `
+    let queryDoctor = `SELECT * FROM Doctor WHERE city = ? AND (firstName LIKE ? OR lastName LIKE ? OR specialization LIKE ?)`
     let valuesDoctor = [city, `${searchString}%`, `${searchString}%`, `${searchString}%`]
 
     let queryHospital = `SELECT * FROM Hospital WHERE city = ? AND name LIKE ?`

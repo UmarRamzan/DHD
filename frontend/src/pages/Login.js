@@ -17,10 +17,11 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         let res = await login(email, password)
+
+        console.log(res)
         
-        if (res.data.is_successful) {
-            localStorage.setItem('userID', res.data.account_ID)
-            setUserID(res.data.account_ID)
+        if (res.data.isSuccessful) {
+            localStorage.setItem('accountID', res.data.accountID)
             navigate("/home")
 
         } else {

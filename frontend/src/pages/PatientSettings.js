@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { patient_get_info } from "../API/api";
+import { patientGetInfo } from "../API/api";
 
 const PatientSettings = () => {
     const [userData, setUserData] = useState({})
@@ -7,7 +7,7 @@ const PatientSettings = () => {
     let userID = localStorage.getItem("userID")
     
     useEffect(() => {
-        let data = patient_get_info(userID)
+        let data = patientGetInfo(userID)
         data.then((res) => setUserData(res.data))
     }, [])
 
