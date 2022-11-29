@@ -207,7 +207,7 @@ export async function search(req, response) {
     let searchString = req.body.searchString
     let city = req.body.city
 
-    let queryDoctor = `SELECT * FROM Doctor WHERE city = ? AND (firstName LIKE ? OR lastName LIKE ? OR specialization LIKE ?) `
+    let queryDoctor = `SELECT * FROM Doctor WHERE city = ? AND (firstName LIKE ? OR lastName LIKE ? OR specialization LIKE ?)`
     let valuesDoctor = [city, `${searchString}%`, `${searchString}%`, `${searchString}%`]
 
     let queryHospital = `SELECT * FROM Hospital WHERE city = ? AND name LIKE ?`

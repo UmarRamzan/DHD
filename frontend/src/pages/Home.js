@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { search } from "../API/api";
 import { UserContext } from "../UserContext";
-import Select from 'react-select';
 
 const Home = () => {
 
@@ -10,17 +9,20 @@ const Home = () => {
 
     const [searchString, setSearchString] = useState('')
     const [city, setCity] = useState('lahore')
-    const [hospitalResults, setHospitalResults] = useState(null)
     const [doctorResults, setDoctorResults] = useState(null)
-
+    const [hospitalResults, setHospitalResults] = useState(null)
+    const [showDoctors, setShowDoctors] = useState(true)
+    const [showHospitals, setShowHospitals] = useState(true)
+    
     const handleSearch = async () => {
         if (searchString == '') {
             setHospitalResults('')
             setDoctorResults('')
         } else {
             let res = await search(searchString, city)
-            setDoctorResults(res.data.doctor_list)
-            setHospitalResults(res.data.hospital_list)
+
+            setDoctorResults(res.data.doctorList)
+            setHospitalResults(res.data.hospitalList)
         }
     }
 
@@ -61,22 +63,36 @@ const Home = () => {
                 
             </div>
 
+            <span>Show Doctors</span>
+            <input 
+                    type="checkbox"
+                    defaultChecked={true}
+                    onChange={(e)=>{setShowDoctors(!showDoctors)}}
+            />
+
+            <span>Show Hospitals</span>
+            <input 
+                    type="checkbox"
+                    defaultChecked={true}
+                    onChange={(e)=>{setShowHospitals(!showHospitals)}}
+            />
+
             <div className="results">
-                {doctorResults && doctorResults.map((res) => (
+                {showDoctors && doctorResults && doctorResults.map((res) => (
                     <Link to="/doctorPublic">
                         <div className="profileTile">
-                        <div key={res.Account_ID}>
-                            <p>{res.First_Name + " " + res.Last_Name + " " + res.Account_ID }</p>
+                        <div key={res.accountID}>
+                            <p>{res.firstName + " " + res.lastName + " " + res.specialization }</p>
                         </div>
                     </div>
                     </Link>
                 ))}
 
-                {hospitalResults && hospitalResults.map((res) => (
+                {showHospitals && hospitalResults && hospitalResults.map((res) => (
                     <Link to="/doctorPublic">
                         <div className="profileTile">
-                        <div key={res.Account_ID}>
-                            <p>{res.Name + " " + res.Address + " " + res.Account_ID }</p>
+                        <div key={res.accountID}>
+                            <p>{res.name + " " + res.address }</p>
                         </div>
                     </div>
                     </Link>

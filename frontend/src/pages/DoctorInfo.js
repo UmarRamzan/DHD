@@ -137,7 +137,6 @@ const DoctorInfo = () => {
                 <label>Online Availability:</label>
                 <input 
                     type="checkbox"
-                    value={"on"}
                     onChange={(e)=>{setOnlineAvailability(!onlineAvailability)}}
                 />
 

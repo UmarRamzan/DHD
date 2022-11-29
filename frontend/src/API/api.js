@@ -180,10 +180,10 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
 
 // search for relevant doctors and hospitals using search_string and the specified city
 // returns a json object containing two lists: "doctor_list" and "hospital_list"
-export async function search(search_string, city) {
+export async function search(searchString, city) {
 
     const request = {
-        "search_string": search_string,
+        "searchString": searchString,
         "city": city
     }
 
