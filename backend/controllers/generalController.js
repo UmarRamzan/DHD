@@ -64,6 +64,35 @@ export async function validateEmail(req, response) {
     })
 }
 
+export async function removeAccount(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Account WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function signup(req, response) {
 
     let email = req.body.email

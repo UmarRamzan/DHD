@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { hospitalAddEntry } from "../API/api";
+import { removeAccount } from "../API/api";
 
 const HospitalInfo = () => {
 
@@ -37,6 +38,7 @@ const HospitalInfo = () => {
                 navigate("/home")
                 
             } else {
+                removeAccount(accountID)
                 setError(res.data.errorMessage)
             }
             

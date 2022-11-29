@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 app.post('/api/general/signup', router)
 app.post('/api/general/login', router)
 app.post('/api/general/validateEmail', router)
+app.post('/api/general/removeAccount', router)
 app.post('/api/general/search', router)
 app.post('/api/general/searchSpecialization', router)
 app.post('/api/general/associateDoctorHospital', router)

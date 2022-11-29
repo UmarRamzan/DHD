@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { patientAddEntry } from "../API/api";
+import { removeAccount } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -29,8 +30,6 @@ const PatientInfo = () => {
 
         let accountRes = await signup(email, password, 'patient')
 
-        console.log(accountRes.data)
-
         if (accountRes.data.isSuccessful) {
     
             let accountID = accountRes.data.accountID
@@ -48,6 +47,7 @@ const PatientInfo = () => {
                 navigate("/home")
                 
             } else {
+                removeAccount(accountID)
                 setError(res.data.errorMessage)
             }
             

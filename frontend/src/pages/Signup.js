@@ -77,8 +77,6 @@ const Signup = () => {
                 <p>{ error }</p>
             </form>
 
-            <Link to="/login">Login</Link>
-
         </div>
     )
 }

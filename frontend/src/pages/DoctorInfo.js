@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { doctorAddEntry } from "../API/api";
+import { removeAccount } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -16,7 +17,7 @@ const DoctorInfo = () => {
     const [address, setAddress] = useState('')
     const [timings, setTimings] = useState('')
     const [personalBio, setPersonalBio] = useState('')
-    const [onlineAvailability, setOnlineAvailability] = useState('')
+    const [onlineAvailability, setOnlineAvailability] = useState(false)
     const [charges, setCharges] = useState('')
 
     const [error, setError] = useState('')
@@ -36,23 +37,25 @@ const DoctorInfo = () => {
 
         let accountRes = await signup(email, password, 'doctor')
 
+        let accountID = accountRes.data.accountID
+
         if (accountRes.data.isSuccessful) {
-    
-            let accountID = accountRes.data.accountID
-            localStorage.setItem('accountID', accountID)
 
             let year = dateOfBirth.getFullYear()
             let month = dateOfBirth.getMonth()
             let day = dateOfBirth.getDay()
 
             let date = `${year}-${month}-${day}`
+            let online = onlineAvailability? 1 : 0
 
-            let res = await doctorAddEntry(accountID, firstName, lastName, date, gender)
+            let res = await doctorAddEntry(accountID, firstName, lastName, date, gender, specialization, city, address, timings, personalBio, online, charges)
 
             if (res.data.isSuccessful) {
+                localStorage.setItem('accountID', accountID)
                 navigate("/home")
                 
             } else {
+                removeAccount(accountID)
                 setError(res.data.errorMessage)
             }
             
@@ -90,6 +93,61 @@ const DoctorInfo = () => {
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
+
+                <label>Specialization:</label>
+                <input 
+                    type="text"
+                    required
+                    value={specialization}
+                    onChange={(e)=>{setSpecialization(e.target.value)}}
+                />
+
+                <label>City:</label>
+                <input 
+                    type="text"
+                    required
+                    value={city}
+                    onChange={(e)=>{setCity(e.target.value)}}
+                />
+
+                <label>Address:</label>
+                <input 
+                    type="text"
+                    required
+                    value={address}
+                    onChange={(e)=>{setAddress(e.target.value)}}
+                />
+
+                <label>Timings:</label>
+                <input 
+                    type="text"
+                    required
+                    value={timings}
+                    onChange={(e)=>{setTimings(e.target.value)}}
+                />
+
+                <label>Personal Information:</label>
+                <input 
+                    type="text"
+                    required
+                    value={personalBio}
+                    onChange={(e)=>{setPersonalBio(e.target.value)}}
+                />
+
+                <label>Online Availability:</label>
+                <input 
+                    type="checkbox"
+                    value={"on"}
+                    onChange={(e)=>{setOnlineAvailability(!onlineAvailability)}}
+                />
+
+                <label>Charges:</label>
+                <input 
+                    type="text"
+                    required
+                    value={charges}
+                    onChange={(e)=>{setCharges(e.target.value)}}
+                />
 
                 <button>Submit</button>
             </form>
