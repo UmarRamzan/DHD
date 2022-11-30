@@ -7,8 +7,13 @@ const NavBar = () => {
 
     const {accountID, setAccountID} = useContext(UserContext)
 
+    useEffect(() => {
+        setAccountID(localStorage.getItem("accountID"))
+    }, [])
+
     const handleLogout = () => {
         setAccountID(null)
+        localStorage.setItem("accountID", null)
     }
 
     return ( 
@@ -18,9 +23,12 @@ const NavBar = () => {
             <Link to="/login">Login</Link>
             <Link to="/patientSettings">Settings</Link>
             <Link to="/bookings">Bookings</Link>
+
+            <div className="logout">
+                <p>{accountID && `User ${accountID}`}</p>
+                {accountID && (<button onClick={handleLogout}>Log Out</button>)}
+            </div>
             
-            <p>{accountID && `User ${accountID}`}</p>
-            {accountID && (<button onClick={handleLogout}>Log Out</button>)}
         </div>  
      );
 }
