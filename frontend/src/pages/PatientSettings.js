@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { patientGetInfo } from "../API/api";
+import { accountGetInfo, patientGetInfo } from "../API/api";
 
 const PatientSettings = () => {
     const [userData, setUserData] = useState({})
+    const [accountData, setAccountData] = useState({})
     
     useEffect(() => {
         let accountID = localStorage.getItem("accountID")
-        let data = patientGetInfo(accountID)
-        data.then((res) => {setUserData(res.data)})
+        let patientData = patientGetInfo(accountID)
+        let accountData = accountGetInfo(accountID)
+
+        patientData.then((res) => {setUserData(res.data)})
+        accountData.then((res) => {setAccountData(res.data)})
+
     }, [])
 
     const handleEdit = () => {
@@ -25,9 +30,17 @@ const PatientSettings = () => {
                     <p>{"Last Name: " + userData.lastName}</p>
                     <p>{userData.dateOfBirth && "Date of Birth: " + userData.dateOfBirth.substring(0,10)}</p>
                     <p>{"Gender: " + userData.gender}</p>
-                    <button onClick={handleEdit}>Edit Information</button>
+                    <button onClick={handleEdit}>Edit Personal Information</button>
+
+                    <h3>Account Information</h3>
+                    <p>{"Email: " + accountData.email}</p>
+                    <p>{"Account Type: " + accountData.accountType}</p>
+                    <button onClick={handleEdit}>Edit Account Information</button><br/><br/>
+                    <button>Change Password</button>
                 </div>   
             }
+            <br/>
+            <button>Delete Account</button>
         </div>
      );
 }

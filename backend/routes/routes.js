@@ -20,6 +20,7 @@ router.post('/api/general/searchSpecialization', generalController.searchSpecial
 router.post('/api/general/associateDoctorHospital', generalController.associateDoctorHospital)
 router.post('/api/general/createBooking', generalController.createBooking)
 router.post('/api/general/updateBooking', generalController.createBooking)
+router.post('/api/general/accountGetInfo', generalController.accountGetInfo)
 router.post('/api/general/getBookings', generalController.getBookings)
 
 // patient functions

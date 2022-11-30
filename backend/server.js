@@ -32,6 +32,7 @@ app.post('/api/general/login', router)
 app.post('/api/general/validateEmail', router)
 app.post('/api/general/removeAccount', router)
 app.post('/api/general/search', router)
+app.post('/api/general/accountGetInfo', router)
 app.post('/api/general/searchSpecialization', router)
 app.post('/api/general/associateDoctorHospital', router)
 

@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { search } from "../API/api";
 import { UserContext } from "../UserContext";
 
 const NavBar = () => {
 
     const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         setAccountID(localStorage.getItem("accountID"))
@@ -18,6 +20,8 @@ const NavBar = () => {
         localStorage.setItem('accountID', null)
         localStorage.setItem('accountType', null)
         localStorage.setItem('accountName', null)
+
+        navigate('/home')
     }
 
     return ( 

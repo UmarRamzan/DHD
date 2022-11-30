@@ -245,6 +245,38 @@ export async function search(req, response) {
 
 }
 
+export async function accountGetInfo(req, response) {
+    let accountID = req.body.accountID
+
+    let getData = `SELECT * FROM Account WHERE accountID = ?`
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(getData, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process information request"
+            }
+
+            response.send(returnMessage)
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "email": data.email,
+                "password": data.password,
+                "accountType": data.accountType
+            }
+
+            response.send(returnMessage)
+        }
+    })
+}
+
 export async function searchSpecialization(req, response) {
     
     let specialization = req.body.specialization
