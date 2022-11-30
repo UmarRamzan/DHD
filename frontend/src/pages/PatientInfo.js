@@ -51,8 +51,10 @@ const PatientInfo = () => {
                 setAccountType('patient')
                 
                 localStorage.setItem('accountID', accountID)
-                localStorage.setItem('accountName', accountName)
-                localStorage.setItem('accountType', accountType)
+                localStorage.setItem('accountName', firstName)
+                localStorage.setItem('accountType', 'patient')
+
+                console.log(localStorage.getItem('accountName'))
 
                 navigate("/home")
                 
