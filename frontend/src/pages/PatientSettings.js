@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
-import { accountGetInfo, patientGetInfo } from "../API/api";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { accountGetInfo, patientGetInfo, removeAccount, removePatient } from "../API/api";
+import { UserContext } from "../UserContext";
 
 const PatientSettings = () => {
     const [userData, setUserData] = useState({})
     const [accountData, setAccountData] = useState({})
-    
+
+    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
+    const navigate = useNavigate()
+
     useEffect(() => {
         let accountID = localStorage.getItem("accountID")
         let patientData = patientGetInfo(accountID)
@@ -17,6 +22,21 @@ const PatientSettings = () => {
 
     const handleEdit = () => {
         console.log("edit")
+    }
+
+    const handleDelete = async () => {
+        await removeAccount(accountData.accountID)
+        await removePatient(accountData.accountID)
+
+        setAccountID(null)
+        setAccountType(null)
+        setAccountName(null)
+        
+        localStorage.setItem('accountID', null)
+        localStorage.setItem('accountType', null)
+        localStorage.setItem('accountName', null)
+
+        navigate('/home')
     }
 
     return ( 
@@ -40,7 +60,7 @@ const PatientSettings = () => {
                 </div>   
             }
             <br/>
-            <button>Delete Account</button>
+            <button onClick={handleDelete}>Delete Account</button>
         </div>
      );
 }

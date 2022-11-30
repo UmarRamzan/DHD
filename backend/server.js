@@ -43,6 +43,7 @@ app.post('/api/general/getBookings', router)
 app.post('/api/patient/patientAddEntry', router)
 app.post('/api/patient/patientUpdateEntry', router)
 app.post('/api/patient/patientGetInfo', router)
+app.post('/api/patient/removePatient', router)
 
 app.post('/api/doctor/doctorAddEntry', router)
 app.post('/api/doctor/doctorGetInfo', router)

@@ -22,6 +22,15 @@ export async function removeAccount(accountID) {
     return await axios.post(`${url}/general/removeAccount`, request)
 }
 
+export async function removePatient(accountID) {
+    
+    const request = {
+        "accountID": accountID
+    }
+
+    return await axios.post(`${url}/patient/removePatient`, request)
+}
+
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
 export async function signup(email, password, accountType) {

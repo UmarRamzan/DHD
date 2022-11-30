@@ -50,6 +50,8 @@ const HospitalInfo = () => {
     return ( 
         <div className="signup">
 
+            <h2>Personal Information</h2>
+
             <form onSubmit={handleSubmit}>
 
                 <label>Name:</label>

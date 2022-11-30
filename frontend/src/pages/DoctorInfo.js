@@ -66,7 +66,9 @@ const DoctorInfo = () => {
 
     return ( 
         <div className="signup">
-
+            
+            <h2>Personal Information</h2>
+            
             <form onSubmit={handleSubmit}>
 
                 <label>First Name:</label>

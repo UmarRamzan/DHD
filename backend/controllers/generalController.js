@@ -267,6 +267,7 @@ export async function accountGetInfo(req, response) {
 
             let returnMessage = {
                 "isSuccessful": true,
+                "accountID": data.accountID,
                 "email": data.email,
                 "password": data.password,
                 "accountType": data.accountType
