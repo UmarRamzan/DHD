@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/UmarRamzan/DHD#readme",
   "dependencies": {
+    "concurrently": "^7.6.0",
     "react-time-picker": "^5.1.0"
   }
 }
