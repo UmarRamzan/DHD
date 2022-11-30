@@ -26,7 +26,8 @@ const Bookings = () => {
                 <Link>
                     <div className="bookingTile">
                         <div key={res.bookingID}>
-                            <p>{res.patientID + ' ' + res.doctorID + ' ' + res.date + ' ' + res.time}</p>
+                            <p>{'Patient: ' + res.patientID + ' Doctor: ' + res.doctorID }</p>
+                            <p>{'Date: ' + res.date.substring(0,10) + ' Time: ' + res.time}</p>
                         </div>
                     </div>
                 </Link>

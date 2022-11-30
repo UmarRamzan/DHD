@@ -6,7 +6,7 @@ import { UserContext } from "../UserContext";
 
 const Login = () => {
 
-    const {userID, setUserID} = useContext(UserContext)
+    const {accountID, setAccountID} = useContext(UserContext)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -21,11 +21,12 @@ const Login = () => {
         console.log(res)
         
         if (res.data.isSuccessful) {
+            setAccountID(res.data.accountID)
             localStorage.setItem('accountID', res.data.accountID)
             navigate("/home")
 
         } else {
-            setError(res.data.error_message)
+            setError(res.data.errorMessage)
         }
     }
 
@@ -44,7 +45,7 @@ const Login = () => {
 
                 <label>Password:</label>
                 <input 
-                    type="text"
+                    type="password"
                     required
                     value={password}
                     onChange={(e)=>{setPassword(e.target.value)}}
