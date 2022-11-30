@@ -43,12 +43,12 @@ function App() {
 
                 <Route exact path="/login" element={<Login/>}></Route>
 
-                <Route exact path="/bookings" element={<Bookings/>}></Route>
+                <Route exact path="/bookings" element={accountID? <Bookings/> : <Login/> }></Route>
 
                 <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
                 <Route exact path="/hospitalPublic" element={<HospitalPublic/>}></Route>
 
-                <Route exact path="/settings" element={<Settings/>}></Route>
+                <Route exact path="/settings" element={accountID? <Settings/> : <Login/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
 
                 <Route path="*" element={<NotFound/>}></Route>

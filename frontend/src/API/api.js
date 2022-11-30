@@ -121,8 +121,6 @@ export async function patientGetInfo(accountID) {
         "accountID": accountID
     }
 
-    console.log(request)
-
     return await axios.post(`${url}/patient/patientGetInfo`, request)
 }
 

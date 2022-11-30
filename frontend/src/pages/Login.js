@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { login, patientGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
 
@@ -12,7 +12,17 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state) {setError(location.state.message)}
+        
+    }, [])
+
+    useEffect(() => {
+        if (location.state) {setError(location.state.message)}
+    }, [location.state])
 
     const handleSubmit = async (e) => {
         e.preventDefault()

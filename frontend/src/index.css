@@ -50,7 +50,7 @@ code {
   display: block;
 }
 
-.signup button, .login button, .logout button{
+.signup button, .login button, .logout button, .settings button{
   border: 0;
   padding: 8px;
   border-radius: 8px;

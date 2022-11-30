@@ -24,8 +24,8 @@ const NavBar = () => {
         <div className="navbar">
             
             <Link to="/home">Home</Link>
-            <Link to="/bookings">Bookings</Link>
-            <Link to="/settings">Settings</Link>
+            <Link to="/bookings" state={{message:"Login to access bookings"}}>Bookings</Link>
+            <Link to="/settings" state={{message:"Login to access settings"}}>Settings</Link>
             {!accountID && <Link to="/signup">Signup</Link>}
             {!accountID && <Link to="/login">Login</Link>}
 
