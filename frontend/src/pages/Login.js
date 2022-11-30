@@ -1,30 +1,57 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "../API/api";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { login, patientGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
 
 
 const Login = () => {
 
-    const {userID, setUserID} = useContext(UserContext)
+    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.state) {setError(location.state.message)}
+        
+    }, [])
+
+    useEffect(() => {
+        if (location.state) {setError(location.state.message)}
+    }, [location.state])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         let res = await login(email, password)
         
-        if (res.data.is_successful) {
-            localStorage.setItem('userID', res.data.account_ID)
-            setUserID(res.data.account_ID)
-            navigate("/home")
+        if (res.data.isSuccessful) {
+
+            let userData = await patientGetInfo(res.data.accountID)
+            console.log(userData)
+
+            if (userData.data.isSuccessful) {
+                setAccountID(res.data.accountID)
+                setAccountType(res.data.accountType)
+                setAccountName(userData.data.firstName)
+
+                console.log(userData)
+
+                localStorage.setItem('accountID', res.data.accountID)
+                localStorage.setItem('accountType', res.data.accountType)
+                localStorage.setItem('accountName', userData.data.firstName)
+
+                navigate('/home')
+
+            } else {
+                setError(res.data.errorMessage)
+            }
 
         } else {
-            setError(res.data.error_message)
+            setError(res.data.errorMessage)
         }
     }
 
@@ -43,7 +70,7 @@ const Login = () => {
 
                 <label>Password:</label>
                 <input 
-                    type="text"
+                    type="password"
                     required
                     value={password}
                     onChange={(e)=>{setPassword(e.target.value)}}

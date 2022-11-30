@@ -14,13 +14,18 @@ const router = Router()
 router.post('/api/general/signup', generalController.signup)
 router.post('/api/general/login', generalController.login)
 router.post('/api/general/search', generalController.search)
+router.post('/api/general/validateEmail', generalController.validateEmail)
+router.post('/api/general/removeAccount', generalController.removeAccount)
 router.post('/api/general/searchSpecialization', generalController.searchSpecialization)
 router.post('/api/general/associateDoctorHospital', generalController.associateDoctorHospital)
 router.post('/api/general/createBooking', generalController.createBooking)
 router.post('/api/general/updateBooking', generalController.createBooking)
+router.post('/api/general/accountGetInfo', generalController.accountGetInfo)
+router.post('/api/general/getBookings', generalController.getBookings)
 
 // patient functions
 router.post('/api/patient/patientAddEntry', patientController.patientAddEntry)
+router.post('/api/patient/removePatient', patientController.removePatient)
 router.post('/api/patient/patientGetInfo', patientController.patientGetInfo)
 router.post('/api/patient/patientUpdateEntry', patientController.patientUpdateEntry)
 
@@ -30,6 +35,7 @@ router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
+router.post('/api/hospital/hospitalGetInfo', hospitalController.hospitalGetInfo)
 router.post('/api/hospital/searchHospitalByCity', hospitalController.searchHospitalByCity)
 
 export default router

@@ -25,6 +25,74 @@ function validateConnection() {
     return connection
 }
 
+export async function validateEmail(req, response) {
+
+    let email = req.body.email
+
+    let connection = validateConnection()
+
+    let emailValidation = `SELECT * FROM Account WHERE email = ?`
+    let values = [email]
+
+    connection.query(emailValidation, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process validation request"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            if (res.length != 0) {
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "Email already exists"
+                }
+                response.send(returnMessage)
+                connection.end()
+
+            } else {    
+                let returnMessage = {
+                    "isSuccessful": true
+                }
+                response.send(returnMessage)
+                connection.end()
+            }
+        }
+    })
+}
+
+export async function removeAccount(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Account WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function signup(req, response) {
 
     let email = req.body.email
@@ -123,10 +191,12 @@ export async function login(req, response) {
             } else {
                 let returnMessage = {
                     "isSuccessful": true,
-                    "accountID": res[0].AccountID
+                    "accountID": res[0].accountID,
+                    "accountType": res[0].accountType
                 }
-                console.log(res)
+
                 response.send(returnMessage)
+                connection.end()
             }
         }
     })
@@ -139,7 +209,7 @@ export async function search(req, response) {
     let searchString = req.body.searchString
     let city = req.body.city
 
-    let queryDoctor = `SELECT * FROM Doctor WHERE city = ? AND (firstName LIKE ? OR lastName LIKE ? OR specialization LIKE ?) `
+    let queryDoctor = `SELECT * FROM Doctor WHERE city = ? AND (firstName LIKE ? OR lastName LIKE ? OR specialization LIKE ?)`
     let valuesDoctor = [city, `${searchString}%`, `${searchString}%`, `${searchString}%`]
 
     let queryHospital = `SELECT * FROM Hospital WHERE city = ? AND name LIKE ?`
@@ -173,6 +243,39 @@ export async function search(req, response) {
         }
     })
 
+}
+
+export async function accountGetInfo(req, response) {
+    let accountID = req.body.accountID
+
+    let getData = `SELECT * FROM Account WHERE accountID = ?`
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(getData, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process information request"
+            }
+
+            response.send(returnMessage)
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "accountID": data.accountID,
+                "email": data.email,
+                "password": data.password,
+                "accountType": data.accountType
+            }
+
+            response.send(returnMessage)
+        }
+    })
 }
 
 export async function searchSpecialization(req, response) {
@@ -236,20 +339,23 @@ export async function createBooking(req, response) {
 
     let patientID = req.body.patientID
     let doctorID = req.body.doctorID
-    let bookingDate = req.body.bookingDate
-    let bookingTime = req.body.bookingTime
+    let date = req.body.date
+    let time = req.body.time
 
-    let insertQuery = `INSERT INTO Booking (patientID, doctorID, bookingDate, bookingTime) VALUES (?)`
-    let values = [patientID, doctorID, bookingDate, bookingTime]
+    let insertQuery = `INSERT INTO Booking (patientID, doctorID, date, time) VALUES (?)`
+    let values = [patientID, doctorID, date, time]
 
     let connection = validateConnection()
     connection.query(insertQuery, [values], (err, res) => {
         if (err) {
             let returnMessage = {
-                "isSuccessful": false
+                "isSuccessful": false,
+                "errorMessage": "Could not create booking"
             }
 
             response.send(returnMessage)
+            connection.end()
+
             console.log(err)
         } else {
 
@@ -258,9 +364,46 @@ export async function createBooking(req, response) {
             }
 
             response.send(returnMessage)
+            connection.end()
         }
     })
-    connection.end()
 }
 
 export async function updateBooking(req, response) {}
+
+export async function getBookings(req, response) {
+
+    let accountID = req.body.accountID
+    let accountType = req.body.accountType
+
+    let findBookings = ``
+    if (accountType == 'patient') {findBookings = `SELECT * FROM Booking WHERE patientID = ?`}
+    else if (accountType == 'doctor') {findBookings = `SELECT * FROM Booking WHERE doctorID = ?`}
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(findBookings, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not find bookings"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+            
+            console.log(err)
+        } else {
+
+            console.log(res)
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "bookings": res
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}

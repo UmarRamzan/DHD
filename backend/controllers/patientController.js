@@ -28,38 +28,38 @@ function create_connection() {
 
 export async function patientAddEntry(req, response) {
 
-    let account_ID = req.body.account_ID
-    let first_name = req.body.first_name
-    let last_name = req.body.last_name
-    let date_of_birth = req.body.date_of_birth
+    let accountID = req.body.accountID
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let dateOfBirth = req.body.dateOfBirth
     let gender = req.body.gender
     
     let connection = create_connection()
 
-    let seed_query = `INSERT INTO patient VALUES (?)`
-    let values = [account_ID, first_name, last_name, date_of_birth, gender]
+    let seedQuery = `INSERT INTO patient VALUES (?)`
+    let values = [accountID, firstName, lastName, dateOfBirth, gender]
 
-    connection.query(seed_query, [values], (err, res) => {
+    connection.query(seedQuery, [values], (err, res) => {
 
         if (err) {
 
-            let return_message = {
-                "is_successful": false,
-                "error_message": "Could not create a new patient entry",
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not create a new patient entry",
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
             connection.end()
 
             console.log(err)
 
         } else {
 
-            let return_message = {
-                "is_successful": true,
+            let returnMessage = {
+                "isSuccessful": true,
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
             connection.end()
         }
     })
@@ -86,28 +86,64 @@ export async function patientUpdateEntry(req, response) {
 }
 
 export async function patientGetInfo(req, response) {
-    let account_ID = req.body.account_ID
+    let accountID = req.body.accountID
 
-    let select_query = `SELECT * FROM patient WHERE Account_ID = ?`
-    let values = [account_ID]
+    let findPatient = `SELECT * FROM Patient WHERE accountID = ?`
+    let values = [accountID]
 
     let connection = create_connection()
-    connection.query(select_query, [values], (err, res) => {
+    connection.query(findPatient, [values], (err, res) => {
         if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process information request"
+            }
+
+            response.send(returnMessage)
             console.log(err)
         } else {
 
-            let return_message = {
-                "first_name": res.First_Name,
-                "last_name": res.Last_Name,
-                "year": res.Year,
-                "month": res.Month,
-                "day": res.Day,
-                "gender": res.Gender
+            let data = res[0]
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "firstName": data.firstName,
+                "lastName": data.lastName,
+                "dateOfBirth": data.dateOfBirth,
+                "gender": data.gender
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
         }
     })
 
+}
+
+export async function removePatient(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = create_connection()
+
+    let deleteAccount = `DELETE FROM Patient WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
 }
