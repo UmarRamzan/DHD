@@ -17,6 +17,7 @@ const PatientInfo = () => {
     const [error, setError] = useState('')
 
     const {accountID, setAccountID} = useContext(UserContext)
+    const {accountType, setAccountType} = useContext(UserContext)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -37,6 +38,7 @@ const PatientInfo = () => {
     
             let accountID = accountRes.data.accountID
             setAccountID(accountID)
+            localStorage.setItem('accountType',setAccountType)
             localStorage.setItem('accountID', accountID)
 
             let year = dateOfBirth.getFullYear()

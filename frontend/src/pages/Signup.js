@@ -8,7 +8,8 @@ const Signup = () => {
 
     const navigate = useNavigate()
 
-    const {userID, setUserID} = useContext(UserContext)
+    //const {userID, setUserID} = useContext(UserContext)
+    const {accType, setAccType} = useContext(UserContext)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -36,6 +37,7 @@ const Signup = () => {
         } else {
             let res = await validateEmail(email)
             if (res.data.isSuccessful) {
+                setAccType(accountType)
                 navigate(`/signup/${accountType}`, { state: { email: email, password: password } })
             } else {
                 setError(res.data.errorMessage)

@@ -226,3 +226,12 @@ export async function search_hospitals_by_city(city) {
 
     return await axios.post(`${url}/general/search_hospital_by_city`, request)
 }
+
+
+export async function doctorGetReview(accountID) {
+    const request = {
+        "accountID": accountID,
+    }
+
+    return await axios.post(`${url}/doctor/doctorGetReview`, request)
+}

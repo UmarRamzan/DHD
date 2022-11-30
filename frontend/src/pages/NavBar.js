@@ -6,14 +6,19 @@ import { UserContext } from "../UserContext";
 const NavBar = () => {
 
     const {accountID, setAccountID} = useContext(UserContext)
+    const {accountType, setAccountType} = useContext(UserContext)
 
     useEffect(() => {
         setAccountID(localStorage.getItem("accountID"))
+        setAccountType(localStorage.getItem("accountType"))
     }, [])
+
 
     const handleLogout = () => {
         setAccountID(null)
+        setAccountType(null)
         localStorage.setItem("accountID", null)
+        localStorage.setItem("accountType",null)
     }
 
     return ( 
@@ -26,6 +31,7 @@ const NavBar = () => {
 
             <div className="logout">
                 <p>{accountID && `User ${accountID}`}</p>
+                <p>{accountType && `${accountType}`}</p>
                 {accountID && (<button onClick={handleLogout}>Log Out</button>)}
             </div>
             

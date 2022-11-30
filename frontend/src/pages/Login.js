@@ -7,6 +7,7 @@ import { UserContext } from "../UserContext";
 const Login = () => {
 
     const {accountID, setAccountID} = useContext(UserContext)
+    const {accountType, setAccountType} = useContext(UserContext)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -22,6 +23,9 @@ const Login = () => {
         
         if (res.data.isSuccessful) {
             setAccountID(res.data.accountID)
+            setAccountType(res.data.accountType)
+            console.log(res.data.accountType)
+            localStorage.setItem('accountType', res.data.accountType)
             localStorage.setItem('accountID', res.data.accountID)
             navigate("/home")
 

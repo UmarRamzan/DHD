@@ -191,7 +191,8 @@ export async function login(req, response) {
             } else {
                 let returnMessage = {
                     "isSuccessful": true,
-                    "accountID": res[0].accountID
+                    "accountID": res[0].accountID,
+                    "accountType": res[0].accountType
                 }
 
                 response.send(returnMessage)

@@ -30,6 +30,7 @@ router.post('/api/patient/patientUpdateEntry', patientController.patientUpdateEn
 // doctor functions
 router.post('/api/doctor/doctorAddEntry', doctorController.doctorAddEntry)
 router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
+router.post('/api/doctor/doctorGetReview', doctorController.doctorGetReview)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
