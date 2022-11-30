@@ -10,7 +10,7 @@ const NavBar = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        setAccountID(localStorage.getItem("accountID"))
+        setAccountID(JSON.parse(localStorage.getItem("accountID")))
         setAccountType(localStorage.getItem("accountType"))
         console.log(accountID)
         console.log(accountType)
@@ -38,10 +38,12 @@ const NavBar = () => {
             {!accountID && <Link to="/signup">Signup</Link>}
             {!accountID && <Link to="/login">Login</Link>}
 
-            <div className="logout">
-                <p>{accountID && accountName}</p>
-                {accountID && (<button onClick={handleLogout}>Log Out</button>)}
-            </div>
+            {accountID &&
+                <div className="logout">
+                    <p>{accountName}</p>
+                    <button onClick={handleLogout}>Log Out</button>
+                </div>
+            }
             
         </div>  
      );

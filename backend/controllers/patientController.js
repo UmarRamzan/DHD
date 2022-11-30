@@ -146,4 +146,31 @@ export async function patientAddReview(req, response) {
 
 }
 
+export async function removePatient(req, response) {
 
+    let accountID = req.body.accountID
+
+    let connection = create_connection()
+
+    let deleteAccount = `DELETE FROM Patient WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
