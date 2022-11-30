@@ -158,18 +158,16 @@ export async function associate_doctor_hospital(doctor_ID, hospital_ID) {
 
 // create a new booking for the specified patient and doctor at the specified time
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function create_booking(patient_ID, doctor_ID, year, month, day, hour) {
+export async function createBooking(patientID, doctorID, date, time) {
 
     const request = {
-        "patient_ID": patient_ID,
-        "doctor_ID": doctor_ID,
-        "year": year,
-        "month": month,
-        "day": day,
-        "hour": hour
+        "patientID": patientID,
+        "doctorID": doctorID,
+        "date": date,
+        "time": time
     }
 
-    return await axios.post(`${url}/general/create_booking`, request)
+    return await axios.post(`${url}/general/createBooking`, request)
 }
 
 // reschedule the booking with booking_ID to the new time parameters
@@ -185,6 +183,15 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
     }
 
     return await axios.post(`${url}/general/update_booking`, request)
+}
+
+export async function getBookings(accountID, accountType) {
+    const request = {
+        "accountID": accountID,
+        "accountType": accountType
+    }
+
+    return await axios.post(`${url}/general/getBookings`, request)
 }
 
 // search for relevant doctors and hospitals using search_string and the specified city

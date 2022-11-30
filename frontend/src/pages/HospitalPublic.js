@@ -20,7 +20,7 @@ const HospitalPublic = () => {
             <h1>{ data.name }</h1>
             <p>{ data.city }</p>
             <p>{ data.address }</p>
-            <h3>Booking</h3>
+            <h3>Specializations</h3>
         </div>
      );
 }

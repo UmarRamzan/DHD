@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { patientAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import { UserContext } from "../UserContext";
 
 const PatientInfo = () => {
 
@@ -14,6 +15,8 @@ const PatientInfo = () => {
     const [gender, setGender] = useState('male')
 
     const [error, setError] = useState('')
+
+    const {accountID, setAccountID} = useContext(UserContext)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -33,6 +36,7 @@ const PatientInfo = () => {
         if (accountRes.data.isSuccessful) {
     
             let accountID = accountRes.data.accountID
+            setAccountID(accountID)
             localStorage.setItem('accountID', accountID)
 
             let year = dateOfBirth.getFullYear()

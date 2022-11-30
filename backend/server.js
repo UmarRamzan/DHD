@@ -34,8 +34,10 @@ app.post('/api/general/removeAccount', router)
 app.post('/api/general/search', router)
 app.post('/api/general/searchSpecialization', router)
 app.post('/api/general/associateDoctorHospital', router)
+
 app.post('/api/general/createBooking', router)
 app.post('/api/general/updateBooking', router)
+app.post('/api/general/getBookings', router)
 
 app.post('/api/patient/patientAddEntry', router)
 app.post('/api/patient/patientUpdateEntry', router)
