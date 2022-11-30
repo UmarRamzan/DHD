@@ -3,18 +3,21 @@ import { patientGetInfo } from "../API/api";
 
 const PatientSettings = () => {
     const [userData, setUserData] = useState({})
-
-    let userID = localStorage.getItem("userID")
     
     useEffect(() => {
-        let data = patientGetInfo(userID)
-        data.then((res) => setUserData(res.data))
+        let accountID = localStorage.getItem("accountID")
+        let data = patientGetInfo(accountID)
+        data.then((res) => {console.log(res); setUserData(res.data)})
     }, [])
 
     return ( 
         <div className="settings">
-            <h1>Settings</h1>
-            <p>{userData.First_Name}</p>
+            <h1>Patient Settings</h1>
+            <h3>Personal Information</h3>
+            <p>{"First Name: " + userData.firstName}</p>
+            <p>{"Last Name: " + userData.lastName}</p>
+            <p>{"Date of Birth: " + userData.dateOfBirth.substring(0,10)}</p>
+            <p>{"Gender: " + userData.gender}</p>
         </div>
      );
 }

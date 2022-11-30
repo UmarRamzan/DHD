@@ -57,7 +57,7 @@ code {
   cursor: pointer;
 }
 
-.profileTile {
+.profileTile, .bookingTile {
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;

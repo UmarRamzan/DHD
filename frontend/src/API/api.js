@@ -115,15 +115,15 @@ export async function patient_update_entry(patient_ID, column_name, new_value) {
     return await axios.post(`${url}/patient/patient_update_entry`, request)
 }
 
-export async function patientGetInfo(account_ID) {
+export async function patientGetInfo(accountID) {
 
     const request = {
-        "account_ID": account_ID
+        "accountID": accountID
     }
 
     console.log(request)
 
-    return await axios.post(`${url}/patient/patient_get_info`, request)
+    return await axios.post(`${url}/patient/patientGetInfo`, request)
 }
 
 export async function doctorGetInfo(accountID) {

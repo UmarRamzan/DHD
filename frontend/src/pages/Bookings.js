@@ -6,7 +6,7 @@ import { UserContext } from "../UserContext";
 const Bookings = () => {
     const [bookings, setBookings] = useState(null)
 
-    const {accountID, setAccountID} = useContext(UserContext)
+    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
     useEffect(() => {
 
@@ -21,16 +21,12 @@ const Bookings = () => {
 
     return ( 
         <div className="bookings">
-            <p>Bookings</p>
+            <h1>Bookings</h1>
             {bookings && bookings.map((res) => (
-                <Link>
-                    <div className="bookingTile">
-                        <div key={res.bookingID}>
+                    <div className="bookingTile" key={res.bookingID}>
                             <p>{'Patient: ' + res.patientID + ' Doctor: ' + res.doctorID }</p>
                             <p>{'Date: ' + res.date.substring(0,10) + ' Time: ' + res.time}</p>
-                        </div>
                     </div>
-                </Link>
             ))}
         </div>
      );

@@ -86,27 +86,34 @@ export async function patientUpdateEntry(req, response) {
 }
 
 export async function patientGetInfo(req, response) {
-    let account_ID = req.body.account_ID
+    let accountID = req.body.accountID
 
-    let select_query = `SELECT * FROM patient WHERE Account_ID = ?`
-    let values = [account_ID]
+    let findPatient = `SELECT * FROM Patient WHERE accountID = ?`
+    let values = [accountID]
 
     let connection = create_connection()
-    connection.query(select_query, [values], (err, res) => {
+    connection.query(findPatient, [values], (err, res) => {
         if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process information request"
+            }
+
+            response.send(returnMessage)
             console.log(err)
         } else {
 
-            let return_message = {
-                "first_name": res.First_Name,
-                "last_name": res.Last_Name,
-                "year": res.Year,
-                "month": res.Month,
-                "day": res.Day,
-                "gender": res.Gender
+            let data = res[0]
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "firstName": data.firstName,
+                "lastName": data.lastName,
+                "dateOfBirth": data.dateOfBirth,
+                "gender": data.gender
             }
 
-            response.send(return_message)
+            response.send(returnMessage)
         }
     })
 

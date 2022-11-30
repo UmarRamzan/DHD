@@ -12,6 +12,7 @@ import DoctorInfo from './pages/DoctorInfo'
 import HospitalInfo from './pages/HospitalInfo';
 import DoctorPublic from './pages/DoctorPublic';
 import HospitalPublic from './pages/HospitalPublic';
+import Settings from './pages/Settings';
 import PatientSettings from './pages/PatientSettings';
 import Bookings from './pages/Bookings';
 
@@ -21,11 +22,14 @@ function App() {
 
   const [accountID, setAccountID] = useState(null)
   const [accountType, setAccountType] = useState(null)
+  const [accountName, setAccountName] = useState(null)
+  
+  const userState = {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName}
 
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={{accountID, setAccountID}}>
+        <UserContext.Provider value={userState}>
           <NavBar />
           <div className="content">
             <Routes>
@@ -44,6 +48,7 @@ function App() {
                 <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
                 <Route exact path="/hospitalPublic" element={<HospitalPublic/>}></Route>
 
+                <Route exact path="/settings" element={<Settings/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
 
                 <Route path="*" element={<NotFound/>}></Route>

@@ -16,7 +16,7 @@ const PatientInfo = () => {
 
     const [error, setError] = useState('')
 
-    const {accountID, setAccountID} = useContext(UserContext)
+    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -36,8 +36,6 @@ const PatientInfo = () => {
         if (accountRes.data.isSuccessful) {
     
             let accountID = accountRes.data.accountID
-            setAccountID(accountID)
-            localStorage.setItem('accountID', accountID)
 
             let year = dateOfBirth.getFullYear()
             let month = dateOfBirth.getMonth()
@@ -48,6 +46,14 @@ const PatientInfo = () => {
             let res = await patientAddEntry(accountID, firstName, lastName, date, gender)
 
             if (res.data.isSuccessful) {
+                setAccountID(accountID)
+                setAccountName(firstName)
+                setAccountType('patient')
+                
+                localStorage.setItem('accountID', accountID)
+                localStorage.setItem('accountName', accountName)
+                localStorage.setItem('accountType', accountType)
+
                 navigate("/home")
                 
             } else {

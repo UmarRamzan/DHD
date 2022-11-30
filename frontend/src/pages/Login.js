@@ -1,12 +1,12 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../API/api";
+import { login, patientGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
 
 
 const Login = () => {
 
-    const {accountID, setAccountID} = useContext(UserContext)
+    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -17,13 +17,28 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         let res = await login(email, password)
-
-        console.log(res)
         
         if (res.data.isSuccessful) {
-            setAccountID(res.data.accountID)
-            localStorage.setItem('accountID', res.data.accountID)
-            navigate("/home")
+
+            let userData = await patientGetInfo(res.data.accountID)
+            console.log(userData)
+
+            if (userData.data.isSuccessful) {
+                setAccountID(res.data.accountID)
+                setAccountType(res.data.accountType)
+                setAccountName(userData.data.firstName)
+
+                console.log(userData)
+
+                localStorage.setItem('accountID', res.data.accountID)
+                localStorage.setItem('accountType', res.data.accountType)
+                localStorage.setItem('accountName', userData.data.firstName)
+
+                navigate('/home')
+
+            } else {
+                setError(res.data.errorMessage)
+            }
 
         } else {
             setError(res.data.errorMessage)
