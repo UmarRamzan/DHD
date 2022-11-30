@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let url = `http://localhost:3000/api`
+let url = `http://localhost:3001/api`
 
 // for all functions the resulting data can be accessed by using .data on the returned object
 
