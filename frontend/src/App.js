@@ -17,6 +17,7 @@ import Bookings from './pages/Bookings';
 import Reviews from './pages/Reviews';
 
 import { UserContext } from './UserContext';
+import AddReview from './pages/AddReview';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
 
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
                 <Route exact path="/reviews" element={<Reviews/>}></Route>
+                <Route exact path="/addReview" element={<AddReview/>}></Route>
 
 
 

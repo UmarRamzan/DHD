@@ -235,3 +235,14 @@ export async function doctorGetReview(accountID) {
 
     return await axios.post(`${url}/doctor/doctorGetReview`, request)
 }
+
+export async function patientAddReview(accountID,doctorID,rating,reviewText) {
+    const request = {
+        "accountID": accountID,
+        "doctorID": doctorID,
+        "rating": rating,
+        "reviewText": reviewText
+    }
+
+    return await axios.post(`${url}/patient/patientAddReview`, request)
+}

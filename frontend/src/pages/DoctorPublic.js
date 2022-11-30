@@ -57,6 +57,8 @@ const DoctorPublic = () => {
             <p>{ data.onlineAvailability }</p>
             <p>{ data.charges }</p>
             <Link to="/reviews" state={{doctorID: doctorID}}>Reviews</Link>
+            <p></p>
+            <Link to="/addReview" state={{doctorID: doctorID}}>Add Review</Link>
             <h3>Booking</h3>
             <DatePicker onChange={(date) => {setBookingDate(date)}} selected={bookingDate}/>
             <TimePicker onChange={(time) => {setBookingTime(time)}} selected={bookingTime} disableClock={true}/>

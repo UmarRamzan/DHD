@@ -11,6 +11,8 @@ const NavBar = () => {
     useEffect(() => {
         setAccountID(localStorage.getItem("accountID"))
         setAccountType(localStorage.getItem("accountType"))
+        console.log(accountID)
+        console.log(accountType)
     }, [])
 
 
