@@ -30,7 +30,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={{accountID, setAccountID, accountType, setAccountType}}>
+        <UserContext.Provider value={{accountID, setAccountID, accountType, setAccountType, accountName,setAccountName}}>
           <NavBar />
           <div className="content">
             <Routes>
