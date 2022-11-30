@@ -36,6 +36,9 @@ const PatientInfo = () => {
         if (accountRes.data.isSuccessful) {
     
             let accountID = accountRes.data.accountID
+            setAccountID(accountID)
+            localStorage.setItem('accountType',accountType)
+            localStorage.setItem('accountID', accountID)
 
             let year = dateOfBirth.getFullYear()
             let month = dateOfBirth.getMonth()

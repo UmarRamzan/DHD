@@ -15,6 +15,7 @@ const NavBar = () => {
         setAccountName(localStorage.getItem("accountName"))
     }, [])
 
+
     const handleLogout = () => {
         setAccountID(null)
         setAccountType(null)

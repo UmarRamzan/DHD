@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { hospitalAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
+import { UserContext } from "../UserContext";
 
 const HospitalInfo = () => {
-
+    const {accountType, setAccountType} = useContext(UserContext)
     const [name, setName] = useState('')
     const [city, setCity] = useState('')
     const [address, setAddress] = useState('')
@@ -29,7 +30,8 @@ const HospitalInfo = () => {
 
         if (accountRes.data.isSuccessful) {
     
-            let accountID = accountRes.data.accountID
+            let accountID = accountRes.data.
+            localStorage.setItem('accountType',accountType)
             localStorage.setItem('accountID', accountID)
 
             let res = await hospitalAddEntry(accountID, name, city, address)

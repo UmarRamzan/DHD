@@ -8,11 +8,13 @@ const Signup = () => {
 
     const navigate = useNavigate()
 
-    const {userID, setUserID} = useContext(UserContext)
+    //const {userID, setUserID} = useContext(UserContext)
+    const {accountType, setAccountType} = useContext(UserContext)
+
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [accountType, setAccountType] = useState('patient')
+    const [accType, setAccType] = useState('patient')
     const [error, setError] = useState('')
 
     const userRef = useRef()
@@ -23,7 +25,7 @@ const Signup = () => {
 
     useEffect(() => {
         setError('')
-    }, [email, password, accountType])
+    }, [email, password, accType])
 
     const handleSubmit = async (e) => {
 
@@ -36,7 +38,8 @@ const Signup = () => {
         } else {
             let res = await validateEmail(email)
             if (res.data.isSuccessful) {
-                navigate(`/signup/${accountType}`, { state: { email: email, password: password } })
+                setAccountType(accType)
+                navigate(`/signup/${accType}`, { state: { email: email, password: password } })
             } else {
                 setError(res.data.errorMessage)
             }
@@ -67,7 +70,7 @@ const Signup = () => {
                 />
 
                 <label>Account Type</label>
-                <select value={accountType} onChange={(e)=>{setAccountType(e.target.value)}}>
+                <select value={accType} onChange={(e)=>{setAccType(e.target.value)}}>
                     <option value="patient">Patient</option>
                     <option value="doctor">Doctor</option>
                     <option value="hospital">Hospital</option>

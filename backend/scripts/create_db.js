@@ -1,14 +1,15 @@
 
 import { createConnection } from 'mysql2';
+import mysql from 'mysql'
 import { config } from 'dotenv';
 
 config({path:".env"});
 
 // Create a connection to the sql server
-const connection = createConnection({
+const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "pass",
+    password: "Qoq74316",
 });
 
 // Process a general sql query and throw any resulting errors
