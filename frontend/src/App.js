@@ -15,10 +15,8 @@ import HospitalPublic from './pages/HospitalPublic';
 import Settings from './pages/Settings';
 import PatientSettings from './pages/PatientSettings';
 import Bookings from './pages/Bookings';
-import Reviews from './pages/Reviews';
 
 import { UserContext } from './UserContext';
-import AddReview from './pages/AddReview';
 
 function App() {
 
@@ -31,7 +29,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={{accountID, setAccountID, accountType, setAccountType, accountName,setAccountName}}>
+        <UserContext.Provider value={userState}>
           <NavBar />
           <div className="content">
             <Routes>
@@ -52,10 +50,6 @@ function App() {
 
                 <Route exact path="/settings" element={accountID? <Settings/> : <Login/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
-                <Route exact path="/reviews" element={<Reviews/>}></Route>
-                <Route exact path="/addReview" element={<AddReview/>}></Route>
-
-
 
                 <Route path="*" element={<NotFound/>}></Route>
             </Routes>

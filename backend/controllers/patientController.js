@@ -119,33 +119,6 @@ export async function patientGetInfo(req, response) {
 
 }
 
-export async function patientAddReview(req, response) {
-    let accountID= req.body.accountID
-    let doctorID = req.body.doctorID
-    let rating = req.body.rating
-    let reviewText = req.body.reviewText
-
-    let select_query = `INSERT INTO review (patientID,doctorID,rating,reviewText) VALUES (?)`
-    let values = [accountID,doctorID,rating,reviewText]
-
-    let connection = create_connection()
-    connection.query(select_query, [values], (err, res) => {
-        if (err) {
-            response.send(err)
-            console.log(err)
-        } else {
-
-            let return_message = {
-                "isSuccessful": true
-            }
-
-            response.send(return_message)
-        }
-    })
-    connection.end()
-
-}
-
 export async function removePatient(req, response) {
 
     let accountID = req.body.accountID
