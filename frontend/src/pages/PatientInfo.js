@@ -38,7 +38,7 @@ const PatientInfo = () => {
     
             let accountID = accountRes.data.accountID
             setAccountID(accountID)
-            localStorage.setItem('accountType',setAccountType)
+            localStorage.setItem('accountType',accountType)
             localStorage.setItem('accountID', accountID)
 
             let year = dateOfBirth.getFullYear()
