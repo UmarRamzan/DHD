@@ -28,12 +28,10 @@ router.post('/api/patient/patientAddEntry', patientController.patientAddEntry)
 router.post('/api/patient/removePatient', patientController.removePatient)
 router.post('/api/patient/patientGetInfo', patientController.patientGetInfo)
 router.post('/api/patient/patientUpdateEntry', patientController.patientUpdateEntry)
-router.post('/api/patient/patientAddReview', patientController.patientAddReview)
 
 // doctor functions
 router.post('/api/doctor/doctorAddEntry', doctorController.doctorAddEntry)
 router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
-router.post('/api/doctor/doctorGetReview', doctorController.doctorGetReview)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)

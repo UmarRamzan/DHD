@@ -111,30 +111,3 @@ export async function doctorGetInfo(req, response) {
 
 // update an existing entry within the doctors table
 export async function doctorUpdateEntry(req, response) {}
-
-
-export async function doctorGetReview(req, response) {
-
-    let accountID = req.body.accountID
-
-    let getInfo = `SELECT * FROM review WHERE doctorID = ?`
-    let values = [accountID]
-
-    let connection = validateConnection()
-    connection.query(getInfo, [values], (err, res) => {
-        if (err) {
-            console.log(err)
-        } else {
-
-            let returnMessage = {
-                "reviews": res
-
-            }
-
-            response.send(returnMessage)
-            connection.end()
-        }
-    })
-
-}
-

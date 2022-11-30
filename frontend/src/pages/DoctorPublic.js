@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { doctorGetInfo } from "../API/api";
 import { createBooking } from "../API/api";
 import DatePicker from "react-datepicker"
@@ -56,9 +56,6 @@ const DoctorPublic = () => {
             <p>{ data.personalBio }</p>
             <p>{ data.onlineAvailability }</p>
             <p>{ data.charges }</p>
-            <Link to="/reviews" state={{doctorID: doctorID}}>Reviews</Link>
-            <p></p>
-            <Link to="/addReview" state={{doctorID: doctorID}}>Add Review</Link>
             <h3>Booking</h3>
             <DatePicker onChange={(date) => {setBookingDate(date)}} selected={bookingDate}/>
             <TimePicker onChange={(time) => {setBookingTime(time)}} selected={bookingTime} disableClock={true}/>

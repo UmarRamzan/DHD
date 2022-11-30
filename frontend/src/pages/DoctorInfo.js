@@ -1,14 +1,13 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { doctorAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { UserContext } from "../UserContext";
 
 const DoctorInfo = () => {
-    const {accountType, setAccountType} = useContext(UserContext)
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [dateOfBirth, setDateOfBirth] = useState(new Date())
@@ -52,7 +51,6 @@ const DoctorInfo = () => {
             let res = await doctorAddEntry(accountID, firstName, lastName, date, gender, specialization, city, address, timings, personalBio, online, charges)
 
             if (res.data.isSuccessful) {
-                localStorage.setItem('accountType',accountType)
                 localStorage.setItem('accountID', accountID)
                 navigate("/home")
                 

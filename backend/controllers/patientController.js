@@ -119,31 +119,35 @@ export async function patientGetInfo(req, response) {
 
 }
 
-export async function patientAddReview(req, response) {
-    let accountID= req.body.accountID
-    let doctorID = req.body.doctorID
-    let rating = req.body.rating
-    let reviewText = req.body.reviewText
+export async function removePatient(req, response) {
 
-    let select_query = `INSERT INTO review (patientID,doctorID,rating,reviewText) VALUES (?)`
-    let values = [accountID,doctorID,rating,reviewText]
+    let accountID = req.body.accountID
 
     let connection = create_connection()
-    connection.query(select_query, [values], (err, res) => {
-        if (err) {
-            response.send(err)
-            console.log(err)
-        } else {
 
-            let return_message = {
+    let deleteAccount = `DELETE FROM Patient WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
                 "isSuccessful": true
             }
-
-            response.send(return_message)
+            response.send(returnMessage)
+            connection.end()
         }
     })
-    connection.end()
 
+    connection.end()
 }
 
 export async function removePatient(req, response) {
