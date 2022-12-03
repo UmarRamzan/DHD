@@ -27,20 +27,11 @@ function App() {
   
   const userState = {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName}
 
-  const [testState, setTestState] = useState({
-    accountID: null,
-    accountType: null,
-    accountName: null
-  })
-
-  useEffect(() => {
-    console.log("Changed State: ",testState)
-  }, [testState])
 
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={{testState, setTestState}}>
+        <UserContext.Provider value={userState}>
           <NavBar />
           <div className="content">
             <Routes>

@@ -54,13 +54,7 @@ const Home = () => {
                 <DropdownButton variant="outline-dark" title="Filters">
                     <Dropdown.Item href="#">Action</Dropdown.Item>
                     <Dropdown.Item href="#">Another action</Dropdown.Item>
-                    <Dropdown.Item href="#"><Form.Check 
-            type='radio'
-            
-            label='test'
-          /></Dropdown.Item>
                     <Dropdown.Divider />
-                    
                     <Dropdown.Item href="#">Separated link</Dropdown.Item>
                 </DropdownButton>
                 

@@ -6,6 +6,12 @@ import { removeAccount } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+
 const DoctorInfo = () => {
 
     const [firstName, setFirstName] = useState('')
@@ -65,94 +71,94 @@ const DoctorInfo = () => {
     }
 
     return ( 
-        <div className="signup">
+        <div className="signup" style={{width:"400px", margin:"30px auto"}}>
             
             <h2>Personal Information</h2>
-            
-            <form onSubmit={handleSubmit}>
 
-                <label>First Name:</label>
-                <input 
-                    type="text"
-                    required
-                    value={firstName}
-                    onChange={(e)=>{setFirstName(e.target.value)}}
-                />
+            <hr style={{width:"350px", margin:"20px auto"}}/>
 
-                <label>Last Name:</label>
-                <input 
-                    type="text"
-                    required
-                    value={lastName}
-                    onChange={(e)=>{setLastName(e.target.value)}}
-                />
+            <Form onSubmit={handleSubmit}>
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="First Name" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
 
-                <label>Date of Birth</label>
-                <DatePicker onChange={(date) => {setDateOfBirth(date)}} selected={dateOfBirth}/>
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Last Name" value={lastName} onChange={(e)=>{setLastName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Gender</label>
-                <select value={gender} onChange={(e)=>{setGender(e.target.value)}}>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Day" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Month" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Year" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                
+                </Row>
 
-                <label>Specialization:</label>
-                <input 
-                    type="text"
-                    required
-                    value={specialization}
-                    onChange={(e)=>{setSpecialization(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Select onChange={(e)=>{setGender(e.target.value)}}>
+                            <option>Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Row>
 
-                <label>City:</label>
-                <input 
-                    type="text"
-                    required
-                    value={city}
-                    onChange={(e)=>{setCity(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Specialization" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Address:</label>
-                <input 
-                    type="text"
-                    required
-                    value={address}
-                    onChange={(e)=>{setAddress(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="City" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Address" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Timings:</label>
-                <input 
-                    type="text"
-                    required
-                    value={timings}
-                    onChange={(e)=>{setTimings(e.target.value)}}
-                />
+                <Row>
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Timings" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>   
+                    <Form.Group as={Col}>
+                        <Form.Check 
+                        type="checkbox"
+                        id="custom-switch"
+                        label="Available Online"
+                        />
+                    </Form.Group>
+                </Row>
 
-                <label>Personal Information:</label>
-                <input 
-                    type="text"
-                    required
-                    value={personalBio}
-                    onChange={(e)=>{setPersonalBio(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Personal Bio" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Online Availability:</label>
-                <input 
-                    type="checkbox"
-                    onChange={(e)=>{setOnlineAvailability(!onlineAvailability)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Charges" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Charges:</label>
-                <input 
-                    type="text"
-                    required
-                    value={charges}
-                    onChange={(e)=>{setCharges(e.target.value)}}
-                />
+                
 
-                <button>Submit</button>
-            </form>
-            <p>{ error }</p>
+                <Row className="mb-3">
+                    <Button variant="outline-dark" type="submit" style={{width:"310px", margin:"auto"}}>Submit</Button>
+                </Row>
+
+             </Form>
+             {error && <Alert variant='danger'>{error}</Alert>}
         </div>
     )
 }

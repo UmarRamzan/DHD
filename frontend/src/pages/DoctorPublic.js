@@ -48,7 +48,13 @@ const DoctorPublic = () => {
 
     return ( 
         <div className="doctorPublic">
-            <h1>{ data.firstName + ' ' + data.lastName}</h1>
+            <div className="name" style={{margin: "100px 150px", textAlign: "left"}}>
+                <h1>{ `${data.firstName} ${data.lastName}`}</h1>
+                <hr style={{width:"350px", margin:"20px auto"}}/>
+            </div>
+
+        
+            
             <p>{ data.specialization }</p>
             <p>{ data.city }</p>
             <p>{ data.address }</p>

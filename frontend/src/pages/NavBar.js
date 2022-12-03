@@ -9,13 +9,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const NavBar = () => {
 
-    //const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
+    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
-    const {testState, setTestState} = useContext(UserContext)
-    console.log("State: ",testState)
-    testState.accountID = 1
-    console.log("State2: ",testState)
-    setTestState(testState)
     const navigate = useNavigate()
 
     useEffect(() => {

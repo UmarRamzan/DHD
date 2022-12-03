@@ -75,8 +75,10 @@ const PatientInfo = () => {
     }
 
     return ( 
-        <div className="signup" style={{width:"310px", margin:"150px auto"}}>
+        <div className="signup" style={{width:"400px", margin:"150px auto"}}>
             <h2>Personal Information</h2>
+
+            <hr style={{width:"350px", margin:"20px auto"}}/>
 
             <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
