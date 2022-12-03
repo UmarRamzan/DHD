@@ -3,6 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { validateEmail } from "../API/api";
 
+import Stack from 'react-bootstrap/Stack';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+
 
 const Signup = () => {
 
@@ -18,10 +24,6 @@ const Signup = () => {
     const userRef = useRef()
 
     useEffect(() => {
-        userRef.current.focus()
-    }, [])
-
-    useEffect(() => {
         setError('')
     }, [email, password, accountType])
 
@@ -32,7 +34,7 @@ const Signup = () => {
         if (!/\S+@\S+\.\S+/.test(email)) {
             setError('Incorrect Email')
         } else if (password.length <= 8) {
-            setError('Password must be atleast 8 characters long')
+            setError('Password must be atleast 8 characters')
         } else {
             let res = await validateEmail(email)
             if (res.data.isSuccessful) {
@@ -44,39 +46,39 @@ const Signup = () => {
     }
 
     return (
-        <div className="signup">
+        
+        <div className="form" style={{width:"400px", margin:"150px auto"}}>
+            <Container>
+                <Form onSubmit={handleSubmit}>
 
-            <h1>Sign-up</h1>
+                    <p className="display-6">Sign-Up</p>
 
-            <form onSubmit={handleSubmit}>
-                <label>Email:</label>
-                <input 
-                    type="text"
-                    ref={userRef}
-                    required
-                    value={email}
-                    onChange={(e)=>{setEmail(e.target.value)}}
-                />
+                    <hr style={{width:"350px", margin:"20px auto"}}/>
 
-                <label>Password:</label>
-                <input 
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e)=>{setPassword(e.target.value)}}
-                />
+                    <Stack gap={1} className="col-12 mx-auto">
 
-                <label>Account Type</label>
-                <select value={accountType} onChange={(e)=>{setAccountType(e.target.value)}}>
-                    <option value="patient">Patient</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="hospital">Hospital</option>
-                </select>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Control type="email" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
+                    </Form.Group>
+                
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value)}} required/>
+                    </Form.Group>
 
-                <button>Next</button>
-                <p>{ error }</p>
-            </form>
+                    <Form.Select onChange={(e)=>{setAccountType(e.target.value)}}>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="hospital">Hospital</option>
+                    </Form.Select>
 
+                    <Button variant="outline-dark" type="submit" className="my-2">Next</Button>
+
+                    {error && <Alert variant='danger'>{error}</Alert>}
+
+                    </Stack>
+
+                </Form>    
+            </Container>
         </div>
     )
 }

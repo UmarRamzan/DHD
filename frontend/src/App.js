@@ -18,6 +18,7 @@ import Bookings from './pages/Bookings';
 
 import { UserContext } from './UserContext';
 
+
 function App() {
 
   const [accountID, setAccountID] = useState(null)
@@ -26,10 +27,20 @@ function App() {
   
   const userState = {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName}
 
+  const [testState, setTestState] = useState({
+    accountID: null,
+    accountType: null,
+    accountName: null
+  })
+
+  useEffect(() => {
+    console.log("Changed State: ",testState)
+  }, [testState])
+
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={userState}>
+        <UserContext.Provider value={{testState, setTestState}}>
           <NavBar />
           <div className="content">
             <Routes>

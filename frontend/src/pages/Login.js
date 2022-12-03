@@ -3,6 +3,12 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { login, patientGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
 
+import Stack from 'react-bootstrap/Stack';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+
 
 const Login = () => {
 
@@ -56,31 +62,33 @@ const Login = () => {
     }
 
     return ( 
-        <div className="login">
-            <h1>Login</h1>
+        <div className="form" style={{width:"400px", margin:"150px auto"}}>
+            <Container>
+                <Form onSubmit={handleSubmit}>
 
-            <form onSubmit={handleSubmit}>
-                <label>Email:</label>
-                <input 
-                    type="text"
-                    required
-                    value={email}
-                    onChange={(e)=>{setEmail(e.target.value)}}
-                />
+                    <p className="display-6">Login</p>
 
-                <label>Password:</label>
-                <input 
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e)=>{setPassword(e.target.value)}}
-                />
+                    <hr style={{width:"350px", margin:"20px auto"}}/>
 
-                <button>Submit</button>
-            </form>
-            <p>{ error }</p>
-            <Link to="/signup">Signup</Link>
-        </div>  
+                    <Stack gap={1} className="col-12 mx-auto">
+
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Control type="email" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
+                    </Form.Group>
+                
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value)}} required/>
+                    </Form.Group>
+
+                    <Button variant="outline-dark" type="submit" className="my-2">Next</Button>
+
+                    {error && <Alert variant='danger'>{error}</Alert>}
+
+                    </Stack>
+
+                </Form>    
+            </Container>
+        </div>
      );
 }
  
