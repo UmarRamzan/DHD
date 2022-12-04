@@ -78,6 +78,7 @@ export async function hospitalGetInfo(req, response) {
             let data = res[0]
 
             let returnMessage = {
+                "isSuccessful": true,
                 "name": data.name,
                 "city": data.city,
                 "address": data.address,

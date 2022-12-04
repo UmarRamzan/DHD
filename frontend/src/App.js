@@ -46,7 +46,7 @@ function App() {
         userState.setAccountType(savedState.accountType)
         userState.setAccountName(savedState.accountName)
     }
-    
+
   }, [])
 
   return (

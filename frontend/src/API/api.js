@@ -76,7 +76,7 @@ export async function patientAddEntry(accountID, firstName, lastName, dateOfBirt
 // add a row containing the specified values into the doctor table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function doctorAddEntry(accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, timings, personalBio, onlineAvailability, charges) {
+export async function doctorAddEntry(accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, onlineAvailability, hourlyCharge) {
 
     const request = {
         "accountID": accountID,
@@ -87,9 +87,10 @@ export async function doctorAddEntry(accountID, firstName, lastName, dateOfBirth
         "specialization": specialization,
         "city": city,
         "address": address,
-        "timings": timings,
+        "startTime": startTime,
+        "endTime": endTime,
         "onlineAvailability": onlineAvailability,
-        "charges": charges,
+        "hourlyCharge": hourlyCharge,
         "personalBio": personalBio
     }
 

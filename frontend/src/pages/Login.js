@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { login, patientGetInfo } from "../API/api";
+import { login, patientGetInfo, doctorGetInfo, hospitalGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
 import { UserState } from "../UserState";
 
@@ -13,7 +13,6 @@ import Alert from 'react-bootstrap/Alert';
 
 const Login = () => {
 
-    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
     const userState = useContext(UserState)
 
     const [email, setEmail] = useState('')
@@ -33,24 +32,36 @@ const Login = () => {
 
     useEffect(() => {
         setError('')
-    }, [email, password, accountType])
+    }, [email, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         let res = await login(email, password)
         
         if (res.data.isSuccessful) {
+            let accountType = res.data.accountType
+            console.log(res)
 
-            let userData = await patientGetInfo(res.data.accountID)
-
+            let userData = null;
+            if (accountType == 'patient') {userData = await patientGetInfo(res.data.accountID)}
+            else if (accountType == 'doctor') {userData = await doctorGetInfo(res.data.accountID)}
+            else if (accountType == 'hospital') {userData = await hospitalGetInfo(res.data.accountID)}
+            console.log(userData)
+            
             if (userData.data.isSuccessful) {
                 userState.setAccountID(res.data.accountID)
                 userState.setAccountType(res.data.accountType)
-                userState.setAccountName(userData.data.firstName)
-
+                
                 userState["accountID"] = res.data.accountID
-                userState["accountName"] = userData.data.firstName
                 userState["accountType"] = res.data.accountType
+
+                if (accountType == 'hospital') {
+                    userState.setAccountName(userData.data.name)
+                    userState["accountName"] = userData.data.name
+                } else {
+                    userState.setAccountName(userData.data.firstName)
+                    userState["accountName"] = userData.data.firstNname
+                }
                 
                 localStorage.setItem('userState', JSON.stringify(userState))
 

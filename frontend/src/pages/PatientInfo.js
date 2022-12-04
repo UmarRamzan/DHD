@@ -36,6 +36,7 @@ const PatientInfo = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault()
+        
         let email = location.state.email
         let password = location.state.password
 
@@ -71,7 +72,7 @@ const PatientInfo = () => {
     }
 
     return ( 
-        <div className="signup" style={{width:"400px", margin:"150px auto"}}>
+        <div className="signup" style={{width:"380px", margin:"150px auto"}}>
             <h2>Personal Information</h2>
 
             <hr style={{width:"350px", margin:"20px auto"}}/>
@@ -108,7 +109,7 @@ const PatientInfo = () => {
                 </Row>
 
                 <Row className="mb-3">
-                    <Button variant="outline-success" type="submit" style={{width:"310px", margin:"auto"}}>Submit</Button>
+                    <Button variant="outline-success" type="submit" style={{width:"320px", margin:"auto"}}>Submit</Button>
                 </Row>
 
              </Form>

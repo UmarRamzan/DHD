@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { hospitalAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
+import { UserState } from "../UserState";
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,6 +13,8 @@ import Alert from 'react-bootstrap/Alert';
 import { FormGroup, Label, Input} from 'reactstrap';
 
 const HospitalInfo = () => {
+
+    const userState = useContext(UserState)
 
     const [name, setName] = useState('')
     const [city, setCity] = useState('')
@@ -42,6 +45,16 @@ const HospitalInfo = () => {
             let res = await hospitalAddEntry(accountID, name, city, address)
 
             if (res.data.isSuccessful) {
+                userState.setAccountID(accountID)
+                userState.setAccountName(name)
+                userState.setAccountType('hospital')
+
+                userState["accountID"] = accountID
+                userState["accountName"] = name
+                userState["accountType"] = 'hospital'
+                
+                localStorage.setItem('userState', JSON.stringify(userState))
+
                 navigate("/home")
                 
             } else {
