@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { UserState } from "../UserState";
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import {LinkContainer} from 'react-router-bootstrap'
 
 const NavBar = () => {
 
@@ -28,25 +29,25 @@ const NavBar = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top">
             <Container>
-                <Navbar.Brand href="/home">DHD</Navbar.Brand>
+                <Navbar.Brand as={NavLink} to="/home">DHD</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/home">Home</Nav.Link>
-                        <Nav.Link href="/bookings">Bookings</Nav.Link>
+                        <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
+                        <Nav.Link as={NavLink} to="/bookings">Bookings</Nav.Link>
                     </Nav>
 
                     <Nav>
-                        {!accountID && <Nav.Link href="/signup">Sign Up</Nav.Link>}
-                        {!accountID && <Nav.Link href="/login">Login</Nav.Link>}
+                        {!accountID && <Nav.Link as={NavLink} to="/signup">Sign Up</Nav.Link>}
+                        {!accountID && <Nav.Link as={NavLink} to="/login">Login</Nav.Link>}
 
                         {accountID &&
                         <div className="useroptions">
                         <NavDropdown title= {accountName} id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                            <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
+                            <NavDropdown.Item as={NavLink} to="/profile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item as={NavLink} to="/settings">Settings</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/home" onClick={handleLogout}>Log Out</NavDropdown.Item>
+                            <NavDropdown.Item as={NavLink} to="/home" onClick={handleLogout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                         </div>
                         }
