@@ -12,15 +12,17 @@ import { FormGroup, Label, Input} from 'reactstrap';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Alert from 'react-bootstrap/Alert';
 
 const DoctorPublic = () => {
 
     const userState = useContext(UserState)
 
     const [data, setData] = useState({})
-    const [bookingDate, setBookingDate] = useState(new Date())
-    const [bookingTime, setBookingTime] = useState(new Date())
+    const [bookingDate, setBookingDate] = useState('')
+    const [bookingTime, setBookingTime] = useState('')
 
+    const [message, setMessage] = useState('')
     const [error, setError] = useState('')
 
     const navigate = useNavigate()
@@ -30,6 +32,7 @@ const DoctorPublic = () => {
 
     useEffect(() => {
         setError('')
+        setMessage('')
     }, [bookingDate, bookingTime])
 
     useEffect(() => {
@@ -39,15 +42,10 @@ const DoctorPublic = () => {
 
     const addBooking  = async () => {
 
-        let year = bookingDate.getFullYear()
-        let month = bookingDate.getMonth()
-        let day = bookingDate.getDay()
-        let date = `${year}-${month}-${day}`
-
-        let res = await createBooking(userState.accountID, doctorID, date, bookingTime)
+        let res = await createBooking(userState.accountID, doctorID, bookingDate, bookingTime)
 
         if (res.data.isSuccessful) {
-            navigate("/home")
+            setMessage("Booking has been created")
             
         } else {
             setError(res.data.errorMessage)
@@ -79,14 +77,18 @@ const DoctorPublic = () => {
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Date</h6>
                             <Input type="date" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}} required/>
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Time</h6>
-                            <Input type="time" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}} required/>
+                            <Input type="time" name="time" placeholder="time placeholder" onChange={(e)=>{setBookingTime(e.target.value)}} required/>
 
                         <Form.Select style={{margin:"20px 0px"}}required>
                             <option value="online">Online</option>
                             <option value="inPerson">In Person</option>
                         </Form.Select>
-
-                            <Button style={{margin:"auto"}} variant="outline-success">Confirm Booking</Button>
+                            <Button onClick={addBooking} style={{margin:"auto"}} variant="outline-success">Confirm Booking</Button>
+                        <div className="messages" style={{margin:"10px 0px"}}>
+                            {error && <Alert variant='danger'>{error}</Alert>}
+                            {message && <Alert variant='success'>{message}</Alert>}
+                        </div>
+                            
                         </Card.Body>
                     </Card>
                     <p>{ error }</p>

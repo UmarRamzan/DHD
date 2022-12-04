@@ -20,7 +20,7 @@ const DoctorSettings = () => {
     const [userData, setUserData] = useState({})
     const [accountData, setAccountData] = useState({})
     const [editing, setEditing] = useState(false)
-    const [changingPassword, setChangingPassword] = useState(true)
+    const [changingPassword, setChangingPassword] = useState(false)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
