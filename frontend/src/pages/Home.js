@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { search } from "../API/api";
 import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -17,8 +18,11 @@ const Home = () => {
     const [hospitalResults, setHospitalResults] = useState(null)
     const [showDoctors, setShowDoctors] = useState(true)
     const [showHospitals, setShowHospitals] = useState(true)
-    
+
+    const userState = useContext(UserState);
+
     const handleSearch = async () => {
+
         if (searchString == '') {
             setHospitalResults('')
             setDoctorResults('')

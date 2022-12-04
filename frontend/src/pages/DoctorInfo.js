@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import {Input, Label} from 'reactstrap';
 
 const DoctorInfo = () => {
 
@@ -89,16 +90,12 @@ const DoctorInfo = () => {
                 </Row>
 
                 <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Control placeholder="Day" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    <Form.Group as={Col} xs={4}>
+                        <Form.Label style={{margin:"5px 10px"}}>Date of Birth</Form.Label>
                     </Form.Group>
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="Month" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                        <Input type="date" name="date" placeholder="date placeholder" value={dateOfBirth} onChange={(e)=>{setDateOfBirth(e.target.value)}} required/>
                     </Form.Group>
-                    <Form.Group as={Col}>
-                        <Form.Control placeholder="Year" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
-                    </Form.Group>
-                
                 </Row>
 
                 <Row className="mb-3">
@@ -113,48 +110,57 @@ const DoctorInfo = () => {
 
                 <Row className="mb-3">
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="Specialization" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                        <Form.Control placeholder="Specialization" value={specialization} onChange={(e)=>{setSpecialization(e.target.value)}} required/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="City" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                        <Form.Control placeholder="City" value={city} onChange={(e)=>{setCity(e.target.value)}} required/>
                     </Form.Group>
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="Address" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                        <Form.Control placeholder="Address" value={address} onChange={(e)=>{setAddress(e.target.value)}} required/>
                     </Form.Group>
                 </Row>
 
-                <Row>
+                <Row style={{marginTop:"5px"}}>      
+                    <Form.Group as={Col} xs={4}>
+                        <Form.Label style={{margin:"5px 10px"}}>Start Time</Form.Label>
+                    </Form.Group>
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="Timings" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
-                    </Form.Group>   
+                        <Input type="time" name="time" id="exampleTime" placeholder="time placeholder" />
+                    </Form.Group>
+                </Row>
+
+                <Row style={{marginTop:"5px", marginBottom:"15px"}}>      
+                    <Form.Group as={Col} xs={4}>
+                        <Form.Label style={{margin:"5px 10px"}}>End Time</Form.Label>
+                    </Form.Group>
                     <Form.Group as={Col}>
-                        <Form.Check 
-                        type="checkbox"
-                        id="custom-switch"
-                        label="Available Online"
-                        />
+                        <Input type="time" name="time" id="exampleTime" placeholder="time placeholder" />
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="Personal Bio" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                        <Input type="textarea" name="text" placeholder="Personal Bio" value={personalBio} onChange={(e)=>{setPersonalBio(e.target.value)}}/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Control placeholder="Charges" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    <Form.Group as={Col} xs={7}>
+                        <Input type="number" name="number"placeholder="Hourly Charges" />
+                    </Form.Group>
+                    <Form.Group as={Col} style={{marginTop: "5px"}}>
+                        <Label check>
+                            <Input type="checkbox" />{' '}
+                            Available Online
+                        </Label>
                     </Form.Group>
                 </Row>
 
-                
-
                 <Row className="mb-3">
-                    <Button variant="outline-dark" type="submit" style={{width:"310px", margin:"auto"}}>Submit</Button>
+                    <Button variant="outline-success" type="submit" style={{width:"350px", margin:"auto"}}>Submit</Button>
                 </Row>
 
              </Form>

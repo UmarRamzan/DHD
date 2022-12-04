@@ -4,6 +4,13 @@ import { signup } from "../API/api";
 import { hospitalAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
 
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import { FormGroup, Label, Input} from 'reactstrap';
+
 const HospitalInfo = () => {
 
     const [name, setName] = useState('')
@@ -48,42 +55,38 @@ const HospitalInfo = () => {
     }
 
     return ( 
-        <div className="signup">
+        <div className="signup" style={{width:"400px", margin:"150px auto"}}>
 
             <h2>Personal Information</h2>
 
-            <form onSubmit={handleSubmit}>
+            <hr style={{width:"320px", margin:"20px auto"}}/>
 
-                <label>Name:</label>
-                <input 
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e)=>{setName(e.target.value)}}
-                />
+            <Form onSubmit={handleSubmit} style={{textAlign:"left"}}>
 
-                <label>City:</label>
-                <input 
-                    type="text"
-                    required
-                    value={city}
-                    onChange={(e)=>{setCity(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Name" value={name} onChange={(e)=>{setName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Address:</label>
-                <input 
-                    type="text"
-                    required
-                    value={address}
-                    onChange={(e)=>{setAddress(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="City" value={city} onChange={(e)=>{setCity(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <button>Submit</button>
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Address" value={address} onChange={(e)=>{setAddress(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-            </form>
+                <Row className="mb-3">
+                    <Button variant="outline-success" type="submit" style={{width:"320px", margin:"auto"}}>Submit</Button>
+                </Row>
 
-            <p>{ error }</p>
-            
+            </Form>
+            {error && <Alert variant='danger'>{error}</Alert>}
         </div>
     )
 }

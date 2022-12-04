@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { login, patientGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
 
 import Stack from 'react-bootstrap/Stack';
 import Container from 'react-bootstrap/Container';
@@ -13,6 +14,7 @@ import Alert from 'react-bootstrap/Alert';
 const Login = () => {
 
     const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
+    const userState = useContext(UserState)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -23,12 +25,15 @@ const Login = () => {
 
     useEffect(() => {
         if (location.state) {setError(location.state.message)}
-        
     }, [])
 
     useEffect(() => {
         if (location.state) {setError(location.state.message)}
     }, [location.state])
+
+    useEffect(() => {
+        setError('')
+    }, [email, password, accountType])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -37,18 +42,17 @@ const Login = () => {
         if (res.data.isSuccessful) {
 
             let userData = await patientGetInfo(res.data.accountID)
-            console.log(userData)
 
             if (userData.data.isSuccessful) {
-                setAccountID(res.data.accountID)
-                setAccountType(res.data.accountType)
-                setAccountName(userData.data.firstName)
+                userState.setAccountID(res.data.accountID)
+                userState.setAccountType(res.data.accountType)
+                userState.setAccountName(userData.data.firstName)
 
-                console.log(userData)
-
-                localStorage.setItem('accountID', res.data.accountID)
-                localStorage.setItem('accountType', res.data.accountType)
-                localStorage.setItem('accountName', userData.data.firstName)
+                userState["accountID"] = res.data.accountID
+                userState["accountName"] = userData.data.firstName
+                userState["accountType"] = res.data.accountType
+                
+                localStorage.setItem('userState', JSON.stringify(userState))
 
                 navigate('/home')
 
@@ -80,7 +84,7 @@ const Login = () => {
                         <Form.Control type="password" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value)}} required/>
                     </Form.Group>
 
-                    <Button variant="outline-dark" type="submit" className="my-2">Next</Button>
+                    <Button variant="outline-success" type="submit" className="my-2">Next</Button>
 
                     {error && <Alert variant='danger'>{error}</Alert>}
 

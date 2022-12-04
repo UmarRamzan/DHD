@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/UmarRamzan/DHD#readme",
   "dependencies": {
-    "react-time-picker": "^5.1.0"
+    "react-time-picker": "^5.1.0",
+    "reactstrap": "^9.1.5"
   }
 }

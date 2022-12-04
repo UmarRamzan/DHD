@@ -14,14 +14,10 @@ const Signup = () => {
 
     const navigate = useNavigate()
 
-    const {userID, setUserID} = useContext(UserContext)
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [accountType, setAccountType] = useState('patient')
     const [error, setError] = useState('')
-
-    const userRef = useRef()
 
     useEffect(() => {
         setError('')
@@ -57,7 +53,7 @@ const Signup = () => {
 
                     <Stack gap={1} className="col-12 mx-auto">
 
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3">
                         <Form.Control type="email" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
                     </Form.Group>
                 

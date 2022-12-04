@@ -25,6 +25,7 @@ const Bookings = () => {
     return ( 
         <div className="bookings" style={{margin:"30px auto"}}>
             <p className="display-6">Bookings</p>
+            <hr style={{width:"350px", margin:"20px auto"}}/>
             {bookings && bookings.map((res) => (
                 
                     <div className="bookingTile" key={res.bookingID}>

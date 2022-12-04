@@ -5,24 +5,26 @@ import { patientAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
 import "react-datepicker/dist/react-datepicker.css"
 import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
+
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import DatePicker from "react-datepicker"
 import Alert from 'react-bootstrap/Alert';
+import { FormGroup, Label, Input} from 'reactstrap';
 
 const PatientInfo = () => {
 
+    const userState = useContext(UserState)
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [dateOfBirth, setDateOfBirth] = useState(new Date())
+    const [dateOfBirth, setDateOfBirth] = useState('')
     const [gender, setGender] = useState('male')
 
     const [error, setError] = useState('')
-
-    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -43,24 +45,18 @@ const PatientInfo = () => {
     
             let accountID = accountRes.data.accountID
 
-            let year = dateOfBirth.getFullYear()
-            let month = dateOfBirth.getMonth()
-            let day = dateOfBirth.getDay()
-
-            let date = `${year}-${month}-${day}`
-
-            let res = await patientAddEntry(accountID, firstName, lastName, date, gender)
+            let res = await patientAddEntry(accountID, firstName, lastName, dateOfBirth, gender)
 
             if (res.data.isSuccessful) {
-                setAccountID(accountID)
-                setAccountName(firstName)
-                setAccountType('patient')
-                
-                localStorage.setItem('accountID', accountID)
-                localStorage.setItem('accountName', firstName)
-                localStorage.setItem('accountType', 'patient')
+                userState.setAccountID(accountID)
+                userState.setAccountName(firstName)
+                userState.setAccountType('patient')
 
-                console.log(localStorage.getItem('accountName'))
+                userState["accountID"] = accountID
+                userState["accountName"] = firstName
+                userState["accountType"] = 'patient'
+                
+                localStorage.setItem('userState', JSON.stringify(userState))
 
                 navigate("/home")
                 
@@ -80,33 +76,30 @@ const PatientInfo = () => {
 
             <hr style={{width:"350px", margin:"20px auto"}}/>
 
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} style={{textAlign:"left"}}>
+
                 <Row className="mb-3">
                     <Form.Group as={Col}>
                         <Form.Control placeholder="First Name" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
                     </Form.Group>
-
+                    
                     <Form.Group as={Col}>
                         <Form.Control placeholder="Last Name" value={lastName} onChange={(e)=>{setLastName(e.target.value)}} required/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
-                    <Form.Group as={Col}>
-                        <Form.Control placeholder="Day" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    <Form.Group as={Col} xs={4}>
+                        <Form.Label style={{margin:"5px 10px"}}>Date of Birth</Form.Label>
                     </Form.Group>
                     <Form.Group as={Col}>
-                        <Form.Control placeholder="Month" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                        <Input type="date" name="date" placeholder="date placeholder" value={dateOfBirth} onChange={(e)=>{setDateOfBirth(e.target.value)}} required/>
                     </Form.Group>
-                    <Form.Group as={Col}>
-                        <Form.Control placeholder="Year" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
-                    </Form.Group>
-                
                 </Row>
 
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridState">
-                        <Form.Select onChange={(e)=>{setGender(e.target.value)}}>
+                        <Form.Select onChange={(e)=>{setGender(e.target.value)}} required>
                             <option>Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -115,7 +108,7 @@ const PatientInfo = () => {
                 </Row>
 
                 <Row className="mb-3">
-                    <Button variant="outline-dark" type="submit" style={{width:"310px", margin:"auto"}}>Submit</Button>
+                    <Button variant="outline-success" type="submit" style={{width:"310px", margin:"auto"}}>Submit</Button>
                 </Row>
 
              </Form>

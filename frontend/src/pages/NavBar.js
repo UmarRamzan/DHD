@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -9,24 +10,18 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const NavBar = () => {
 
-    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
+    const userState = useContext(UserState)
+    const accountID = userState.accountID
+    const accountName = userState.accountName
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        setAccountID(JSON.parse(localStorage.getItem("accountID")))
-        setAccountType(localStorage.getItem("accountType"))
-        setAccountName(localStorage.getItem("accountName"))
-    }, [])
-
     const handleLogout = () => {
-        setAccountID(null)
-        setAccountType(null)
-        setAccountName(null)
+        userState.setAccountID(null)
+        userState.setAccountType(null)
+        userState.setAccountName(null)
         
-        localStorage.setItem('accountID', null)
-        localStorage.setItem('accountType', null)
-        localStorage.setItem('accountName', null)
+        localStorage.setItem('userState', null)
 
         navigate('/home')
     }
@@ -47,12 +42,14 @@ const NavBar = () => {
                         {!accountID && <Nav.Link href="/login">Login</Nav.Link>}
 
                         {accountID &&
+                        <div className="useroptions">
                         <NavDropdown title= {accountName} id="collasible-nav-dropdown">
                             <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                             <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/home">Log Out</NavDropdown.Item>
+                            <NavDropdown.Item href="/home" onClick={handleLogout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
+                        </div>
                         }
                     </Nav>
                 </Navbar.Collapse>
