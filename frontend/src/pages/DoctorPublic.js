@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { doctorGetInfo } from "../API/api";
 import { createBooking } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import TimePicker from 'react-time-picker'
+import { UserState } from "../UserState";
 
 const DoctorPublic = () => {
+
+    const userState = useContext(UserState)
 
     const [data, setData] = useState({})
     const [bookingDate, setBookingDate] = useState(new Date())
@@ -17,7 +20,6 @@ const DoctorPublic = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    let patientID = localStorage.getItem("accountID")
     let doctorID = location.state.doctorID
 
     useEffect(() => {
@@ -36,7 +38,7 @@ const DoctorPublic = () => {
         let day = bookingDate.getDay()
         let date = `${year}-${month}-${day}`
 
-        let res = await createBooking(patientID, doctorID, date, bookingTime)
+        let res = await createBooking(userState.accountID, doctorID, date, bookingTime)
 
         if (res.data.isSuccessful) {
             navigate("/home")
@@ -53,8 +55,6 @@ const DoctorPublic = () => {
                 <hr style={{width:"350px", margin:"20px auto"}}/>
             </div>
 
-        
-            
             <p>{ data.specialization }</p>
             <p>{ data.city }</p>
             <p>{ data.address }</p>

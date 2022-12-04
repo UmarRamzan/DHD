@@ -36,7 +36,7 @@ const PatientInfo = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault()
-        
+
         let email = location.state.email
         let password = location.state.password
 
@@ -101,7 +101,6 @@ const PatientInfo = () => {
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Select onChange={(e)=>{setGender(e.target.value)}} required>
-                            <option>Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </Form.Select>

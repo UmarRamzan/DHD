@@ -202,6 +202,14 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
     return await axios.post(`${url}/general/update_booking`, request)
 }
 
+export async function cancelBooking(bookingID) {
+    const request = {
+        "bookingID": bookingID
+    }
+
+    return await axios.post(`${url}/general/cancelBooking`, request)
+}
+
 export async function getBookings(accountID, accountType) {
     const request = {
         "accountID": accountID,

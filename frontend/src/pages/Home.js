@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { search } from "../API/api";
-import { UserContext } from "../UserContext";
 import { UserState } from "../UserState";
 
 import Form from 'react-bootstrap/Form';
@@ -64,10 +63,6 @@ const Home = () => {
                 
             </InputGroup>
 
-
-        
-
-            
             <span>Show Doctors</span>
             <input 
                     type="checkbox"
@@ -90,9 +85,10 @@ const Home = () => {
                             <Card.Body>
                                 <Card.Title>{`${res.firstName} ${res.lastName}`}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{res.specialization}</Card.Subtitle>
+                                <Card.Subtitle className="mb-2 text-muted">{`${res.address} ${res.city}`}</Card.Subtitle>
+                                <Card.Subtitle className="mb-2 text-muted">{`${res.hourlyCharge}/hour`}</Card.Subtitle>
                                 <Card.Text>
-                                Some quick example text to build on the card title and make up the
-                                bulk of the card's content.
+                                {res.personalBio}
                                 </Card.Text>
                             </Card.Body>
                         </Card>
@@ -100,12 +96,16 @@ const Home = () => {
                 ))}
 
                 {showHospitals && hospitalResults && hospitalResults.map((res) => (
-                    <Link to="/hospitalPublic" state={{hospitalID: res.accountID}}>
-                        <div className="profileTile">
-                        <div key={res.accountID}>
-                            <p>{res.name + " " + res.address }</p>
-                        </div>
-                    </div>
+                    <Link to="/hospitalPublic" state={{hospitalID: res.accountID}} style={{textDecoration:"none", color:"black"}}>
+                        <Card style={{ width: '800px', margin:"15px auto", textAlign:"left" }}>
+                            <Card.Body>
+                                <Card.Title>{`${res.name}`}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">{`${res.address} ${res.city}`}</Card.Subtitle>
+                                <Card.Text>
+                                {res.personalBio}
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
                     </Link>
                 ))}
             </div>    

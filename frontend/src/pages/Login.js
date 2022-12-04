@@ -23,6 +23,7 @@ const Login = () => {
     const location = useLocation()
 
     useEffect(() => {
+        console.log(location.state)
         if (location.state) {setError(location.state.message)}
     }, [])
 
@@ -40,13 +41,11 @@ const Login = () => {
         
         if (res.data.isSuccessful) {
             let accountType = res.data.accountType
-            console.log(res)
 
             let userData = null;
             if (accountType == 'patient') {userData = await patientGetInfo(res.data.accountID)}
             else if (accountType == 'doctor') {userData = await doctorGetInfo(res.data.accountID)}
             else if (accountType == 'hospital') {userData = await hospitalGetInfo(res.data.accountID)}
-            console.log(userData)
             
             if (userData.data.isSuccessful) {
                 userState.setAccountID(res.data.accountID)
@@ -60,7 +59,7 @@ const Login = () => {
                     userState["accountName"] = userData.data.name
                 } else {
                     userState.setAccountName(userData.data.firstName)
-                    userState["accountName"] = userData.data.firstNname
+                    userState["accountName"] = userData.data.firstName
                 }
                 
                 localStorage.setItem('userState', JSON.stringify(userState))

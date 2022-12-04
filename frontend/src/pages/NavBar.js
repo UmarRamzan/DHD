@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
 import { UserState } from "../UserState";
 
 import Container from 'react-bootstrap/Container';
