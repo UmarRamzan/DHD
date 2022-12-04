@@ -92,7 +92,7 @@ const DoctorSettings = () => {
                     {editing &&
                         <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
                             <Card.Body>
-                                <Card.Title>Account Information</Card.Title>
+                                <Card.Title>Edit Account Information</Card.Title>
                                 <Stack gap={1} className="col-12 mx-auto">
                             
                                 <Form.Group className="mb-3">

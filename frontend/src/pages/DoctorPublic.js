@@ -6,6 +6,12 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import TimePicker from 'react-time-picker'
 import { UserState } from "../UserState";
+import Card from 'react-bootstrap/Card';
+import Button from "react-bootstrap/Button";
+import { FormGroup, Label, Input} from 'reactstrap';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const DoctorPublic = () => {
 
@@ -50,23 +56,42 @@ const DoctorPublic = () => {
 
     return ( 
         <div className="doctorPublic">
-            <div className="name" style={{margin: "100px 150px", textAlign: "left"}}>
-                <h1>{ `${data.firstName} ${data.lastName}`}</h1>
-                <hr style={{width:"350px", margin:"20px auto"}}/>
-            </div>
 
-            <p>{ data.specialization }</p>
-            <p>{ data.city }</p>
-            <p>{ data.address }</p>
-            <p>{ data.timings }</p>
-            <p>{ data.personalBio }</p>
-            <p>{ data.onlineAvailability }</p>
-            <p>{ data.charges }</p>
-            <h3>Booking</h3>
-            <DatePicker onChange={(date) => {setBookingDate(date)}} selected={bookingDate}/>
-            <TimePicker onChange={(time) => {setBookingTime(time)}} selected={bookingTime} disableClock={true}/>
-            <button onClick={addBooking}>Book</button>
-            <p>{ error }</p>
+            <Row>
+                <Col xs={8}>
+                    <Card style={{ width: '800px', margin:"50px auto", textAlign: "left" }}>
+                        <Card.Body>
+                            <Card.Title>{ `${data.firstName} ${data.lastName}`}</Card.Title>
+                            <p>{ data.specialization }</p>
+                            <p>{ `${data.address} ${data.city}` }</p>
+                            <p>{ data.timings }</p>
+                            <p>{ data.personalBio }</p>
+                            <p>{ data.onlineAvailability }</p>
+                            <p>{ data.charges }</p>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                <Col>
+                    <Card style={{ width: '400px', margin:"50px auto", textAlign: "left" }}>
+                        <Card.Body>
+                            <Card.Title>Booking</Card.Title>
+                            <h6 style={{margin:"10px 0px 5px 0px"}}>Date</h6>
+                            <Input type="date" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}} required/>
+                            <h6 style={{margin:"10px 0px 5px 0px"}}>Time</h6>
+                            <Input type="time" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}} required/>
+
+                        <Form.Select style={{margin:"20px 0px"}}required>
+                            <option value="online">Online</option>
+                            <option value="inPerson">In Person</option>
+                        </Form.Select>
+
+                            <Button style={{margin:"auto"}} variant="outline-success">Confirm Booking</Button>
+                        </Card.Body>
+                    </Card>
+                    <p>{ error }</p>
+                </Col>
+            </Row>
         </div>
      );
 }
