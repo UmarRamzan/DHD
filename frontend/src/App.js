@@ -14,6 +14,7 @@ import DoctorPublic from './pages/DoctorPublic';
 import HospitalPublic from './pages/HospitalPublic';
 import Settings from './pages/Settings';
 import PatientSettings from './pages/PatientSettings';
+import DoctorSettings from './pages/DoctorSettings';
 import Bookings from './pages/Bookings';
 
 import { UserContext } from './UserContext';
@@ -74,6 +75,7 @@ function App() {
 
                 <Route exact path="/settings" element={<Settings/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
+                <Route exact path="/doctorSettings" element={<DoctorSettings/>}></Route>
 
                 <Route path="*" element={<NotFound/>}></Route>
             </Routes>

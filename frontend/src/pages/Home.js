@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { search } from "../API/api";
 import { UserState } from "../UserState";
 
@@ -55,10 +55,10 @@ const Home = () => {
                 </div>
 
                 <DropdownButton variant="outline-dark" title="Filters">
-                    <Dropdown.Item href="#">Action</Dropdown.Item>
-                    <Dropdown.Item href="#">Another action</Dropdown.Item>
+                    <Dropdown.Item as={NavLink} to="#">Action</Dropdown.Item>
+                    <Dropdown.Item as={NavLink} to="#">Another action</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item href="#">Separated link</Dropdown.Item>
+                    <Dropdown.Item as={NavLink} to="#">Separated link</Dropdown.Item>
                 </DropdownButton>
                 
             </InputGroup>

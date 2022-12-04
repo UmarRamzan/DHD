@@ -33,10 +33,12 @@ router.post('/api/patient/patientUpdateEntry', patientController.patientUpdateEn
 // doctor functions
 router.post('/api/doctor/doctorAddEntry', doctorController.doctorAddEntry)
 router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
+router.post('/api/doctor/removeDoctor', doctorController.removeDoctor)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
 router.post('/api/hospital/hospitalGetInfo', hospitalController.hospitalGetInfo)
+router.post('/api/hospital/removeHospital', hospitalController.removeHospital)
 router.post('/api/hospital/searchHospitalByCity', hospitalController.searchHospitalByCity)
 
 export default router

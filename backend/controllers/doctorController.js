@@ -114,3 +114,32 @@ export async function doctorGetInfo(req, response) {
 
 // update an existing entry within the doctors table
 export async function doctorUpdateEntry(req, response) {}
+
+export async function removeDoctor(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Doctor WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
