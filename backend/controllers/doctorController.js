@@ -37,15 +37,16 @@ export async function doctorAddEntry(req, response) {
     let specialization = req.body.specialization
     let city = req.body.city
     let address = req.body.address
-    let timings = req.body.timings
+    let startTime = req.body.startTime
+    let endTime = req.body.endTime
     let onlineAvailability = req.body.onlineAvailability
-    let charges = req.body.charges
+    let hourlyCharge = req.body.hourlyCharge
     let personalBio = req.body.personalBio
     
     let connection = validateConnection()
 
     let seedQuery = `INSERT INTO Doctor VALUES (?)`
-    let values = [accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, timings, personalBio, onlineAvailability, charges]
+    let values = [accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, onlineAvailability, hourlyCharge]
 
     connection.query(seedQuery, [values], (err, res) => {
 
@@ -89,6 +90,7 @@ export async function doctorGetInfo(req, response) {
             let data = res[0]
 
             let returnMessage = {
+                "isSuccessful": true,
                 "firstName": data.firstName,
                 "lastName": data.lastName,
                 "dateOfBirth": data.dateOfBirth,
@@ -96,10 +98,11 @@ export async function doctorGetInfo(req, response) {
                 "specialization": data.specialization,
                 "city": data.city,
                 "address": data.address,
-                "timings": data.timings,
+                "startTime": data.startTime,
+                "endTime": data.endTime,
                 "personalBio": data.personalBio,
                 "onlineAvailability": data.onlineAvailability,
-                "charges": data.charges,
+                "hourlyCharges": data.hourlyCharge,
             }
 
             response.send(returnMessage)
@@ -111,3 +114,32 @@ export async function doctorGetInfo(req, response) {
 
 // update an existing entry within the doctors table
 export async function doctorUpdateEntry(req, response) {}
+
+export async function removeDoctor(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Doctor WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}

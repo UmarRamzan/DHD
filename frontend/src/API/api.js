@@ -31,6 +31,24 @@ export async function removePatient(accountID) {
     return await axios.post(`${url}/patient/removePatient`, request)
 }
 
+export async function removeDoctor(accountID) {
+    
+    const request = {
+        "accountID": accountID
+    }
+
+    return await axios.post(`${url}/doctor/removeDoctor`, request)
+}
+
+export async function removeHospital(accountID) {
+    
+    const request = {
+        "accountID": accountID
+    }
+
+    return await axios.post(`${url}/hospital/removeHospital`, request)
+}
+
 // create a new account of account_type with the specified email and password
 // returns a json object containing "is_succesful" and "account_ID" / "error_message"
 export async function signup(email, password, accountType) {
@@ -76,7 +94,7 @@ export async function patientAddEntry(accountID, firstName, lastName, dateOfBirt
 // add a row containing the specified values into the doctor table
 // only pass an account_ID that has been returned by the server for this user
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function doctorAddEntry(accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, timings, personalBio, onlineAvailability, charges) {
+export async function doctorAddEntry(accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, onlineAvailability, hourlyCharge) {
 
     const request = {
         "accountID": accountID,
@@ -87,9 +105,10 @@ export async function doctorAddEntry(accountID, firstName, lastName, dateOfBirth
         "specialization": specialization,
         "city": city,
         "address": address,
-        "timings": timings,
+        "startTime": startTime,
+        "endTime": endTime,
         "onlineAvailability": onlineAvailability,
-        "charges": charges,
+        "hourlyCharge": hourlyCharge,
         "personalBio": personalBio
     }
 
@@ -199,6 +218,14 @@ export async function update_booking(booking_ID, new_year, new_month, new_day, n
     }
 
     return await axios.post(`${url}/general/update_booking`, request)
+}
+
+export async function cancelBooking(bookingID) {
+    const request = {
+        "bookingID": bookingID
+    }
+
+    return await axios.post(`${url}/general/cancelBooking`, request)
 }
 
 export async function getBookings(accountID, accountType) {

@@ -14,9 +14,12 @@ import DoctorPublic from './pages/DoctorPublic';
 import HospitalPublic from './pages/HospitalPublic';
 import Settings from './pages/Settings';
 import PatientSettings from './pages/PatientSettings';
+import DoctorSettings from './pages/DoctorSettings';
 import Bookings from './pages/Bookings';
 
 import { UserContext } from './UserContext';
+import { UserState } from './UserState';
+
 
 function App() {
 
@@ -24,12 +27,34 @@ function App() {
   const [accountType, setAccountType] = useState(null)
   const [accountName, setAccountName] = useState(null)
   
-  const userState = {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName}
+  const userContext = {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName}
+
+  const userState = {
+    accountID: accountID,
+    setAccountID: setAccountID,
+    accountType: accountType,
+    setAccountType: setAccountType,
+    accountName: accountName,
+    setAccountName: setAccountName
+  }
+
+  useEffect(() => {
+    const savedState = JSON.parse(localStorage.getItem("userState"))
+    console.log(savedState)
+
+    if (savedState) {
+        userState.setAccountID(savedState.accountID)
+        userState.setAccountType(savedState.accountType)
+        userState.setAccountName(savedState.accountName)
+    }
+
+  }, [])
 
   return (
     <Router>
       <div className="App">
-        <UserContext.Provider value={userState}>
+        <UserContext.Provider value={userContext}>
+          <UserState.Provider value={userState}>
           <NavBar />
           <div className="content">
             <Routes>
@@ -43,17 +68,19 @@ function App() {
 
                 <Route exact path="/login" element={<Login/>}></Route>
 
-                <Route exact path="/bookings" element={accountID? <Bookings/> : <Login/> }></Route>
+                <Route exact path="/bookings" element={accountID? <Bookings/> : <Login/>}></Route>
 
                 <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
                 <Route exact path="/hospitalPublic" element={<HospitalPublic/>}></Route>
 
-                <Route exact path="/settings" element={accountID? <Settings/> : <Login/>}></Route>
+                <Route exact path="/settings" element={<Settings/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
+                <Route exact path="/doctorSettings" element={<DoctorSettings/>}></Route>
 
                 <Route path="*" element={<NotFound/>}></Route>
             </Routes>
           </div>
+          </UserState.Provider>
         </UserContext.Provider>
       </div>
     </Router>

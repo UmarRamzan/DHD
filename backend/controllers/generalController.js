@@ -163,7 +163,7 @@ export async function login(req, response) {
 
     let connection = validateConnection()
 
-    let selectQuery = `SELECT * FROM Account WHERE email = ? AND password = ?`
+    let selectQuery = `SELECT * FROM Account WHERE email = ?`
     let values = [email, password]
 
     connection.query(selectQuery, values, (err, res) => {
@@ -182,21 +182,31 @@ export async function login(req, response) {
             if (res.length == 0){
                 let returnMessage = {
                     "isSuccessful": false,
-                    "errorMessage": "Email or Password is incorrect"
+                    "errorMessage": "Email does not exist"
                 }
 
                 response.send(returnMessage)
                 connection.end()
 
             } else {
-                let returnMessage = {
-                    "isSuccessful": true,
-                    "accountID": res[0].accountID,
-                    "accountType": res[0].accountType
-                }
-
-                response.send(returnMessage)
-                connection.end()
+                if (res[0].password != password) {
+                    let returnMessage = {
+                        "isSuccessful": false,
+                        "errorMessage": "Password is incorrect"
+                    }
+    
+                    response.send(returnMessage)
+                    connection.end()
+                } else {
+                    let returnMessage = {
+                        "isSuccessful": true,
+                        "accountID": res[0].accountID,
+                        "accountType": res[0].accountType
+                    }
+    
+                    response.send(returnMessage)
+                    connection.end()
+                }  
             }
         }
     })
@@ -371,12 +381,45 @@ export async function createBooking(req, response) {
 
 export async function updateBooking(req, response) {}
 
+export async function cancelBooking(req, response) {
+    let bookingID = req.body.bookingID
+
+    let insertQuery = `DELETE FROM Booking WHERE bookingID = ?`
+    let values = [bookingID]
+
+    let connection = validateConnection()
+    connection.query(insertQuery, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not cancel booking"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+
+}
+
 export async function getBookings(req, response) {
+
+    console.log(req.body)
 
     let accountID = req.body.accountID
     let accountType = req.body.accountType
 
-    let findBookings = ``
+    let findBookings = null
     if (accountType == 'patient') {findBookings = `SELECT * FROM Booking WHERE patientID = ?`}
     else if (accountType == 'doctor') {findBookings = `SELECT * FROM Booking WHERE doctorID = ?`}
     let values = [accountID]
@@ -407,3 +450,4 @@ export async function getBookings(req, response) {
         }
     })
 }
+

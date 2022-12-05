@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { hospitalGetInfo } from "../API/api";
+import Card from 'react-bootstrap/Card';
 
 const HospitalPublic = () => {
 
@@ -20,7 +21,18 @@ const HospitalPublic = () => {
             <h1>{ data.name }</h1>
             <p>{ data.city }</p>
             <p>{ data.address }</p>
-            <h3>Specializations</h3>
+
+            <Card style={{ width: '1300px', margin: "auto" }}>
+                <Card.Body>
+                    <Card.Title>Departements</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                    <Card.Text>
+                    Some quick example text to build on the card title and make up the
+                    bulk of the card's content.
+                    </Card.Text>
+
+                </Card.Body>
+            </Card>
         </div>
      );
 }

@@ -38,6 +38,7 @@ app.post('/api/general/associateDoctorHospital', router)
 
 app.post('/api/general/createBooking', router)
 app.post('/api/general/updateBooking', router)
+app.post('/api/general/cancelBooking', router)
 app.post('/api/general/getBookings', router)
 
 app.post('/api/patient/patientAddEntry', router)
@@ -47,7 +48,9 @@ app.post('/api/patient/removePatient', router)
 
 app.post('/api/doctor/doctorAddEntry', router)
 app.post('/api/doctor/doctorGetInfo', router)
+app.post('/api/doctor/removeDoctor', router)
 
 app.post('/api/hospital/hospitalAddEntry', router)
 app.post('/api/hospital/hospitalGetInfo', router)
+app.post('/api/hospital/removeHospital', router)
 app.post('/api/hospital/searchHospitalByCity', router)

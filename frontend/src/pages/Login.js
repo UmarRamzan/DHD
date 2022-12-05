@@ -1,12 +1,19 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { login, patientGetInfo } from "../API/api";
+import { login, patientGetInfo, doctorGetInfo, hospitalGetInfo } from "../API/api";
 import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
+
+import Stack from 'react-bootstrap/Stack';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 
 
 const Login = () => {
 
-    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
+    const userState = useContext(UserState)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,33 +23,46 @@ const Login = () => {
     const location = useLocation()
 
     useEffect(() => {
+        console.log(location.state)
         if (location.state) {setError(location.state.message)}
-        
     }, [])
 
     useEffect(() => {
         if (location.state) {setError(location.state.message)}
     }, [location.state])
 
+    useEffect(() => {
+        setError('')
+    }, [email, password])
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         let res = await login(email, password)
         
         if (res.data.isSuccessful) {
+            let accountType = res.data.accountType
 
-            let userData = await patientGetInfo(res.data.accountID)
-            console.log(userData)
-
+            let userData = null;
+            if (accountType == 'patient') {userData = await patientGetInfo(res.data.accountID)}
+            else if (accountType == 'doctor') {userData = await doctorGetInfo(res.data.accountID)}
+            else if (accountType == 'hospital') {userData = await hospitalGetInfo(res.data.accountID)}
+            
             if (userData.data.isSuccessful) {
-                setAccountID(res.data.accountID)
-                setAccountType(res.data.accountType)
-                setAccountName(userData.data.firstName)
+                userState.setAccountID(res.data.accountID)
+                userState.setAccountType(res.data.accountType)
+                
+                userState["accountID"] = res.data.accountID
+                userState["accountType"] = res.data.accountType
 
-                console.log(userData)
-
-                localStorage.setItem('accountID', res.data.accountID)
-                localStorage.setItem('accountType', res.data.accountType)
-                localStorage.setItem('accountName', userData.data.firstName)
+                if (accountType == 'hospital') {
+                    userState.setAccountName(userData.data.name)
+                    userState["accountName"] = userData.data.name
+                } else {
+                    userState.setAccountName(userData.data.firstName)
+                    userState["accountName"] = userData.data.firstName
+                }
+                
+                localStorage.setItem('userState', JSON.stringify(userState))
 
                 navigate('/home')
 
@@ -56,31 +76,33 @@ const Login = () => {
     }
 
     return ( 
-        <div className="login">
-            <h1>Login</h1>
+        <div className="form" style={{width:"400px", margin:"150px auto"}}>
+            <Container>
+                <Form onSubmit={handleSubmit}>
 
-            <form onSubmit={handleSubmit}>
-                <label>Email:</label>
-                <input 
-                    type="text"
-                    required
-                    value={email}
-                    onChange={(e)=>{setEmail(e.target.value)}}
-                />
+                    <p className="display-6">Login</p>
 
-                <label>Password:</label>
-                <input 
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e)=>{setPassword(e.target.value)}}
-                />
+                    <hr style={{width:"350px", margin:"20px auto"}}/>
 
-                <button>Submit</button>
-            </form>
-            <p>{ error }</p>
-            <Link to="/signup">Signup</Link>
-        </div>  
+                    <Stack gap={1} className="col-12 mx-auto">
+
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Control type="email" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
+                    </Form.Group>
+                
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value)}} required/>
+                    </Form.Group>
+
+                    <Button variant="outline-success" type="submit" className="my-2">Next</Button>
+
+                    {error && <Alert variant='danger'>{error}</Alert>}
+
+                    </Stack>
+
+                </Form>    
+            </Container>
+        </div>
      );
 }
  

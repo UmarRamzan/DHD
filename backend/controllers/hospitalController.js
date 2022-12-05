@@ -78,6 +78,7 @@ export async function hospitalGetInfo(req, response) {
             let data = res[0]
 
             let returnMessage = {
+                "isSuccessful": true,
                 "name": data.name,
                 "city": data.city,
                 "address": data.address,
@@ -91,4 +92,33 @@ export async function hospitalGetInfo(req, response) {
 
 export async function searchHospitalByCity(req, response) {
 
+}
+
+export async function removeHospital(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Hospital WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
 }

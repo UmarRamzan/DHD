@@ -19,7 +19,8 @@ router.post('/api/general/removeAccount', generalController.removeAccount)
 router.post('/api/general/searchSpecialization', generalController.searchSpecialization)
 router.post('/api/general/associateDoctorHospital', generalController.associateDoctorHospital)
 router.post('/api/general/createBooking', generalController.createBooking)
-router.post('/api/general/updateBooking', generalController.createBooking)
+router.post('/api/general/updateBooking', generalController.updateBooking)
+router.post('/api/general/cancelBooking', generalController.cancelBooking)
 router.post('/api/general/accountGetInfo', generalController.accountGetInfo)
 router.post('/api/general/getBookings', generalController.getBookings)
 
@@ -32,10 +33,12 @@ router.post('/api/patient/patientUpdateEntry', patientController.patientUpdateEn
 // doctor functions
 router.post('/api/doctor/doctorAddEntry', doctorController.doctorAddEntry)
 router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
+router.post('/api/doctor/removeDoctor', doctorController.removeDoctor)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
 router.post('/api/hospital/hospitalGetInfo', hospitalController.hospitalGetInfo)
+router.post('/api/hospital/removeHospital', hospitalController.removeHospital)
 router.post('/api/hospital/searchHospitalByCity', hospitalController.searchHospitalByCity)
 
 export default router

@@ -3,20 +3,28 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { signup } from "../API/api";
 import { patientAddEntry } from "../API/api";
 import { removeAccount } from "../API/api";
-import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
+
+
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import { FormGroup, Label, Input} from 'reactstrap';
 
 const PatientInfo = () => {
 
+    const userState = useContext(UserState)
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [dateOfBirth, setDateOfBirth] = useState(new Date())
+    const [dateOfBirth, setDateOfBirth] = useState('')
     const [gender, setGender] = useState('male')
 
     const [error, setError] = useState('')
-
-    const {accountID, setAccountID, accountType, setAccountType, accountName, setAccountName} = useContext(UserContext)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -28,6 +36,7 @@ const PatientInfo = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault()
+
         let email = location.state.email
         let password = location.state.password
 
@@ -37,24 +46,18 @@ const PatientInfo = () => {
     
             let accountID = accountRes.data.accountID
 
-            let year = dateOfBirth.getFullYear()
-            let month = dateOfBirth.getMonth()
-            let day = dateOfBirth.getDay()
-
-            let date = `${year}-${month}-${day}`
-
-            let res = await patientAddEntry(accountID, firstName, lastName, date, gender)
+            let res = await patientAddEntry(accountID, firstName, lastName, dateOfBirth, gender)
 
             if (res.data.isSuccessful) {
-                setAccountID(accountID)
-                setAccountName(firstName)
-                setAccountType('patient')
-                
-                localStorage.setItem('accountID', accountID)
-                localStorage.setItem('accountName', firstName)
-                localStorage.setItem('accountType', 'patient')
+                userState.setAccountID(accountID)
+                userState.setAccountName(firstName)
+                userState.setAccountType('patient')
 
-                console.log(localStorage.getItem('accountName'))
+                userState["accountID"] = accountID
+                userState["accountName"] = firstName
+                userState["accountType"] = 'patient'
+                
+                localStorage.setItem('userState', JSON.stringify(userState))
 
                 navigate("/home")
                 
@@ -69,40 +72,47 @@ const PatientInfo = () => {
     }
 
     return ( 
-        <div className="signup">
-
+        <div className="signup" style={{width:"380px", margin:"150px auto"}}>
             <h2>Personal Information</h2>
 
-            <form onSubmit={handleSubmit}>
+            <hr style={{width:"350px", margin:"20px auto"}}/>
 
-                <label>First Name:</label>
-                <input 
-                    type="text"
-                    required
-                    value={firstName}
-                    onChange={(e)=>{setFirstName(e.target.value)}}
-                />
+            <Form onSubmit={handleSubmit} style={{textAlign:"left"}}>
 
-                <label>Last Name:</label>
-                <input 
-                    type="text"
-                    required
-                    value={lastName}
-                    onChange={(e)=>{setLastName(e.target.value)}}
-                />
+                <Row className="mb-3">
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="First Name" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                    </Form.Group>
+                    
+                    <Form.Group as={Col}>
+                        <Form.Control placeholder="Last Name" value={lastName} onChange={(e)=>{setLastName(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Date of Birth</label>
-                <DatePicker onChange={(date) => {setDateOfBirth(date)}} selected={dateOfBirth}/>
+                <Row className="mb-3">
+                    <Form.Group as={Col} xs={4}>
+                        <Form.Label style={{margin:"5px 10px"}}>Date of Birth</Form.Label>
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                        <Input type="date" name="date" placeholder="date placeholder" value={dateOfBirth} onChange={(e)=>{setDateOfBirth(e.target.value)}} required/>
+                    </Form.Group>
+                </Row>
 
-                <label>Gender</label>
-                <select value={gender} onChange={(e)=>{setGender(e.target.value)}}>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
+                <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridState">
+                        <Form.Select onChange={(e)=>{setGender(e.target.value)}} required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Row>
 
-                <button>Submit</button>
-            </form>
-            <p>{ error }</p>
+                <Row className="mb-3">
+                    <Button variant="outline-success" type="submit" style={{width:"320px", margin:"auto"}}>Submit</Button>
+                </Row>
+
+             </Form>
+             {error && <Alert variant='danger'>{error}</Alert>}
         </div>
     )
 }
