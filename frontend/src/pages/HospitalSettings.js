@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { accountGetInfo, patientGetInfo, removeAccount, removePatient, updateAccount } from "../API/api";
+import { accountGetInfo, hospitalGetInfo, removeAccount, removeHospital } from "../API/api";
 import { UserState } from "../UserState";
 import sha1 from 'sha1';
 
@@ -13,7 +13,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 
-const PatientSettings = () => {
+const HospitalSettings = () => {
 
     const userState = useContext(UserState)
 
@@ -24,13 +24,12 @@ const PatientSettings = () => {
     const [changingPassword, setChangingPassword] = useState(false)
     const [deleting, setDeleting] = useState(false);
 
-    const [newEmail, setNewEmail] = useState('')
-
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
-
+    const [accountType, setAccountType] = useState('patient')
     const [error, setError] = useState('')
-    const [message, setMessage] = useState('')
 
     const navigate = useNavigate()
 
@@ -39,10 +38,10 @@ const PatientSettings = () => {
         const savedState = JSON.parse(localStorage.getItem("userState"))
 
         if (savedState) {
-            let patientData = patientGetInfo(savedState.accountID)
+            let hospitalData = hospitalGetInfo(savedState.accountID)
             let accountData = accountGetInfo(savedState.accountID)
 
-            patientData.then((res) => {setUserData(res.data)})
+            hospitalData.then((res) => {setUserData(res.data)})
             accountData.then((res) => {setAccountData(res.data)})
         }
 
@@ -52,53 +51,15 @@ const PatientSettings = () => {
         setError('')
     }, [oldPassword, newPassword])
 
-    useEffect(() => {
-        setError('')
-        setMessage('')
-    }, [editing, deleting])
-
-    const handleEditConfirm = async () => {
-        if (newEmail == '') {
-            setError("Enter a new Email")
-
-        } else {
-            let res = await updateAccount(accountData.accountID, newEmail, accountData.password)
-
-            if (res.data.isSuccessful) {
-
-                setNewEmail('')
-
-                accountData['email'] = newEmail
-                setAccountData(accountData)
-                
-                setEditing(false)
-                setMessage("Email changed")
-
-            } else {
-                setError(res.data.errorMessage)
-            } 
-        }
+    const handleEditConfirm = () => {
+        setEditing(false)
     }
 
-    const handleChangePassword = async () => {
-        if (newPassword == '') {
-            setError("Enter a new password")
-        } else if (sha1(oldPassword) != accountData.password) {
+    const handleChangePassword = () => {
+        if (sha1(oldPassword) != accountData.password) {
             setError("Old password is incorrect")
         } else {
-            let res = await updateAccount(accountData.accountID, accountData.email, sha1(newPassword))
-
-            if (res.data.isSuccessful) {
-
-                setOldPassword('')
-                setNewPassword('')
-                
-                setChangingPassword(false)
-                setMessage("Password changed")
-
-            } else {
-                setError(res.data.errorMessage)
-            } 
+            setEditing(false)
         }
     }
 
@@ -107,7 +68,7 @@ const PatientSettings = () => {
         setDeleting(false)
 
         await removeAccount(accountData.accountID)
-        await removePatient(accountData.accountID)
+        await removeHospital(accountData.accountID)
 
         userState.setAccountID(null)
         userState.setAccountType(null)
@@ -151,8 +112,6 @@ const PatientSettings = () => {
                             <Button variant="outline-secondary" onClick={()=>{setEditing(true)}} style={{margin:"5px"}}>Edit</Button>
                             <Button variant="outline-secondary" onClick={()=>{setChangingPassword(true)}} style={{margin:"5px"}}>Change Password</Button>
                             <Button variant="outline-danger" onClick={()=>{setDeleting(true)}} style={{margin:"5px"}}>Delete Account</Button>
-                        
-                            {message && <Alert style={{width:"360px", marginTop: "5px"}} variant='success'>{message}</Alert>}
                         </Card.Body>
                     </Card>
                     }
@@ -164,7 +123,7 @@ const PatientSettings = () => {
                             
                                 <Form.Group className="mb-3">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control style={{ width: '300px'}} type="email" placeholder={accountData.email} value={newEmail} onChange={(e)=>{setNewEmail(e.target.value)}} required/>
+                                    <Form.Control style={{ width: '300px'}} type="email" placeholder={accountData.email} value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
                                 </Form.Group>
 
                                 <Button onClick={()=>{setEditing(false)}} variant="outline-secondary" type="submit" style={{width: "300px"}}>Cancel</Button>
@@ -191,7 +150,7 @@ const PatientSettings = () => {
                                 <Button onClick={()=>{setChangingPassword(false)}} variant="outline-secondary" type="submit" style={{width: "300px"}}>Cancel</Button>
                                 <Button onClick={(handleChangePassword)}variant="outline-success" type="submit" style={{width: "300px"}}>Confirm</Button>
 
-                                {error && <Alert style={{width:"300px", marginTop: "5px"}} variant='danger'>{error}</Alert>}
+                                {error && <Alert variant='danger'>{error}</Alert>}
 
                                 </Stack>   
                             </Card.Body>
@@ -203,10 +162,10 @@ const PatientSettings = () => {
                     <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
                         <Card.Body>
                             <Card.Title>Personal Information</Card.Title>
-                            <Card.Text>{"First Name: " + userData.firstName}</Card.Text>
-                            <Card.Text>{"Last Name: " + userData.lastName}</Card.Text>
+                            <Card.Text>{"Name: " + userData.name}</Card.Text>
+                            <Card.Text>{"City: " + userData.city}</Card.Text>
                             {userData.dateOfBirth && <Card.Text>{"Date of Birth: " + userData.dateOfBirth.substring(0,10)}</Card.Text>}
-                            <Card.Text>{"Gender: " + userData.gender}</Card.Text>
+                            <Card.Text>{"Address: " + userData.address}</Card.Text>
                             
                             <Button variant="outline-success" onClick={()=>{setEditing(true)}}>Edit</Button>
                         </Card.Body>
@@ -218,4 +177,4 @@ const PatientSettings = () => {
      );
 }
  
-export default PatientSettings
+export default HospitalSettings

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { hospitalGetInfo } from "../API/api";
 import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const HospitalPublic = () => {
 
@@ -18,21 +21,30 @@ const HospitalPublic = () => {
 
     return ( 
         <div className="hospitalPublic">
-            <h1>{ data.name }</h1>
-            <p>{ data.city }</p>
-            <p>{ data.address }</p>
+            <Row style={{marginTop: "50px"}}>
 
-            <Card style={{ width: '1300px', margin: "auto" }}>
-                <Card.Body>
-                    <Card.Title>Departements</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
-                    </Card.Text>
+                <Col xs={5} style={{margin: "0px 10px"}}>
+                    <h1>{ data.name }</h1>
+                    <p>{ data.city }</p>
+                    <p>{ data.address }</p>
+                </Col>
 
-                </Card.Body>
-            </Card>
+                <Col xs={5} style={{margin: "0px 10px"}}>
+                    <h3>Departements</h3>
+                    <ListGroup defaultActiveKey="#link1">
+                        <ListGroup.Item action href="#link1">
+                            Link 1
+                        </ListGroup.Item>
+                        <ListGroup.Item action href="#link2" disabled>
+                            Link 2
+                        </ListGroup.Item>
+                        <ListGroup.Item action>
+                            This one is a button
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Col>
+            </Row>
+
         </div>
      );
 }

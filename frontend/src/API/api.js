@@ -22,6 +22,17 @@ export async function removeAccount(accountID) {
     return await axios.post(`${url}/general/removeAccount`, request)
 }
 
+export async function updateAccount(accountID, newEmail, newPassword) {
+
+    const request = {
+        "accountID": accountID,
+        "newEmail": newEmail,
+        "newPassword" : newPassword
+    }
+
+    return await axios.post(`${url}/general/updateAccount`, request)
+}
+
 export async function removePatient(accountID) {
     
     const request = {

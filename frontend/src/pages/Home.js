@@ -55,27 +55,27 @@ const Home = () => {
                 </div>
 
                 <DropdownButton variant="outline-dark" title="Filters">
-                    <Dropdown.Item as={NavLink} to="#">Action</Dropdown.Item>
-                    <Dropdown.Item as={NavLink} to="#">Another action</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item as={NavLink} to="#">Separated link</Dropdown.Item>
+                    
+                    <Form.Check 
+                    style={{marginLeft:"10px"}}
+                    type="checkbox"
+                    label="Show Doctors"
+                    defaultChecked={true}
+                    onChange={(e)=>{setShowDoctors(!showDoctors)}}
+                    />
+                    
+                    <Form.Check 
+                    style={{marginLeft:"10px"}}
+                    type="checkbox"
+                    label="Show Hospitals"
+                    defaultChecked={true}
+                    onChange={(e)=>{setShowHospitals(!showHospitals)}}
+                    />
                 </DropdownButton>
                 
             </InputGroup>
 
-            <span>Show Doctors</span>
-            <input 
-                    type="checkbox"
-                    defaultChecked={true}
-                    onChange={(e)=>{setShowDoctors(!showDoctors)}}
-            />
-
-            <span>Show Hospitals</span>
-            <input 
-                    type="checkbox"
-                    defaultChecked={true}
-                    onChange={(e)=>{setShowHospitals(!showHospitals)}}
-            />
+            
             
             <div className="results" style={{ width: '800px', margin:"15px auto" }}>
                 {showDoctors && doctorResults && doctorResults.map((res) => (

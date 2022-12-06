@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import TimePicker from 'react-time-picker'
 import { UserState } from "../UserState";
+
 import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button";
 import { FormGroup, Label, Input} from 'reactstrap';
@@ -42,13 +43,17 @@ const DoctorPublic = () => {
 
     const addBooking  = async () => {
 
-        let res = await createBooking(userState.accountID, doctorID, bookingDate, bookingTime)
+        if (bookingDate != '' && bookingTime != '') {
+            let res = await createBooking(userState.accountID, doctorID, bookingDate, bookingTime)
 
-        if (res.data.isSuccessful) {
-            setMessage("Booking has been created")
-            
+            if (res.data.isSuccessful) {
+                setMessage("Booking has been created")
+                
+            } else {
+                setError(res.data.errorMessage)
+            }
         } else {
-            setError(res.data.errorMessage)
+            setError("Choose date and time")
         }
     }
 
@@ -75,9 +80,9 @@ const DoctorPublic = () => {
                         <Card.Body>
                             <Card.Title>Booking</Card.Title>
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Date</h6>
-                            <Input type="date" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}} required/>
+                            <Input type="date" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}}/>
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Time</h6>
-                            <Input type="time" name="time" placeholder="time placeholder" onChange={(e)=>{setBookingTime(e.target.value)}} required/>
+                            <Input type="time" name="time" placeholder="time placeholder" onChange={(e)=>{setBookingTime(e.target.value)}}/>
 
                         <Form.Select style={{margin:"20px 0px"}}required>
                             <option value="online">Online</option>
@@ -91,7 +96,6 @@ const DoctorPublic = () => {
                             
                         </Card.Body>
                     </Card>
-                    <p>{ error }</p>
                 </Col>
             </Row>
         </div>

@@ -36,7 +36,7 @@ export async function patientAddEntry(req, response) {
     
     let connection = create_connection()
 
-    let seedQuery = `INSERT INTO patient VALUES (?)`
+    let seedQuery = `INSERT INTO Patient VALUES (?)`
     let values = [accountID, firstName, lastName, dateOfBirth, gender]
 
     connection.query(seedQuery, [values], (err, res) => {
@@ -70,7 +70,7 @@ export async function patientUpdateEntry(req, response) {
     let column_name = req.body.column_name
     let new_value = req.body.new_value
 
-    let update_query = `UPDATE patient SET ? = ? WHERE Patient_ID = ?`
+    let update_query = `UPDATE Patient SET ? = ? WHERE Patient_ID = ?`
     let values = [column_name, new_value, patient_ID]
 
     let connection = create_connection()

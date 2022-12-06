@@ -15,6 +15,7 @@ import HospitalPublic from './pages/HospitalPublic';
 import Settings from './pages/Settings';
 import PatientSettings from './pages/PatientSettings';
 import DoctorSettings from './pages/DoctorSettings';
+import HospitalSettings from './pages/HospitalSettings';
 import Bookings from './pages/Bookings';
 
 import { UserContext } from './UserContext';
@@ -40,12 +41,15 @@ function App() {
 
   useEffect(() => {
     const savedState = JSON.parse(localStorage.getItem("userState"))
-    console.log(savedState)
 
     if (savedState) {
         userState.setAccountID(savedState.accountID)
         userState.setAccountType(savedState.accountType)
         userState.setAccountName(savedState.accountName)
+
+        userState["accountID"] = savedState.accountID
+        userState["accountName"] = savedState.accountType
+        userState["accountType"] = savedState.accountName
     }
 
   }, [])
@@ -76,6 +80,7 @@ function App() {
                 <Route exact path="/settings" element={<Settings/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
                 <Route exact path="/doctorSettings" element={<DoctorSettings/>}></Route>
+                <Route exact path="/hospitalSettings" element={<HospitalSettings/>}></Route>
 
                 <Route path="*" element={<NotFound/>}></Route>
             </Routes>

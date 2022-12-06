@@ -64,6 +64,37 @@ export async function validateEmail(req, response) {
     })
 }
 
+export async function updateAccount(req, response) {
+
+    let accountID = req.body.accountID
+    let newEmail = req.body.newEmail
+    let newPassword = req.body.newPassword
+
+    let connection = validateConnection()
+
+    let updateAccount = `UPDATE Account SET email = ?, password = ? WHERE accountID = ?`
+    let values = [newEmail, newPassword, accountID]
+
+    connection.query(updateAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not update the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function removeAccount(req, response) {
 
     let accountID = req.body.accountID
