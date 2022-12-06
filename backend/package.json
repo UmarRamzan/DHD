@@ -119,7 +119,7 @@
     "yallist": "^4.0.0"
   },
   "scripts": {
-    "server": "nodemon server.js",
+    "server": "node server.js",
     "create_db": "node ./scripts/create_db.js",
     "seed_db": "node ./scripts/seed_db.js",
     "api": "node ../API/api.js"
