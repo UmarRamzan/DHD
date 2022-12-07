@@ -150,7 +150,7 @@ const DoctorPublic = () => {
                                 <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
                                 <Card.Body>
                                     <Card.Title>{review.patientID}</Card.Title>
-                                    <Card.Text>{review.rating}</Card.Text>
+                                    <Card.Text>{`${review.rating}/10`}</Card.Text>
                                     <Card.Text>{review.reviewText}</Card.Text>
                                     <Card.Text>Date</Card.Text>
                                     {review.patientID == userState.accountID && <Button variant="outline-danger" onClick={()=>{deleteReview(review.reviewID)}}>Remove</Button>}

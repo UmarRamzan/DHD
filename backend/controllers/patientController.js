@@ -73,7 +73,7 @@ export async function patientUpdateEntry(req, response) {
     let dateOfBirth = req.body.dateOfBirth
     let gender = req.body.gender
 
-    let updatePatient = `UPDATE Patient SET firstName = ?, lastName = ?, dateOfBirth = ?, gender = ? WHERE patientID = ?`
+    let updatePatient = `UPDATE Patient SET firstName = ?, lastName = ?, dateOfBirth = ?, gender = ? WHERE accountID = ?`
     let values = [firstName, lastName, dateOfBirth, gender, patientID]
 
     console.log(req.body)
@@ -87,7 +87,10 @@ export async function patientUpdateEntry(req, response) {
             response.send(returnMessage)
             connection.end()
 
+            console.log(err)
+
         } else {
+            console.log("success")
             let returnMessage = {
                 "isSuccessful": true
             }

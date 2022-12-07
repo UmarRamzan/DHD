@@ -36,7 +36,7 @@ const PatientSettings = () => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [dateOfBirth, setDateOfBirth] = useState('')
-    const [gender, setGender] = useState('')
+    const [gender, setGender] = useState('male')
 
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
@@ -67,10 +67,10 @@ const PatientSettings = () => {
     }, [editing, deleting])
 
     const handleEditPersonal = async () => {
-        console.log("here")
-        let res = await patientUpdateEntry(accountData.accountID, firstName, lastName, dateOfBirth, gender)
+
+        let res = await patientUpdateEntry(userState.accountID, firstName, lastName, dateOfBirth, gender)
         console.log(res)
-        if (res.data.isSuccessful) {
+        if (false) {
 
             userData['firstName'] = firstName
             userData['lastName'] = lastName
@@ -84,8 +84,6 @@ const PatientSettings = () => {
             setDateOfBirth('')
             setGender('')
 
-            
-            
             //setEditingPersonal(false)
 
             setMessage("Personal information updated")
@@ -256,7 +254,7 @@ const PatientSettings = () => {
                         <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
                         <Card.Body>
                         <Card.Title>Edit Personal Information</Card.Title>
-                        <Form style={{textAlign:"left", width: "380px"}} onSubmit={handleEditPersonal}>
+                        <Form style={{textAlign:"left", width: "380px"}}>
 
                         <Row className="mb-3">
                             <Form.Group as={Col}>
@@ -293,7 +291,7 @@ const PatientSettings = () => {
 
                         <Row className="mb-3" style={{marginLeft: "0px"}}>
                             <Button onClick={()=>{setEditingPersonal(false)}} variant="outline-secondary" style={{width: "380px", margin: "5px 0px"}}>Cancel</Button>
-                            <Button variant="outline-success" type="submit" style={{width: "380px"}}>Confirm</Button>
+                            <Button onClick={handleEditPersonal} variant="outline-success" type="submit" style={{width: "380px"}}>Confirm</Button>
                         </Row>
 
                     </Form>
