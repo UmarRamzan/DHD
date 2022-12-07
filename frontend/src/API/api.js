@@ -303,3 +303,12 @@ export async function getReviews(doctorID) {
 
     return await axios.post(`${url}/general/getReviews`, request)
 }
+
+export async function removeReview(reviewID) {
+
+    const request = {
+        "reviewID": reviewID,
+    }
+
+    return await axios.post(`${url}/general/removeReview`, request)
+}

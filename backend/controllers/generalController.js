@@ -505,7 +505,8 @@ export async function reviewAddEntry(req, response) {
         } else {
 
             let returnMessage = {
-                "isSuccessful": true
+                "isSuccessful": true,
+                "reviewID": res.insertId
             }
 
             response.send(returnMessage)
@@ -535,11 +536,40 @@ export async function getReviews(req, response) {
             console.log(err)
         } else {
 
-            console.log(res)
-
             let returnMessage = {
                 "isSuccessful": true,
                 "reviews": res
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
+export async function removeReview(req, response) {
+
+    let reviewID = req.body.reviewID
+
+    let removeReview = `DELETE FROM Review WHERE reviewID = ?`
+    let values = [reviewID]
+
+    let connection = validateConnection()
+    connection.query(removeReview, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not remove review"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true,
             }
 
             response.send(returnMessage)

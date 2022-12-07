@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { doctorGetInfo, getReviews, reviewAddEntry } from "../API/api";
+import { doctorGetInfo, getReviews, removeReview, reviewAddEntry } from "../API/api";
 import { createBooking } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -46,11 +46,6 @@ const DoctorPublic = () => {
     }, [])
 
     useEffect(() => {
-        let reviewData = getReviews(doctorID)
-        reviewData.then((res) => {setReviewList(res.data.reviews)})
-    }, [addingReview])
-
-    useEffect(() => {
         setError('')
         setMessage('')
     }, [bookingDate, bookingTime])
@@ -60,10 +55,26 @@ const DoctorPublic = () => {
         
         let res = await reviewAddEntry(patientID, doctorID, rating, review)
         if (res.data.isSuccessful) {
+            reviewList.push({
+                "reviewID": res.data.reviewID,
+                "patientID": patientID,
+                "doctorID": doctorID,
+                "rating": rating,
+                "reviewText": review
+            })
             setAddingReview(false)
             
         } else {
             setError(res.data.errorMessage)
+        }
+    }
+
+    const deleteReview = async (reviewID) => {
+        let res = await removeReview(reviewID)
+        if (!res.data.isSuccessful) {
+            setError(res.data.errorMessage)
+        } else {
+            setReviewList(reviewList.filter(review => review.reviewID != reviewID))
         }
     }
 
@@ -134,7 +145,7 @@ const DoctorPublic = () => {
                                 </Card.Body>
                             </Card>
                             }
-                            {console.log("Review List: ",reviewList)}
+
                             {reviewList && reviewList.map((review)=> (
                                 <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
                                 <Card.Body>
@@ -142,6 +153,7 @@ const DoctorPublic = () => {
                                     <Card.Text>{review.rating}</Card.Text>
                                     <Card.Text>{review.reviewText}</Card.Text>
                                     <Card.Text>Date</Card.Text>
+                                    {review.patientID == userState.accountID && <Button variant="outline-danger" onClick={()=>{deleteReview(review.reviewID)}}>Remove</Button>}
                                 </Card.Body>
                             </Card>
                             ))}
