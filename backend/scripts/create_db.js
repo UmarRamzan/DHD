@@ -8,7 +8,7 @@ config({path:".env"});
 const connection = createConnection({
     host: "localhost",
     user: "root",
-    password: "pass",
+    password: "khizerer",
 });
 
 // Process a general sql query and throw any resulting errors
@@ -93,7 +93,7 @@ connection.connect((err) => {
         console.log("Connected to the mysql server")
 
         // delete the database for testing
-        processQuery(`DROP DATABASE dhd`)
+        processQuery(`DROP DATABASE IF EXISTS dhd`)
         
         // create and use the dhd database
         processQuery(`CREATE DATABASE IF NOT EXISTS dhd`)
