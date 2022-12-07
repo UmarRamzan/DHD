@@ -51,6 +51,7 @@ app.post('/api/patient/patientGetInfo', router)
 app.post('/api/patient/removePatient', router)
 
 app.post('/api/doctor/doctorAddEntry', router)
+app.post('/api/doctor/doctorUpdateEntry', router)
 app.post('/api/doctor/doctorGetInfo', router)
 app.post('/api/doctor/removeDoctor', router)
 
