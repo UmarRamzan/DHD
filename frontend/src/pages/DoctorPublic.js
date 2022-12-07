@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { doctorGetInfo } from "../API/api";
+import { doctorGetInfo, reviewAddEntry } from "../API/api";
 import { createBooking } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -23,6 +23,11 @@ const DoctorPublic = () => {
     const [bookingDate, setBookingDate] = useState('')
     const [bookingTime, setBookingTime] = useState('')
 
+    const [rating, setRating] = useState(null)
+    const [review, setReview] = useState('')
+
+    const [addingReview, setAddingReview] = useState(false)
+
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
 
@@ -41,7 +46,19 @@ const DoctorPublic = () => {
         data.then((res) => {setData(res.data)})
     }, [])
 
-    const addBooking  = async () => {
+    const addReview = async () => {
+        let patientID = userState.accountID
+        
+        let res = await reviewAddEntry(patientID, doctorID, rating, review)
+        if (res.data.isSuccessful) {
+            setAddingReview(false)
+            
+        } else {
+            setError(res.data.errorMessage)
+        }
+    }
+
+    const addBooking = async () => {
 
         if (userState.accountID == null) {
             setError('Login to create a booking')
@@ -78,30 +95,32 @@ const DoctorPublic = () => {
 
                     <Card style={{ width: '800px', margin: 'auto',textAlign: "left" }}>
                         <Card.Body>
-                            <Row>
+                            <Row style={{ width: '700px', margin: 'auto',textAlign: "left" }}>
                                 <Col>
                                     <Card.Title>Reviews</Card.Title>
                                 </Col>
                                 <Col xs={3}>
-                                    <Button variant="outline-success">Add Review</Button>
+                                    {!addingReview && <Button variant="outline-success" onClick={()=>{setAddingReview(true)}}>Add Review</Button>}
                                 </Col>
                             </Row>  
-
+                            
+                            { addingReview &&
                             <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
                                 <Card.Body>
                                     <Card.Title>Add Review</Card.Title>
                                     <Form>
                                         <Form.Group className="mb-3">
-                                            <Form.Control type="number" placeholder="Rating / 10" />
+                                            <Form.Control type="number" placeholder="Rating / 10" onChange={(e)=>{setRating(e.target.value)}}/>
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                            <Form.Control as="textarea" placeholder="Review" rows={5} />
+                                            <Form.Control as="textarea" placeholder="Review" rows={3} onChange={(e)=>{setReview(e.target.value)}} />
                                         </Form.Group>
-                                        <Button style={{margin:"0px 5px"}} variant="outline-secondary">Cancel</Button>
-                                        <Button style={{margin:"0px 5px"}} variant="outline-success">Confirm</Button>
+                                        <Button style={{margin:"0px 5px"}} variant="outline-secondary" onClick={()=>{setAddingReview(false)}}>Cancel</Button>
+                                        <Button style={{margin:"0px 5px"}} variant="outline-success" onClick={addReview}>Confirm</Button>
                                     </Form>
                                 </Card.Body>
                             </Card>
+                            }
 
                             <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
                                 <Card.Body>
@@ -116,7 +135,7 @@ const DoctorPublic = () => {
                 </Col>
 
                 <Col xs={4}>
-                    <Card style={{ width: '400px', margin:"50px 50px 50px 0px", textAlign: "left" }}>
+                    <Card style={{ width: '400px', margin:"50px 0px", textAlign: "left" }}>
                         <Card.Body>
                             <Card.Title>Booking</Card.Title>
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Date</h6>

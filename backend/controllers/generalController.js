@@ -445,8 +445,6 @@ export async function cancelBooking(req, response) {
 
 export async function getBookings(req, response) {
 
-    console.log(req.body)
-
     let accountID = req.body.accountID
     let accountType = req.body.accountType
 
@@ -482,3 +480,36 @@ export async function getBookings(req, response) {
     })
 }
 
+export async function reviewAddEntry(req, response) {
+    console.log(req)
+    let patientID = req.body.patientID
+    let doctorID = req.body.doctorID
+    let rating = req.body.rating
+    let reviewText = req.body.reviewText
+
+    let addReview = `INSERT INTO Review (patientID, doctorID, rating, reviewText) VALUES (?)`
+    let values = [patientID, doctorID, rating, reviewText]
+
+    let connection = validateConnection()
+    connection.query(addReview, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not add review"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}

@@ -282,3 +282,15 @@ export async function search_hospitals_by_city(city) {
 
     return await axios.post(`${url}/general/search_hospital_by_city`, request)
 }
+
+export async function reviewAddEntry(patientID, doctorID, rating, reviewText) {
+
+    const request = {
+        "patientID": patientID,
+        "doctorID": doctorID,
+        "rating": rating,
+        "reviewText": reviewText
+    }
+
+    return await axios.post(`${url}/general/reviewAddEntry`, request)
+}
