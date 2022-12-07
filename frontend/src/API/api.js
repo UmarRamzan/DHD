@@ -156,6 +156,17 @@ export async function patientUpdateEntry(patientID, firstName, lastName, dateOfB
     return await axios.post(`${url}/patient/patientUpdateEntry`, request)
 }
 
+export async function hospitalUpdateEntry(hospitalID, name, city, address) {
+    const request = {
+        "hospitalID": hospitalID,
+        "name": name,
+        "city": city,
+        "address": address
+    }
+
+    return await axios.post(`${url}/hospital/hospitalUpdateEntry`, request)
+}
+
 export async function accountGetInfo(accountID) {
 
     const request = {

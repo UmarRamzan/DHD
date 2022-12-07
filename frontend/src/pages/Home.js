@@ -82,8 +82,8 @@ const Home = () => {
                     
                     <Link to="/doctorPublic" state={{doctorID: res.accountID}} style={{textDecoration:"none", color:"black"}}>
                         <Card style={{ width: '800px', margin:"15px auto", textAlign:"left" }}>
+                            <Card.Header as="h5">{`${res.firstName} ${res.lastName}`}</Card.Header>
                             <Card.Body>
-                                <Card.Title>{`${res.firstName} ${res.lastName}`}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{res.specialization}</Card.Subtitle>
                                 <Card.Subtitle className="mb-2 text-muted">{`${res.address} ${res.city}`}</Card.Subtitle>
                                 <Card.Subtitle className="mb-2 text-muted">{`${res.hourlyCharge}/hour`}</Card.Subtitle>
@@ -98,8 +98,8 @@ const Home = () => {
                 {showHospitals && hospitalResults && hospitalResults.map((res) => (
                     <Link to="/hospitalPublic" state={{hospitalID: res.accountID}} style={{textDecoration:"none", color:"black"}}>
                         <Card style={{ width: '800px', margin:"15px auto", textAlign:"left" }}>
+                        <Card.Header as="h5">{`${res.name}`}</Card.Header>
                             <Card.Body>
-                                <Card.Title>{`${res.name}`}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{`${res.address} ${res.city}`}</Card.Subtitle>
                                 <Card.Text>
                                 {res.personalBio}
