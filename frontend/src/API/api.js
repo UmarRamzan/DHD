@@ -141,17 +141,19 @@ export async function hospitalAddEntry(accountID, name, city, address) {
     return await axios.post(`${url}/hospital/hospitalAddEntry`, request)
 }
 
-// update column_name to new_value for patient_ID in the patient table
-// returns a json object containing "is_successful" and any possible "error_message"
-export async function patient_update_entry(patient_ID, column_name, new_value) {
+// update all values within a single row in the patient table
+// returns a json object containing "isSuccessful" and any possible "errorMessage"
+export async function patientUpdateEntry(patientID, firstName, lastName, dateOfBirth, gender) {
 
     const request = {
-        "patient_ID": patient_ID,
-        "column_name": column_name,
-        "new_value": new_value
+        "patientID": patientID,
+        "firstName": firstName,
+        "lastName": lastName,
+        "dateOfBirth": dateOfBirth,
+        "gender": gender
     }
 
-    return await axios.post(`${url}/patient/patient_update_entry`, request)
+    return await axios.post(`${url}/patient/patientUpdateEntry`, request)
 }
 
 export async function accountGetInfo(accountID) {

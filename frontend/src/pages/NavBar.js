@@ -46,7 +46,7 @@ const NavBar = () => {
                             <NavDropdown.Item as={NavLink} to="/profile">Profile</NavDropdown.Item>
                             <NavDropdown.Item as={NavLink} to="/settings">Settings</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item as={NavLink} to="/home" onClick={handleLogout}>Log Out</NavDropdown.Item>
+                            <NavDropdown.Item onClick={handleLogout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                         </div>
                         }

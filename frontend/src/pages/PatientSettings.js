@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { accountGetInfo, patientGetInfo, removeAccount, removePatient, updateAccount } from "../API/api";
+import { accountGetInfo, patientGetInfo, removeAccount, removePatient, updateAccount, patientUpdateEntry } from "../API/api";
 import { UserState } from "../UserState";
 import sha1 from 'sha1';
 
@@ -12,6 +12,9 @@ import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { FormGroup, Label, Input} from 'reactstrap';
 
 const PatientSettings = () => {
 
@@ -21,6 +24,7 @@ const PatientSettings = () => {
     const [accountData, setAccountData] = useState({})
 
     const [editing, setEditing] = useState(false)
+    const [editingPersonal, setEditingPersonal] = useState(false)
     const [changingPassword, setChangingPassword] = useState(false)
     const [deleting, setDeleting] = useState(false);
 
@@ -28,6 +32,11 @@ const PatientSettings = () => {
 
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
+
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [dateOfBirth, setDateOfBirth] = useState('')
+    const [gender, setGender] = useState('')
 
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
@@ -56,6 +65,36 @@ const PatientSettings = () => {
         setError('')
         setMessage('')
     }, [editing, deleting])
+
+    const handleEditPersonal = async () => {
+        console.log("here")
+        let res = await patientUpdateEntry(accountData.accountID, firstName, lastName, dateOfBirth, gender)
+        console.log(res)
+        if (res.data.isSuccessful) {
+
+            userData['firstName'] = firstName
+            userData['lastName'] = lastName
+            userData['dateOfBirth'] = dateOfBirth
+            userData['gender'] = gender
+
+            setUserData(userData)
+
+            setFirstName('')
+            setLastName('')
+            setDateOfBirth('')
+            setGender('')
+
+            
+            
+            //setEditingPersonal(false)
+
+            setMessage("Personal information updated")
+
+        } else {
+            setError(res.data.errorMessage)
+        } 
+        console.log(res)
+    }
 
     const handleEditConfirm = async () => {
         if (newEmail == '') {
@@ -199,7 +238,7 @@ const PatientSettings = () => {
                     }   
                 </Tab>
                 <Tab eventKey="personal" title="Personal">
-                    {!editing && userData && 
+                    {!editingPersonal && userData && 
                     <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
                         <Card.Body>
                             <Card.Title>Personal Information</Card.Title>
@@ -208,7 +247,57 @@ const PatientSettings = () => {
                             {userData.dateOfBirth && <Card.Text>{"Date of Birth: " + userData.dateOfBirth.substring(0,10)}</Card.Text>}
                             <Card.Text>{"Gender: " + userData.gender}</Card.Text>
                             
-                            <Button variant="outline-success" onClick={()=>{setEditing(true)}}>Edit</Button>
+                            <Button variant="outline-success" onClick={()=>{setEditingPersonal(true)}}>Edit</Button>
+                        </Card.Body>
+                    </Card>
+                    }
+
+                    {editingPersonal && 
+                        <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
+                        <Card.Body>
+                        <Card.Title>Edit Personal Information</Card.Title>
+                        <Form style={{textAlign:"left", width: "380px"}} onSubmit={handleEditPersonal}>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col}>
+                                <Form.Label>First Name</Form.Label>
+                                <Form.Control placeholder={userData.firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
+                            </Form.Group>
+                            
+                            <Form.Group as={Col}>
+                                <Form.Label>Last Name</Form.Label>
+                                <Form.Control placeholder={userData.lastName} onChange={(e)=>{setLastName(e.target.value)}} required/>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} xs={4}>
+                                <Form.Label style={{margin:"5px 10px"}}>Date of Birth</Form.Label>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <Input type="date" name="date" placeholder={userData.dateOfBirth} onChange={(e)=>{setDateOfBirth(e.target.value)}} required/>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3">
+                            <Form.Group as={Col} xs={4}>
+                                <Form.Label style={{margin:"5px 10px"}}>Gender</Form.Label>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                            <Form.Select placeholder={userData.gender} onChange={(e)=>{setGender(e.target.value)}} required>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Row>
+
+                        <Row className="mb-3" style={{marginLeft: "0px"}}>
+                            <Button onClick={()=>{setEditingPersonal(false)}} variant="outline-secondary" style={{width: "380px", margin: "5px 0px"}}>Cancel</Button>
+                            <Button variant="outline-success" type="submit" style={{width: "380px"}}>Confirm</Button>
+                        </Row>
+
+                    </Form>
+                    {error && <Alert variant='danger'>{error}</Alert>}
                         </Card.Body>
                     </Card>
                     }

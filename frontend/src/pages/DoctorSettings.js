@@ -131,6 +131,7 @@ const DoctorSettings = () => {
                     </Card>
                     }   
                 </Tab>
+                
                 <Tab eventKey="personal" title="Personal">
                     {!editing && userData && 
                     <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
