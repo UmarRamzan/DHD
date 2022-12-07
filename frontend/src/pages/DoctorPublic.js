@@ -43,7 +43,9 @@ const DoctorPublic = () => {
 
     const addBooking  = async () => {
 
-        if (bookingDate != '' && bookingTime != '') {
+        if (userState.accountID == null) {
+            setError('Login to create a booking')
+        } else if (bookingDate != '' && bookingTime != '') {
             let res = await createBooking(userState.accountID, doctorID, bookingDate, bookingTime)
 
             if (res.data.isSuccessful) {
@@ -73,10 +75,48 @@ const DoctorPublic = () => {
                             <p>{ data.charges }</p>
                         </Card.Body>
                     </Card>
+
+                    <Card style={{ width: '800px', margin: 'auto',textAlign: "left" }}>
+                        <Card.Body>
+                            <Row>
+                                <Col>
+                                    <Card.Title>Reviews</Card.Title>
+                                </Col>
+                                <Col xs={3}>
+                                    <Button variant="outline-success">Add Review</Button>
+                                </Col>
+                            </Row>  
+
+                            <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
+                                <Card.Body>
+                                    <Card.Title>Add Review</Card.Title>
+                                    <Form>
+                                        <Form.Group className="mb-3">
+                                            <Form.Control type="number" placeholder="Rating / 10" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                            <Form.Control as="textarea" placeholder="Review" rows={5} />
+                                        </Form.Group>
+                                        <Button style={{margin:"0px 5px"}} variant="outline-secondary">Cancel</Button>
+                                        <Button style={{margin:"0px 5px"}} variant="outline-success">Confirm</Button>
+                                    </Form>
+                                </Card.Body>
+                            </Card>
+
+                            <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
+                                <Card.Body>
+                                    <Card.Title>Patient Name</Card.Title>
+                                    <Card.Text>Rating</Card.Text>
+                                    <Card.Text>Review</Card.Text>
+                                    <Card.Text>Date</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Card.Body>
+                    </Card>
                 </Col>
 
-                <Col>
-                    <Card style={{ width: '400px', margin:"50px auto", textAlign: "left" }}>
+                <Col xs={4}>
+                    <Card style={{ width: '400px', margin:"50px 50px 50px 0px", textAlign: "left" }}>
                         <Card.Body>
                             <Card.Title>Booking</Card.Title>
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Date</h6>
@@ -96,6 +136,12 @@ const DoctorPublic = () => {
                             
                         </Card.Body>
                     </Card>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col xs={8}>
+                    
                 </Col>
             </Row>
         </div>
