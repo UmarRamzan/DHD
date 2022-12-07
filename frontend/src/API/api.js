@@ -294,3 +294,12 @@ export async function reviewAddEntry(patientID, doctorID, rating, reviewText) {
 
     return await axios.post(`${url}/general/reviewAddEntry`, request)
 }
+
+export async function getReviews(doctorID) {
+
+    const request = {
+        "doctorID": doctorID,
+    }
+
+    return await axios.post(`${url}/general/getReviews`, request)
+}

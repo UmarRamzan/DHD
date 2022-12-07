@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { doctorGetInfo, reviewAddEntry } from "../API/api";
+import { doctorGetInfo, getReviews, reviewAddEntry } from "../API/api";
 import { createBooking } from "../API/api";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -20,6 +20,8 @@ const DoctorPublic = () => {
     const userState = useContext(UserState)
 
     const [data, setData] = useState({})
+    const [reviewList, setReviewList] = useState([])
+
     const [bookingDate, setBookingDate] = useState('')
     const [bookingTime, setBookingTime] = useState('')
 
@@ -37,14 +39,21 @@ const DoctorPublic = () => {
     let doctorID = location.state.doctorID
 
     useEffect(() => {
+        let data = doctorGetInfo(doctorID)
+        data.then((res) => {setData(res.data)})
+        let reviewData = getReviews(doctorID)
+        reviewData.then((res) => {setReviewList(res.data.reviews)})
+    }, [])
+
+    useEffect(() => {
+        let reviewData = getReviews(doctorID)
+        reviewData.then((res) => {setReviewList(res.data.reviews)})
+    }, [addingReview])
+
+    useEffect(() => {
         setError('')
         setMessage('')
     }, [bookingDate, bookingTime])
-
-    useEffect(() => {
-        let data = doctorGetInfo(doctorID)
-        data.then((res) => {setData(res.data)})
-    }, [])
 
     const addReview = async () => {
         let patientID = userState.accountID
@@ -82,8 +91,9 @@ const DoctorPublic = () => {
             <Row>
                 <Col xs={8}>
                     <Card style={{ width: '800px', margin:"50px auto", textAlign: "left" }}>
+                        <Card.Header as="h2">{`${data.firstName} ${data.lastName}`}</Card.Header>
+                    
                         <Card.Body>
-                            <Card.Title>{ `${data.firstName} ${data.lastName}`}</Card.Title>
                             <p>{ data.specialization }</p>
                             <p>{ `${data.address} ${data.city}` }</p>
                             <p>{ data.timings }</p>
@@ -94,20 +104,23 @@ const DoctorPublic = () => {
                     </Card>
 
                     <Card style={{ width: '800px', margin: 'auto',textAlign: "left" }}>
-                        <Card.Body>
-                            <Row style={{ width: '700px', margin: 'auto',textAlign: "left" }}>
+                        <Card.Header as="h5">
+                        <Row style={{ width: '700px', margin: 'auto',textAlign: "left" }}>
                                 <Col>
-                                    <Card.Title>Reviews</Card.Title>
+                                    <Card.Title as="h5" style={{marginTop:"10px"}}>Reviews</Card.Title>
                                 </Col>
                                 <Col xs={3}>
-                                    {!addingReview && <Button variant="outline-success" onClick={()=>{setAddingReview(true)}}>Add Review</Button>}
+                                    {!addingReview && <Button style={{marginTop:"3px"}} variant="outline-success" onClick={()=>{setAddingReview(true)}}>Add Review</Button>}
                                 </Col>
                             </Row>  
+                        </Card.Header>
+                        <Card.Body>
+                            
                             
                             { addingReview &&
                             <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
+                                <Card.Header as="h5">Add Review</Card.Header>
                                 <Card.Body>
-                                    <Card.Title>Add Review</Card.Title>
                                     <Form>
                                         <Form.Group className="mb-3">
                                             <Form.Control type="number" placeholder="Rating / 10" onChange={(e)=>{setRating(e.target.value)}}/>
@@ -121,23 +134,27 @@ const DoctorPublic = () => {
                                 </Card.Body>
                             </Card>
                             }
-
-                            <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
+                            {console.log("Review List: ",reviewList)}
+                            {reviewList && reviewList.map((review)=> (
+                                <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
                                 <Card.Body>
-                                    <Card.Title>Patient Name</Card.Title>
-                                    <Card.Text>Rating</Card.Text>
-                                    <Card.Text>Review</Card.Text>
+                                    <Card.Title>{review.patientID}</Card.Title>
+                                    <Card.Text>{review.rating}</Card.Text>
+                                    <Card.Text>{review.reviewText}</Card.Text>
                                     <Card.Text>Date</Card.Text>
                                 </Card.Body>
                             </Card>
+                            ))}
+                            
                         </Card.Body>
                     </Card>
                 </Col>
 
                 <Col xs={4}>
                     <Card style={{ width: '400px', margin:"50px 0px", textAlign: "left" }}>
+                        <Card.Header as="h5">Booking</Card.Header>
                         <Card.Body>
-                            <Card.Title>Booking</Card.Title>
+                            
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Date</h6>
                             <Input type="date" name="date" placeholder="date placeholder" onChange={(e)=>{setBookingDate(e.target.value)}}/>
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Time</h6>

@@ -37,6 +37,7 @@ app.post('/api/general/accountGetInfo', router)
 app.post('/api/general/searchSpecialization', router)
 app.post('/api/general/associateDoctorHospital', router)
 app.post('/api/general/reviewAddEntry', router)
+app.post('/api/general/getReviews', router)
 
 app.post('/api/general/createBooking', router)
 app.post('/api/general/updateBooking', router)

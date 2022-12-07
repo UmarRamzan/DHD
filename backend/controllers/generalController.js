@@ -481,7 +481,7 @@ export async function getBookings(req, response) {
 }
 
 export async function reviewAddEntry(req, response) {
-    console.log(req)
+
     let patientID = req.body.patientID
     let doctorID = req.body.doctorID
     let rating = req.body.rating
@@ -506,6 +506,40 @@ export async function reviewAddEntry(req, response) {
 
             let returnMessage = {
                 "isSuccessful": true
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
+export async function getReviews(req, response) {
+
+    let doctorID = req.body.doctorID
+
+    let getReviews = `SELECT * FROM Review WHERE doctorID = ?`
+    let values = [doctorID]
+
+    let connection = validateConnection()
+    connection.query(getReviews, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not get reviews"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            console.log(res)
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "reviews": res
             }
 
             response.send(returnMessage)
