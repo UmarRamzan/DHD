@@ -345,37 +345,6 @@ export async function searchSpecialization(req, response) {
     connection.end()
 }
 
-export async function associateDoctorHospital(req, response) {
-
-    let doctor_ID = req.body.doctor_ID
-    let hospital_ID = req.body.hospital_ID
-
-    let insert_query = `INSERT INTO doctor_hospital VALUES (?)`
-    let values = [doctor_ID, hospital_ID]
-
-    let connection = validateConnection()
-
-    connection.query(insert_query, [values], (err, res) => {
-        if (err) {
-            let return_message = {
-                "is_successful": false
-            }
-
-            response.send(return_message)
-            console.log(err)
-            
-        } else {
-            let return_message = {
-                "is_successful": true
-            }
-
-            response.send(return_message)
-        }
-    })
-
-    connection.end()
-}
-
 export async function createBooking(req, response) {
 
     let patientID = req.body.patientID
@@ -611,4 +580,37 @@ export async function removeReview(req, response) {
             connection.end()
         }
     })
+}
+
+export async function doctorHospitalAddEntry(req, response) {
+
+    let doctorID = req.body.doctorID
+    let hospitalID = req.body.hospitalID
+    let department = req.body.department
+
+    let addEntry = `INSERT INTO DoctorHospital VALUES (?)`
+    let values = [doctorID, hospitalID, department]
+
+    let connection = validateConnection()
+
+    connection.query(addEntry, [values], (err, res) => {
+        if (err) {
+            let return_message = {
+                "isSuccessful": false,
+                "errorMessage": "Could not add entry"
+            }
+
+            response.send(return_message)
+            console.log(err)
+            
+        } else {
+            let return_message = {
+                "is_successful": true
+            }
+
+            response.send(return_message)
+        }
+    })
+
+    connection.end()
 }

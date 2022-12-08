@@ -238,14 +238,15 @@ export async function hospitalGetInfo(accountID) {
 
 // associate the specified doctor and hospital by adding an entry to the doctor_hospital table
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function associate_doctor_hospital(doctor_ID, hospital_ID) {
+export async function doctorHospitalAddEntry(doctorID, hospitalID, department) {
 
     const request = {
-        "doctor_ID": doctor_ID,
-        "hospital_ID": hospital_ID
+        "doctorID": doctorID,
+        "hospitalID": hospitalID,
+        "department": department
     }
 
-    return await axios.post(`${url}/general/associate_doctor_hospital`, request)
+    return await axios.post(`${url}/general/doctorHospitalAddEntry`, request)
 }
 
 // create a new booking for the specified patient and doctor at the specified time

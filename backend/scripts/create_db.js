@@ -8,7 +8,7 @@ config({path:".env"});
 const connection = createConnection({
     host: "localhost",
     user: "root",
-    password: "khizerer",
+    password: "pass",
 });
 
 // Process a general sql query and throw any resulting errors

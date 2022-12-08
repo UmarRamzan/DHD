@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { accountGetInfo, doctorGetInfo, removeAccount, removeDoctor, updateAccount, doctorUpdateEntry } from "../API/api";
+import { accountGetInfo, doctorGetInfo, removeAccount, removeDoctor, updateAccount, doctorUpdateEntry, doctorHospitalAddEntry } from "../API/api";
 import { UserState } from "../UserState";
 import sha1 from 'sha1';
 
@@ -16,6 +16,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormGroup, Label, Input} from 'reactstrap';
 import Table from 'react-bootstrap/Table';
+import { Link } from "react-router-dom";
+import CloseButton from 'react-bootstrap/CloseButton';
 
 const HospitalSettings = () => {
 
@@ -27,7 +29,14 @@ const HospitalSettings = () => {
     const [editing, setEditing] = useState(false)
     const [editingPersonal, setEditingPersonal] = useState(false)
     const [changingPassword, setChangingPassword] = useState(false)
-    const [deleting, setDeleting] = useState(false);
+    const [deleting, setDeleting] = useState(false)
+    const [addingHospital, setAddingHospital] = useState(false)
+    const [deletingHospital, setDeletingHospital] = useState(false)
+
+    const [hospitals, setHospitals] = useState([])
+
+    const [hospital, setHospital] = useState('')
+    const [department, setDepartment] = useState('')
 
     const [newEmail, setNewEmail] = useState('')
 
@@ -89,7 +98,10 @@ const HospitalSettings = () => {
 
     }, [editing, deleting, editingPersonal])
 
-
+    const addHospital = async () => {
+        let res = await doctorHospitalAddEntry(userState.accountID, 1, department)
+        console.log("Adding Hospital")
+    }
     const handleEditPersonal = async () => {
 
         let online = onlineAvailability? 1 : 0
@@ -371,6 +383,7 @@ const HospitalSettings = () => {
                     }
                 </Tab>
                 <Tab eventKey="hospitals" title="Hospitals">
+                    
                 <Table bordered hover style={{ width: '650px', margin:"0px 100px"}}>
                     <thead>
                         <tr>
@@ -380,26 +393,49 @@ const HospitalSettings = () => {
                     </thead>
                     <tbody>
                         <tr>
-                        <td>1</td>
+                            
+                        <td><Link onClick={()=>{console.log("Clicked")}}>1</Link></td>
                         <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <CloseButton variant="black" />
                         </tr>
                         <tr>
                         <td>2</td>
                         <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
+                        <CloseButton variant="black" />
+
                         </tr>
                         <tr>
                         <td>3</td>
-                        <td colSpan={2}>Larry the Bird</td>
-                        <td>@twitter</td>
+                        <td colSpan={1}>Larry the Bird</td>
+                        <CloseButton variant="black" />
+
                         </tr>
                     </tbody>
                     </Table>
+
+                    <Button variant="outline-danger" >Delete</Button>
+                    <Button variant="outline-success" onClick={()=>{setAddingHospital(true)}}>Add</Button>
+                    
                 </Tab>
             </Tabs>
+
+            { addingHospital &&
+                <Card style={{ width: '300px', margin: '20px auto',textAlign: "left" }}>
+                    <Card.Header as="h5">Add Hospital</Card.Header>
+                    <Card.Body>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Control type="input" placeholder="Hospital" onChange={(e)=>{setHospital(e.target.value)}}/>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Control as="input" placeholder="Department" rows={3} onChange={(e)=>{setDepartment(e.target.value)}} />
+                            </Form.Group>
+                            <Button style={{margin:"0px 5px"}} variant="outline-secondary" onClick={()=>{setAddingHospital(false)}}>Cancel</Button>
+                            <Button style={{margin:"0px 5px"}} variant="outline-success" onClick={addHospital}>Confirm</Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            }
         </div>
      );
 }
