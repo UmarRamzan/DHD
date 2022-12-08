@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { getBookings, cancelBooking } from "../API/api";
+import { getBookings, cancelBooking, updateBooking } from "../API/api";
 import { Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
@@ -17,11 +17,9 @@ const Bookings = () => {
     const [rescheduling, setRescheduling] = useState(false)
 
     const [selectedBookingID, setSelectedBookingID] = useState('')
+    const [selectedDoctorID, setSelectedDoctorID] = useState('')
     const [selectedBookingDate, setSelectedBookingDate] = useState('')
     const [selectedBookingTime, setSelectedBookingTime] = useState('')
-
-    const [bookingDate, setBookingDate] = useState('')
-    const [bookingTime, setBookingTime] = useState('')
 
     useEffect(() => {
 
@@ -34,8 +32,25 @@ const Bookings = () => {
         })
     }, [])
 
-    const handleReschedule = (bookingID) => {
-        console.log(bookingID)
+    useEffect(() => {
+
+        let data = getBookings(userState.accountID, userState.accountType)
+
+        data.then((res) => {
+            if (res.data.isSuccessful) {
+                setBookings(res.data.bookings)
+            }
+        })
+    }, [rescheduling])
+
+    const handleReschedule = async (bookingID) => {
+        let res = await updateBooking(bookingID, userState.accountID, selectedDoctorID, selectedBookingDate, selectedBookingTime)
+        
+        if (!res.data.isSuccessful) {
+            console.log(res.data.errorMessage)
+        } else {
+            setRescheduling(false)
+        }
     }
     const handleCancel = (bookingID) => {
         cancelBooking(bookingID)
@@ -58,7 +73,7 @@ const Bookings = () => {
                                 </Card.Text>
                                 
                                     <div className="editBooking">
-                                        <Button variant="outline-secondary" onClick={()=>{setRescheduling(true); setSelectedBookingID(res.bookingID); setSelectedBookingDate(res.date); setSelectedBookingTime(res.time)}} style={{margin: "10px 2px"}}>Reschedule</Button>
+                                        <Button variant="outline-secondary" onClick={()=>{setRescheduling(true); setSelectedBookingID(res.bookingID); setSelectedBookingDate(res.date); setSelectedBookingTime(res.time); setSelectedDoctorID(res.doctorID)}} style={{margin: "10px 2px"}}>Reschedule</Button>
                                         <Button variant="outline-danger" onClick={() =>{handleCancel(res.bookingID)}} style={{margin: "10px 2px"}}>Cancel</Button>
                                     </div>
                                 </Card.Body>

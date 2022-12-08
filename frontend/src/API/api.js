@@ -156,6 +156,18 @@ export async function patientUpdateEntry(patientID, firstName, lastName, dateOfB
     return await axios.post(`${url}/patient/patientUpdateEntry`, request)
 }
 
+export async function updateBooking(bookingID, patientID, doctorID, date, time) {
+    const request = {
+        "bookingID": bookingID,
+        "patientID": patientID,
+        "doctorID": doctorID,
+        "date": date,
+        "time": time
+    }
+
+    return await axios.post(`${url}/general/updateBooking`, request)
+}
+
 export async function doctorUpdateEntry(doctorID, firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, onlineAvailability, hourlyCharge) {
 
     const request = {

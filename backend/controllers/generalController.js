@@ -410,7 +410,42 @@ export async function createBooking(req, response) {
     })
 }
 
-export async function updateBooking(req, response) {}
+export async function updateBooking(req, response) {
+
+    console.log(req.body)
+
+    let bookingID = req.body.bookingID
+    let patientID = req.body.patientID
+    let doctorID = req.body.doctorID
+    let date = req.body.date.substring(0,10)
+    let time = req.body.time
+
+    let updateQuery = `UPDATE Booking SET patientID = ?, doctorID = ?, date = ?, time = ? WHERE bookingID = ?`
+    let values = [patientID, doctorID, date, time, bookingID]
+
+    let connection = validateConnection()
+    connection.query(updateQuery, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not update booking"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
 
 export async function cancelBooking(req, response) {
     let bookingID = req.body.bookingID
