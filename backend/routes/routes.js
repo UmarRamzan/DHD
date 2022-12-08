@@ -28,6 +28,7 @@ router.post('/api/general/reviewAddEntry', generalController.reviewAddEntry)
 router.post('/api/general/getReviews', generalController.getReviews)
 router.post('/api/general/removeReview', generalController.removeReview)
 router.post('/api/general/getRecord', generalController.getRecord)
+router.post('/api/general/getRecords', generalController.getRecords)
 
 
 // patient functions

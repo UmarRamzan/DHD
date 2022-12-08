@@ -593,6 +593,46 @@ export async function getRecord(req, response) {
     })
 }
 
+export async function getRecords(req, response) {
+
+    let doctorID = req.body.doctorID
+
+    let query = `SELECT * FROM Review WHERE rating = -1 AND doctorID = ?`
+    let values = [doctorID]
+
+    let connection = validateConnection()
+    connection.query(query, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not get records"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            if (res.length != 0){
+                let returnMessage = {
+                    "isSuccessful": true,
+                    "records":res
+                
+            }
+            response.send(returnMessage)
+            }else{
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "idk"
+                }
+            response.send(returnMessage)
+            }
+            connection.end()
+        }
+    })
+}
+
 export async function removeReview(req, response) {
 
     let reviewID = req.body.reviewID

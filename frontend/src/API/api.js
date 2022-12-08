@@ -358,12 +358,20 @@ export async function removeReview(reviewID) {
     return await axios.post(`${url}/general/removeReview`, request)
 }
 
-export async function getRecord(patientID,reviewID) {
+export async function getRecord(patientID) {
 
     const request = {
         "patientID":patientID,
-        "reviewID": reviewID
     }
 
     return await axios.post(`${url}/general/getRecord`, request)
+}
+
+export async function getRecords(doctorID) {
+
+    const request = {
+        "doctorID":doctorID,
+    }
+
+    return await axios.post(`${url}/general/getRecords`, request)
 }
