@@ -15,6 +15,7 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormGroup, Label, Input} from 'reactstrap';
+import Table from 'react-bootstrap/Table';
 
 const HospitalSettings = () => {
 
@@ -368,6 +369,35 @@ const HospitalSettings = () => {
                         </Card.Body>
                     </Card>
                     }
+                </Tab>
+                <Tab eventKey="hospitals" title="Hospitals">
+                <Table bordered hover style={{ width: '650px', margin:"0px 100px"}}>
+                    <thead>
+                        <tr>
+                        <th>Hospital</th>
+                        <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        </tr>
+                        <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                        </tr>
+                        <tr>
+                        <td>3</td>
+                        <td colSpan={2}>Larry the Bird</td>
+                        <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                    </Table>
                 </Tab>
             </Tabs>
         </div>

@@ -63,6 +63,7 @@ const createHospital = `CREATE TABLE IF NOT EXISTS Hospital (
 const createDoctorHospital = `CREATE TABLE IF NOT EXISTS DoctorHospital (
     doctorID INT,
     hospitalID INT,
+    department VARCHAR(50),
     PRIMARY KEY (doctorID, hospitalID)
 )`
 

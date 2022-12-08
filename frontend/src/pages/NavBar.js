@@ -43,7 +43,7 @@ const NavBar = () => {
                         {accountID &&
                         <div className="useroptions">
                         <NavDropdown title= {accountName} id="collasible-nav-dropdown">
-                            <NavDropdown.Item as={NavLink} to="/profile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item as={NavLink} to="/profile" state={{accountID: userState.accountID}}>Profile</NavDropdown.Item>
                             <NavDropdown.Item as={NavLink} to="/settings">Settings</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={handleLogout}>Log Out</NavDropdown.Item>

@@ -77,6 +77,8 @@ function App() {
                 <Route exact path="/doctorPublic" element={<DoctorPublic/>}></Route>
                 <Route exact path="/hospitalPublic" element={<HospitalPublic/>}></Route>
 
+                <Route exact path="/profile" element={userState.accountType == 'doctor'? <DoctorPublic/> : <HospitalPublic/>}></Route>
+
                 <Route exact path="/settings" element={<Settings/>}></Route>
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
                 <Route exact path="/doctorSettings" element={<DoctorSettings/>}></Route>

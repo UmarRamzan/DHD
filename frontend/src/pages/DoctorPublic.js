@@ -2,14 +2,12 @@ import { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { doctorGetInfo, getReviews, removeReview, reviewAddEntry } from "../API/api";
 import { createBooking } from "../API/api";
-import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import TimePicker from 'react-time-picker'
 import { UserState } from "../UserState";
 
 import Card from 'react-bootstrap/Card';
 import Button from "react-bootstrap/Button";
-import { FormGroup, Label, Input} from 'reactstrap';
+import { Input } from 'reactstrap';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
