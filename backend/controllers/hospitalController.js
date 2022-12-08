@@ -34,7 +34,7 @@ export async function hospitalAddEntry(req, response) {
     
     let connection = validateConnection()
 
-    let seedQuery = `INSERT INTO hospital (accountID, name, city, address) VALUES (?)`
+    let seedQuery = `INSERT INTO Hospital (accountID, name, city, address) VALUES (?)`
     let values = [accountID, name, city, address]
 
     connection.query(seedQuery, [values], (err, res) => {
@@ -102,7 +102,7 @@ export async function hospitalGetInfo(req, response) {
 
     let accountID = req.body.accountID
 
-    let getInfo = `SELECT * FROM hospital WHERE accountID = ?`
+    let getInfo = `SELECT * FROM Hospital WHERE accountID = ?`
     let values = [accountID]
 
     let connection = validateConnection()

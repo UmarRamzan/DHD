@@ -20,6 +20,7 @@ import Bookings from './pages/Bookings';
 
 import { UserContext } from './UserContext';
 import { UserState } from './UserState';
+import AddRecord from './pages/AddRecord';
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
                 <Route exact path="/doctorSettings" element={<DoctorSettings/>}></Route>
                 <Route exact path="/hospitalSettings" element={<HospitalSettings/>}></Route>
+                <Route exact path="/addRecord" element={<AddRecord/>}></Route>
 
                 <Route path="*" element={<NotFound/>}></Route>
             </Routes>
