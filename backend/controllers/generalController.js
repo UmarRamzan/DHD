@@ -352,9 +352,10 @@ export async function createBooking(req, response) {
     let doctorID = req.body.doctorID
     let date = req.body.date
     let time = req.body.time
+    let online = req.body.online
 
-    let insertQuery = `INSERT INTO Booking (patientID, doctorID, date, time) VALUES (?)`
-    let values = [patientID, doctorID, date, time]
+    let insertQuery = `INSERT INTO Booking (patientID, doctorID, date, time, online) VALUES (?)`
+    let values = [patientID, doctorID, date, time, online]
 
     let connection = validateConnection()
     connection.query(insertQuery, [values], (err, res) => {
@@ -389,9 +390,10 @@ export async function updateBooking(req, response) {
     let doctorID = req.body.doctorID
     let date = req.body.date.substring(0,10)
     let time = req.body.time
+    let online = req.body.online
 
-    let updateQuery = `UPDATE Booking SET patientID = ?, doctorID = ?, date = ?, time = ? WHERE bookingID = ?`
-    let values = [patientID, doctorID, date, time, bookingID]
+    let updateQuery = `UPDATE Booking SET patientID = ?, doctorID = ?, date = ?, time = ?, online = ? WHERE bookingID = ?`
+    let values = [patientID, doctorID, date, time, online, bookingID]
 
     let connection = validateConnection()
     connection.query(updateQuery, values, (err, res) => {

@@ -251,13 +251,14 @@ export async function doctorHospitalAddEntry(doctorID, hospitalID, department) {
 
 // create a new booking for the specified patient and doctor at the specified time
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function createBooking(patientID, doctorID, date, time) {
+export async function createBooking(patientID, doctorID, date, time, online) {
 
     const request = {
         "patientID": patientID,
         "doctorID": doctorID,
         "date": date,
-        "time": time
+        "time": time,
+        "online": online
     }
 
     return await axios.post(`${url}/general/createBooking`, request)

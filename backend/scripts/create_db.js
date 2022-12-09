@@ -74,6 +74,7 @@ const createBooking = `CREATE TABLE IF NOT EXISTS Booking (
     doctorID INT,
     date DATE,
     time TIME,
+    online INT,
     PRIMARY KEY (bookingID)
 )`
 

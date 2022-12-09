@@ -106,7 +106,7 @@ const Bookings = () => {
                             <Card.Body>
                                 <Card.Title>{'Patient: ' + res.patientName + (userState.accountType != 'doctor'? ' Doctor: ' + res.doctorName : '') }</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{'Date: ' + res.date.substring(0,10) + ' Time: ' + res.time}</Card.Subtitle>
-
+                                <Card.Subtitle className="mb-2 text-muted">{res.online? 'Online' : 'In Person'}</Card.Subtitle>
                                 
                                     <div className="editBooking">
                                         <Button variant="outline-secondary" onClick={()=>{setRescheduling(true); setSelectedBookingID(res.bookingID); setSelectedBookingDate(res.date); setSelectedBookingTime(res.time); setSelectedDoctorID(res.doctorID)}} style={{margin: "10px 2px"}}>Reschedule</Button>
@@ -148,15 +148,15 @@ const Bookings = () => {
 
             <Modal show={deleting} onHide={()=>{setDeleting(false)}}>
                 <Modal.Header closeButton>
-                <Modal.Title>Delete Account</Modal.Title>
+                <Modal.Title>Cancel Booking</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you wish to delete this account</Modal.Body>
+                <Modal.Body>Are you sure you wish to cancel this booking</Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={()=>{setDeleting(false)}}>
                     Close
                 </Button>
                 <Button variant="danger" onClick={handleDelete}>
-                    Delete
+                    Cancel
                 </Button>
                 </Modal.Footer>
             </Modal>

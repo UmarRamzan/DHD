@@ -24,6 +24,7 @@ const DoctorPublic = () => {
 
     const [bookingDate, setBookingDate] = useState('')
     const [bookingTime, setBookingTime] = useState('')
+    const [bookingOnline, setBookingOnline] = useState('1')
 
     const [rating, setRating] = useState(null)
     const [review, setReview] = useState('')
@@ -84,7 +85,8 @@ const DoctorPublic = () => {
         if (userState.accountID == null) {
             setError('Login to create a booking')
         } else if (bookingDate != '' && bookingTime != '') {
-            let res = await createBooking(userState.accountID, doctorID, bookingDate, bookingTime)
+
+            let res = await createBooking(userState.accountID, doctorID, bookingDate, bookingTime, bookingOnline)
 
             if (res.data.isSuccessful) {
                 setMessage("Booking has been created")
@@ -186,10 +188,11 @@ const DoctorPublic = () => {
                             <h6 style={{margin:"10px 0px 5px 0px"}}>Time</h6>
                             <Input type="time" name="time" placeholder="time placeholder" onChange={(e)=>{setBookingTime(e.target.value)}}/>
 
-                        <Form.Select style={{margin:"20px 0px"}}required>
-                            <option value="online">Online</option>
-                            <option value="inPerson">In Person</option>
+                        <Form.Select value={bookingOnline} onChange={(e)=>{setBookingOnline(e.target.value)}} style={{margin:"20px 0px"}}required>
+                            <option value="1">Online</option>
+                            <option value="0">In Person</option>
                         </Form.Select>
+
                             {userState.accountType!='patient' &&
                             <OverlayTrigger key="top" placement="bottom"
                             overlay={
