@@ -18,8 +18,7 @@
         <% if(data.length){ for(var i = 0; i < data.length; i++) {%>
         <tr>
           <th><%= (i+1) %></th>
-          <td><%= data[i].name%></td>
-          <td><%= data[i].email%></td>
+          <td><%= data[i].accountID%></td>
           <td>
             <a class="btn btn-dark" href="../remove/<%=data[i].id%>"
               >Delete</a
