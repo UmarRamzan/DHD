@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { accountGetInfo, doctorGetInfo, removeAccount, removeDoctor, updateAccount, doctorUpdateEntry, doctorHospitalAddEntry } from "../API/api";
+import { accountGetInfo, doctorGetInfo, hospitalGetInfo, removeAccount, removeDoctor, updateAccount, doctorUpdateEntry, doctorHospitalAddEntry, getDoctorHospitalDoctor, removeDoctorHospital } from "../API/api";
 import { UserState } from "../UserState";
 import sha1 from 'sha1';
 
@@ -19,7 +19,7 @@ import Table from 'react-bootstrap/Table';
 import { Link } from "react-router-dom";
 import CloseButton from 'react-bootstrap/CloseButton';
 
-const HospitalSettings = () => {
+const DoctorSettings = () => {
 
     const userState = useContext(UserState)
 
@@ -30,6 +30,7 @@ const HospitalSettings = () => {
     const [editingPersonal, setEditingPersonal] = useState(false)
     const [changingPassword, setChangingPassword] = useState(false)
     const [deleting, setDeleting] = useState(false)
+    const [removing, setRemoving] = useState(false)
     const [addingHospital, setAddingHospital] = useState(false)
     const [deletingHospital, setDeletingHospital] = useState(false)
 
@@ -51,6 +52,8 @@ const HospitalSettings = () => {
     const [onlineAvailability, setOnlineAvailability] = useState(false)
     const [hourlyCharge, setHourlyCharge] = useState('')
 
+    const [departmentList, setDepartmentList] = useState([])
+
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
 
@@ -63,12 +66,28 @@ const HospitalSettings = () => {
         if (savedState) {
             let doctorData = doctorGetInfo(savedState.accountID)
             let accountData = accountGetInfo(savedState.accountID)
+            let departmentData = getDoctorHospitalDoctor(savedState.accountID)
 
             doctorData.then((res) => {setUserData(res.data)})
             accountData.then((res) => {setAccountData(res.data)})
+            departmentData.then(async (res)=>{
+                departmentList.length = 0
+                setDepartmentList(departmentList)
+                await res.data.data.map(async (item, idx)=>{
+                    let name = await hospitalName(item.hospitalID)
+                    res.data.data[idx].hospitalName = name
+                    console.log(res.data.data[idx])
+                    setDepartmentList(res.data.data)
+                    
+                })   
+            })
         }
-
     }, [])
+
+    const hospitalName = async (hospitalID) => {
+        let res = await hospitalGetInfo(hospitalID)
+        return (res.data.name)
+    }
 
     useEffect(() => {
         setError('')
@@ -97,7 +116,6 @@ const HospitalSettings = () => {
     const handleEditPersonal = async () => {
 
         let online = onlineAvailability? 1 : 0
-        console.log(userState)
 
         let res = await doctorUpdateEntry(userState.accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, online, hourlyCharge)
 
@@ -107,7 +125,16 @@ const HospitalSettings = () => {
         } else {
             setError(res.data.errorMessage)
         } 
-        console.log(res)
+    }
+
+    const handleRemove = async (doctorHospitalID) => {
+        console.log("Clicked", doctorHospitalID)
+        let res = await removeDoctorHospital(doctorHospitalID)
+        if (!res.data.isSuccessful) {
+            console.log(res.data.errorMessage)
+        } else {
+            setDepartmentList(departmentList.filter((item) => item.doctorHospitalID != doctorHospitalID))
+        }
     }
 
     const handleEditConfirm = async () => {
@@ -384,30 +411,22 @@ const HospitalSettings = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        
+                           {departmentList && departmentList.map((item)=>(
+                            <tr>
+                            <td>{item.hospitalName}</td>
+                            <td>{item.department}</td>
+                            {removing && <td><CloseButton onClick={()=>handleRemove(item.doctorHospitalID)} variant="black" /></td>}
                             
-                        <td><Link onClick={()=>{console.log("Clicked")}}>1</Link></td>
-                        <td>Mark</td>
-                        <CloseButton variant="black" />
-                        </tr>
-                        <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <CloseButton variant="black" />
+                            </tr>
+                           ))} 
 
-                        </tr>
-                        <tr>
-                        <td>3</td>
-                        <td colSpan={1}>Larry the Bird</td>
-                        <CloseButton variant="black" />
-
-                        </tr>
                     </tbody>
                     </Table>
 
-                    <Button variant="outline-danger" >Delete</Button>
-                    <Button variant="outline-success" onClick={()=>{setAddingHospital(true)}}>Add</Button>
-                    
+                    {removing && <Button style={{marginRight:"105px", marginTop: "10px"}} variant="outline-secondary" onClick={()=>{setRemoving(false)}}>Cancel</Button>}
+                    {!removing && <Button style={{marginRight:"120px", marginTop: "10px"}} variant="outline-danger" onClick={()=>{setRemoving(true)}}>Remove</Button>}
+                      
                 </Tab>
             </Tabs>
 
@@ -416,4 +435,4 @@ const HospitalSettings = () => {
      );
 }
  
-export default HospitalSettings
+export default DoctorSettings

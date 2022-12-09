@@ -49,7 +49,9 @@ app.post('/api/general/getBookings', router)
 
 app.post('/api/general/doctorHospitalAddEntry', router)
 app.post('/api/general/getDoctorHospital', router)
+app.post('/api/general/getDoctorHospitalDoctor', router)
 app.post('/api/general/getDepartments', router)
+app.post('/api/general/removeDoctorHospital', router)
 
 app.post('/api/patient/patientAddEntry', router)
 app.post('/api/patient/patientUpdateEntry', router)

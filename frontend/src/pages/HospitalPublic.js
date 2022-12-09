@@ -70,6 +70,13 @@ const HospitalPublic = () => {
 
     const addHospital = async () => {
         let res = await doctorHospitalAddEntry(userState.accountID, hospitalID, department)
+        if (departmentList[department]) {
+            departmentList[department].push([userState.accountID, await doctorName(userState.accountID)])
+        } else {
+            departmentList[department] = [[userState.accountID, await doctorName(userState.accountID)]]
+        }
+
+        setDepartmentList(departmentList)
         setAddingHospital(false)
     }
 
@@ -77,7 +84,7 @@ const HospitalPublic = () => {
         <div className="hospitalPublic">
             <Row style={{marginTop: "50px"}}>
                 <Col >
-                <Card style={{ width: '800px', margin:"35px auto", textAlign: "left" }}>
+                <Card style={{ width: '800px', margin:"10px 0px 0px 100px", textAlign: "left" }}>
                     <Card.Header as="h2">{`${data.name}`}</Card.Header>
                 
                     <Card.Body>
@@ -112,7 +119,7 @@ const HospitalPublic = () => {
                     </Row>
 
                     { addingHospital &&
-                    <Card style={{ width: '300px', margin: '20px auto',textAlign: "left" }}>
+                    <Card style={{ width: '500px', margin: '20px auto',textAlign: "left" }}>
                         
                         <Card.Body>
                             <Form>

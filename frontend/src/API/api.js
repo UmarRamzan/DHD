@@ -358,7 +358,6 @@ export async function removeReview(reviewID) {
     return await axios.post(`${url}/general/removeReview`, request)
 }
 
-
 export async function getRecord(patientID) {
 
     const request = {
@@ -376,6 +375,7 @@ export async function getRecords(doctorID) {
 
     return await axios.post(`${url}/general/getRecords`, request)
 }
+
 export async function getDepartments(hospitalID) {
 
     const request = {
@@ -393,4 +393,23 @@ export async function getDoctorHospital(hospitalID) {
 
     return await axios.post(`${url}/general/getDoctorHospital`, request)
 
+}
+
+export async function getDoctorHospitalDoctor(doctorID) {
+
+    const request = {
+        "doctorID": doctorID,
+    }
+
+    return await axios.post(`${url}/general/getDoctorHospitalDoctor`, request)
+
+}
+
+export async function removeDoctorHospital(doctorHospitalID) {
+
+    const request = {
+        "doctorHospitalID": doctorHospitalID,
+    }
+
+    return await axios.post(`${url}/general/removeDoctorHospital`, request)
 }
