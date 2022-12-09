@@ -33,11 +33,6 @@ const HospitalSettings = () => {
     const [addingHospital, setAddingHospital] = useState(false)
     const [deletingHospital, setDeletingHospital] = useState(false)
 
-    const [hospitals, setHospitals] = useState([])
-
-    const [hospital, setHospital] = useState('')
-    const [department, setDepartment] = useState('')
-
     const [newEmail, setNewEmail] = useState('')
 
     const [oldPassword, setOldPassword] = useState('')
@@ -98,10 +93,7 @@ const HospitalSettings = () => {
 
     }, [editing, deleting, editingPersonal])
 
-    const addHospital = async () => {
-        let res = await doctorHospitalAddEntry(userState.accountID, 1, department)
-        console.log("Adding Hospital")
-    }
+    
     const handleEditPersonal = async () => {
 
         let online = onlineAvailability? 1 : 0
@@ -419,23 +411,7 @@ const HospitalSettings = () => {
                 </Tab>
             </Tabs>
 
-            { addingHospital &&
-                <Card style={{ width: '300px', margin: '20px auto',textAlign: "left" }}>
-                    <Card.Header as="h5">Add Hospital</Card.Header>
-                    <Card.Body>
-                        <Form>
-                            <Form.Group className="mb-3">
-                                <Form.Control type="input" placeholder="Hospital" onChange={(e)=>{setHospital(e.target.value)}}/>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                <Form.Control as="input" placeholder="Department" rows={3} onChange={(e)=>{setDepartment(e.target.value)}} />
-                            </Form.Group>
-                            <Button style={{margin:"0px 5px"}} variant="outline-secondary" onClick={()=>{setAddingHospital(false)}}>Cancel</Button>
-                            <Button style={{margin:"0px 5px"}} variant="outline-success" onClick={addHospital}>Confirm</Button>
-                        </Form>
-                    </Card.Body>
-                </Card>
-            }
+            
         </div>
      );
 }

@@ -104,7 +104,7 @@ export async function patientUpdateEntry(req, response) {
 
 export async function patientGetInfo(req, response) {
     let accountID = req.body.accountID
-
+    console.log(req)
     let findPatient = `SELECT * FROM Patient WHERE accountID = ?`
     let values = [accountID]
 
@@ -117,20 +117,35 @@ export async function patientGetInfo(req, response) {
             }
 
             response.send(returnMessage)
+            connection.end()
             console.log(err)
         } else {
 
-            let data = res[0]
+            if (res.length == 0) {
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "No such patient exists"
+                }
+    
+                response.send(returnMessage)
+                connection.end()
+                console.log(err)
+            } else {
+                let data = res[0]
 
-            let returnMessage = {
-                "isSuccessful": true,
-                "firstName": data.firstName,
-                "lastName": data.lastName,
-                "dateOfBirth": data.dateOfBirth,
-                "gender": data.gender
+                let returnMessage = {
+                    "isSuccessful": true,
+                    "firstName": data.firstName,
+                    "lastName": data.lastName,
+                    "dateOfBirth": data.dateOfBirth,
+                    "gender": data.gender
+                }
+    
+                response.send(returnMessage)
+                connection.end()
             }
 
-            response.send(returnMessage)
+            
         }
     })
 

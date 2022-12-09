@@ -271,7 +271,8 @@ export async function search(req, response) {
         
                 } else {
                     let hospitalList = res
-
+                    console.log(doctorList)
+                    console.log(hospitalList)
                     let returnMessage = {
                         "doctorList": doctorList,
                         "hospitalList": hospitalList
@@ -664,13 +665,77 @@ export async function removeReview(req, response) {
     })
 }
 
+export async function getDepartments(req, response) {
+
+    let hospitalID = req.body.hospitalID
+
+    let getDepartments = `SELECT DISTINCT(department) FROM doctorHospital WHERE hospitalID = ? ORDER BY department`
+    let values = [hospitalID]
+
+    let connection = validateConnection()
+    connection.query(getDepartments, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not get departments"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "departments": res
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
+export async function getDoctorHospital(req, response) {
+
+    let hospitalID = req.body.hospitalID
+
+    let getDepartments = `SELECT department, doctorID FROM doctorHospital WHERE hospitalID = ? ORDER BY department`
+    let values = [hospitalID]
+
+    let connection = validateConnection()
+    connection.query(getDepartments, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not get doctors"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "data": res
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function doctorHospitalAddEntry(req, response) {
 
     let doctorID = req.body.doctorID
     let hospitalID = req.body.hospitalID
     let department = req.body.department
 
-    let addEntry = `INSERT INTO DoctorHospital VALUES (?)`
+    let addEntry = `INSERT INTO DoctorHospital (doctorID, hospitalID, department) VALUES (?)`
     let values = [doctorID, hospitalID, department]
 
     let connection = validateConnection()
