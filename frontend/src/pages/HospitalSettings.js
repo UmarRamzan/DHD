@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { accountGetInfo, doctorGetInfo, removeAccount, removeDoctor, updateAccount, doctorUpdateEntry, doctorHospitalAddEntry } from "../API/api";
+import { accountGetInfo, hospitalGetInfo, removeAccount, removeHospital, updateAccount, hospitalUpdateEntry } from "../API/api";
 import { UserState } from "../UserState";
 import sha1 from 'sha1';
 
@@ -15,9 +15,6 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FormGroup, Label, Input} from 'reactstrap';
-import Table from 'react-bootstrap/Table';
-import { Link } from "react-router-dom";
-import CloseButton from 'react-bootstrap/CloseButton';
 
 const HospitalSettings = () => {
 
@@ -29,27 +26,16 @@ const HospitalSettings = () => {
     const [editing, setEditing] = useState(false)
     const [editingPersonal, setEditingPersonal] = useState(false)
     const [changingPassword, setChangingPassword] = useState(false)
-    const [deleting, setDeleting] = useState(false)
-    const [addingHospital, setAddingHospital] = useState(false)
-    const [deletingHospital, setDeletingHospital] = useState(false)
+    const [deleting, setDeleting] = useState(false);
 
     const [newEmail, setNewEmail] = useState('')
 
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [dateOfBirth, setDateOfBirth] = useState('')
-    const [gender, setGender] = useState('male')
-    const [specialization, setSpecialization] = useState('')
+    const [name, setName] = useState('')
     const [city, setCity] = useState('')
     const [address, setAddress] = useState('')
-    const [startTime, setStartTime] = useState('')
-    const [endTime, setEndTime] = useState('')
-    const [personalBio, setPersonalBio] = useState('')
-    const [onlineAvailability, setOnlineAvailability] = useState(false)
-    const [hourlyCharge, setHourlyCharge] = useState('')
 
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
@@ -61,10 +47,10 @@ const HospitalSettings = () => {
         const savedState = JSON.parse(localStorage.getItem("userState"))
 
         if (savedState) {
-            let doctorData = doctorGetInfo(savedState.accountID)
+            let hospitalData = hospitalGetInfo(savedState.accountID)
             let accountData = accountGetInfo(savedState.accountID)
 
-            doctorData.then((res) => {setUserData(res.data)})
+            hospitalData.then((res) => {setUserData(res.data)})
             accountData.then((res) => {setAccountData(res.data)})
         }
 
@@ -77,32 +63,27 @@ const HospitalSettings = () => {
     useEffect(() => {
         setError('')
         setMessage('')
+    }, [editing, deleting])
 
-        setFirstName(userData.firstName)
-        setLastName(userData.lastName)
-        if (userData.dateOfBirth) {setDateOfBirth(userData.dateOfBirth.substring(0,10))}
-        setGender(userData.gender)
-        setSpecialization(userData.specialization)
-        setCity(userData.city)
-        setAddress(userData.address)
-        setStartTime(userData.startTime)
-        setEndTime(userData.endTime)
-        setPersonalBio(userData.personalBio)
-        setHourlyCharge(userData.hourlyCharges)
-        setOnlineAvailability(userData.onlineAvailability)
-
-    }, [editing, deleting, editingPersonal])
-
-    
     const handleEditPersonal = async () => {
 
-        let online = onlineAvailability? 1 : 0
-        console.log(userState)
-
-        let res = await doctorUpdateEntry(userState.accountID, firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, online, hourlyCharge)
+        let res = await hospitalUpdateEntry(userState.accountID, name, city, address)
 
         if (res.data.isSuccessful) {
+
+            userData['name'] = name
+            userData['city'] = city
+            userData['address'] = address
+
+            setUserData(userData)
+
+            setName('')
+            setCity('')
+            setAddress('')
+
             setEditingPersonal(false)
+
+            setMessage("Personal information updated")
 
         } else {
             setError(res.data.errorMessage)
@@ -160,7 +141,7 @@ const HospitalSettings = () => {
         setDeleting(false)
 
         await removeAccount(accountData.accountID)
-        await removeDoctor(accountData.accountID)
+        await removeHospital(accountData.accountID)
 
         userState.setAccountID(null)
         userState.setAccountType(null)
@@ -256,19 +237,9 @@ const HospitalSettings = () => {
                     <Card style={{ width: '650px', margin:"0px 100px", textAlign: "left" }}>
                         <Card.Body>
                             <Card.Title>Personal Information</Card.Title>
-                            <Card.Text>{"First Name: " + userData.firstName}</Card.Text>
-                            <Card.Text>{"Last Name: " + userData.lastName}</Card.Text>
-                            {dateOfBirth && <Card.Text>{"Date of Birth: " + userData.dateOfBirth.substring(0,10)}</Card.Text>}
-                            <Card.Text>{"Gender: " + userData.gender}</Card.Text>
-                            <Card.Text>{"Specialization: " + userData.specialization}</Card.Text>
+                            <Card.Text>{"Name: " + userData.name}</Card.Text>
                             <Card.Text>{"City: " + userData.city}</Card.Text>
                             <Card.Text>{"Address: " + userData.address}</Card.Text>
-                            <Card.Text>{"Start Time: " + userData.startTime}</Card.Text>
-                            <Card.Text>{"End Time: " + userData.endTime}</Card.Text>
-                            <Card.Text>{"Personal Bio: " + userData.personalBio}</Card.Text>
-                            <Card.Text>{"Hourly Charges: " + userData.hourlyCharges}</Card.Text>
-                            <Card.Text>{`Online Availability: ${userData.onlineAvailability ? "Avialable" : "Not Available"}`}</Card.Text>
-                            
                             
                             <Button variant="outline-success" onClick={()=>{setEditingPersonal(true)}}>Edit</Button>
                         </Card.Body>
@@ -281,87 +252,24 @@ const HospitalSettings = () => {
                         <Card.Title>Edit Personal Information</Card.Title>
                         <Form style={{textAlign:"left", width: "380px"}}>
 
-                        <Form onSubmit={handleEditPersonal}>
-                            <Row className="mb-3">
-                                <Form.Group as={Col}>
-                                    <Form.Control placeholder="First Name" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}} required/>
-                                </Form.Group>
-
-                                <Form.Group as={Col}>
-                                    <Form.Control placeholder="Last Name" value={lastName} onChange={(e)=>{setLastName(e.target.value)}} required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} xs={4}>
-                                    <Form.Label style={{margin:"5px 10px"}}>Date of Birth</Form.Label>
-                                </Form.Group>
-                                <Form.Group as={Col}>
-                                    <Input type="date" name="date" placeholder="date placeholder" value={dateOfBirth} onChange={(e)=>{setDateOfBirth(e.target.value)}} required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} controlId="formGridState">
-                                    <Form.Select value={gender} onChange={(e)=>{setGender(e.target.value)}} placeholder="Gender" required>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </Form.Select>
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col}>
-                                    <Form.Control placeholder="Specialization" value={specialization} onChange={(e)=>{setSpecialization(e.target.value)}} required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col}>
-                                    <Form.Control placeholder="City" value={city} onChange={(e)=>{setCity(e.target.value)}} required/>
-                                </Form.Group>
-                                <Form.Group as={Col}>
-                                    <Form.Control placeholder="Address" value={address} onChange={(e)=>{setAddress(e.target.value)}} required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row style={{marginTop:"5px"}}>      
-                                <Form.Group as={Col} xs={4}>
-                                    <Form.Label style={{margin:"5px 10px"}}>Start Time</Form.Label>
-                                </Form.Group>
-                                <Form.Group as={Col}>
-                                    <Input type="time" name="time" value={startTime} onChange={(e)=>{setStartTime(e.target.value)}} placeholder="time placeholder" required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row style={{marginTop:"5px", marginBottom:"15px"}}>      
-                                <Form.Group as={Col} xs={4}>
-                                    <Form.Label style={{margin:"5px 10px"}}>End Time</Form.Label>
-                                </Form.Group>
-                                <Form.Group as={Col}>
-                                    <Input type="time" name="time" id="exampleTime" placeholder="time placeholder" value={endTime} onChange={(e)=>{setEndTime(e.target.value)}} required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col}>
-                                    <Input type="textarea" name="text" placeholder="Personal Bio" value={personalBio} onChange={(e)=>{setPersonalBio(e.target.value)}} required/>
-                                </Form.Group>
-                            </Row>
-
-                            <Row className="mb-3">
-                                <Form.Group as={Col} xs={7}>
-                                    <Input type="number" name="number"placeholder="Hourly Charges" value={hourlyCharge} onChange={(e)=>{setHourlyCharge(e.target.value)}} required/>
-                                </Form.Group>
-                                <Form.Group as={Col} style={{marginTop: "5px"}}>
-                                    <Label check>
-                                        <Input type="checkbox" defaultChecked={onlineAvailability} onChange={(e)=>{setOnlineAvailability(!onlineAvailability)}}/>{' '}
-                                        Available Online
-                                    </Label>
-                                </Form.Group>
-                            </Row>
-
-                        </Form>
+                        <Row className="mb-3">
+                            <Form.Group as={Col}>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control placeholder={userData.name} onChange={(e)=>{setName(e.target.value)}} required/>
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-3">
+                            <Form.Group as={Col}>
+                                <Form.Label>City</Form.Label>
+                                <Form.Control placeholder={userData.city} onChange={(e)=>{setCity(e.target.value)}} required/>
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-3">
+                            <Form.Group as={Col}>
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control placeholder={userData.address} onChange={(e)=>{setAddress(e.target.value)}} required/>
+                            </Form.Group>
+                        </Row>
 
                         <Row className="mb-3" style={{marginLeft: "0px"}}>
                             <Button onClick={()=>{setEditingPersonal(false)}} variant="outline-secondary" style={{width: "380px", margin: "5px 0px"}}>Cancel</Button>
@@ -374,44 +282,7 @@ const HospitalSettings = () => {
                     </Card>
                     }
                 </Tab>
-                <Tab eventKey="hospitals" title="Hospitals">
-                    
-                <Table bordered hover style={{ width: '650px', margin:"0px 100px"}}>
-                    <thead>
-                        <tr>
-                        <th>Hospital</th>
-                        <th>Department</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            
-                        <td><Link onClick={()=>{console.log("Clicked")}}>1</Link></td>
-                        <td>Mark</td>
-                        <CloseButton variant="black" />
-                        </tr>
-                        <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <CloseButton variant="black" />
-
-                        </tr>
-                        <tr>
-                        <td>3</td>
-                        <td colSpan={1}>Larry the Bird</td>
-                        <CloseButton variant="black" />
-
-                        </tr>
-                    </tbody>
-                    </Table>
-
-                    <Button variant="outline-danger" >Delete</Button>
-                    <Button variant="outline-success" onClick={()=>{setAddingHospital(true)}}>Add</Button>
-                    
-                </Tab>
             </Tabs>
-
-            
         </div>
      );
 }

@@ -33,7 +33,8 @@ const NavBar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
-                        <Nav.Link as={NavLink} to="/bookings">Bookings</Nav.Link>
+                        {userState.accountType != 'hospital' && <Nav.Link as={NavLink} to="/bookings">{userState.accountType == 'doctor'? 'Appointments' : 'Bookings'}</Nav.Link>}
+                        {accountType === "doctor" && <Nav.Link as={NavLink} to="/viewRecords">Records</Nav.Link>}
                     </Nav>
 
                     <Nav>
@@ -43,10 +44,10 @@ const NavBar = () => {
                         {accountID &&
                         <div className="useroptions">
                         <NavDropdown title= {accountName} id="collasible-nav-dropdown">
-                            <NavDropdown.Item as={NavLink} to="/profile">Profile</NavDropdown.Item>
+                            {userState.accountType != 'patient' && <NavDropdown.Item as={NavLink} to="/profile">Profile</NavDropdown.Item>}
                             <NavDropdown.Item as={NavLink} to="/settings">Settings</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item as={NavLink} to="/home" onClick={handleLogout}>Log Out</NavDropdown.Item>
+                            <NavDropdown.Item onClick={handleLogout}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                         </div>
                         }

@@ -15,14 +15,20 @@ router.post('/api/general/signup', generalController.signup)
 router.post('/api/general/login', generalController.login)
 router.post('/api/general/search', generalController.search)
 router.post('/api/general/validateEmail', generalController.validateEmail)
+router.post('/api/general/updateAccount', generalController.updateAccount)
 router.post('/api/general/removeAccount', generalController.removeAccount)
 router.post('/api/general/searchSpecialization', generalController.searchSpecialization)
-router.post('/api/general/associateDoctorHospital', generalController.associateDoctorHospital)
+router.post('/api/general/doctorHospitalAddEntry', generalController.doctorHospitalAddEntry)
 router.post('/api/general/createBooking', generalController.createBooking)
 router.post('/api/general/updateBooking', generalController.updateBooking)
 router.post('/api/general/cancelBooking', generalController.cancelBooking)
 router.post('/api/general/accountGetInfo', generalController.accountGetInfo)
 router.post('/api/general/getBookings', generalController.getBookings)
+router.post('/api/general/reviewAddEntry', generalController.reviewAddEntry)
+router.post('/api/general/getReviews', generalController.getReviews)
+router.post('/api/general/removeReview', generalController.removeReview)
+router.post('/api/general/getDoctorHospital', generalController.getDoctorHospital)
+router.post('/api/general/getDepartments', generalController.getDepartments)
 
 // patient functions
 router.post('/api/patient/patientAddEntry', patientController.patientAddEntry)
@@ -32,11 +38,13 @@ router.post('/api/patient/patientUpdateEntry', patientController.patientUpdateEn
 
 // doctor functions
 router.post('/api/doctor/doctorAddEntry', doctorController.doctorAddEntry)
+router.post('/api/doctor/doctorUpdateEntry', doctorController.doctorUpdateEntry)
 router.post('/api/doctor/doctorGetInfo', doctorController.doctorGetInfo)
 router.post('/api/doctor/removeDoctor', doctorController.removeDoctor)
 
 // hospital functions
 router.post('/api/hospital/hospitalAddEntry', hospitalController.hospitalAddEntry)
+router.post('/api/hospital/hospitalUpdateEntry', hospitalController.hospitalUpdateEntry)
 router.post('/api/hospital/hospitalGetInfo', hospitalController.hospitalGetInfo)
 router.post('/api/hospital/removeHospital', hospitalController.removeHospital)
 router.post('/api/hospital/searchHospitalByCity', hospitalController.searchHospitalByCity)

@@ -16,7 +16,7 @@ const Settings = () => {
         if (accountType == 'patient') {navigate('/patientSettings')}
         else if (accountType == 'doctor') {navigate('/doctorSettings')}
         else if (accountType == 'hospital') {navigate('/hospitalSettings')}
-    })
+    }, [])
 
     return ( 
         <h1>Settings</h1>

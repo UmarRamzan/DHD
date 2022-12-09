@@ -62,6 +62,42 @@ export async function hospitalAddEntry(req, response) {
     connection.end()
 }
 
+export async function hospitalUpdateEntry(req, response) {
+
+    let hospitalID = req.body.hospitalID
+    let name = req.body.name
+    let city = req.body.city
+    let address = req.body.address
+
+    let updateHospital = `UPDATE Hospital SET name = ?, city = ?, address = ? WHERE accountID = ?`
+    let values = [name, city, address, hospitalID]
+
+    console.log(req.body)
+    let connection = validateConnection()
+    connection.query(updateHospital, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not update hospital record"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+
+    connection.end()
+}
+
 export async function hospitalGetInfo(req, response) {
 
     let accountID = req.body.accountID

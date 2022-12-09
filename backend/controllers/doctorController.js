@@ -75,6 +75,50 @@ export async function doctorAddEntry(req, response) {
     
 }
 
+export async function doctorUpdateEntry(req, response) {
+
+    let doctorID = req.body.doctorID
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let dateOfBirth = req.body.dateOfBirth
+    let gender = req.body.gender
+    let specialization = req.body.specialization
+    let city = req.body.city
+    let address = req.body.address
+    let startTime = req.body.startTime
+    let endTime = req.body.endTime
+    let onlineAvailability = req.body.onlineAvailability
+    let hourlyCharge = req.body.hourlyCharge
+    let personalBio = req.body.personalBio
+
+    let updateDoctor = `UPDATE Doctor SET firstName = ?, lastName = ?, dateOfBirth = ?, gender = ?, specialization = ?, city = ?, address = ?, startTime = ?, endTime = ?, personalBio = ?, onlineAvailability = ?, hourlyCharge = ? WHERE accountID = ?`
+    let values = [firstName, lastName, dateOfBirth, gender, specialization, city, address, startTime, endTime, personalBio, onlineAvailability, hourlyCharge, doctorID]
+
+    let connection = validateConnection()
+    connection.query(updateDoctor, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not update doctor record"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+
+    connection.end()
+}
+
 export async function doctorGetInfo(req, response) {
 
     let accountID = req.body.accountID
@@ -111,9 +155,6 @@ export async function doctorGetInfo(req, response) {
     })
 
 }
-
-// update an existing entry within the doctors table
-export async function doctorUpdateEntry(req, response) {}
 
 export async function removeDoctor(req, response) {
 

@@ -49,7 +49,7 @@ const Login = () => {
             
             if (userData.data.isSuccessful) {
                 userState.setAccountID(res.data.accountID)
-                userState.setAccountType(res.data.accountType)
+                userState.setAccountType(accountType)
                 
                 userState["accountID"] = res.data.accountID
                 userState["accountType"] = res.data.accountType

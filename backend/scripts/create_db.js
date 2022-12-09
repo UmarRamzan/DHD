@@ -6,9 +6,9 @@ config({path:".env"});
 
 // Create a connection to the sql server
 const connection = createConnection({
-    host: "localhost",
-    user: "root",
-    password: "pass",
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD
 });
 
 // Process a general sql query and throw any resulting errors
@@ -61,9 +61,11 @@ const createHospital = `CREATE TABLE IF NOT EXISTS Hospital (
 )`
 
 const createDoctorHospital = `CREATE TABLE IF NOT EXISTS DoctorHospital (
+    doctorHospitalID INT AUTO_INCREMENT,
     doctorID INT,
     hospitalID INT,
-    PRIMARY KEY (doctorID, hospitalID)
+    department VARCHAR(50),
+    PRIMARY KEY (doctorHospitalID)
 )`
 
 const createBooking = `CREATE TABLE IF NOT EXISTS Booking (
@@ -93,7 +95,7 @@ connection.connect((err) => {
         console.log("Connected to the mysql server")
 
         // delete the database for testing
-        processQuery(`DROP DATABASE dhd`)
+        processQuery(`DROP DATABASE IF EXISTS dhd`)
         
         // create and use the dhd database
         processQuery(`CREATE DATABASE IF NOT EXISTS dhd`)

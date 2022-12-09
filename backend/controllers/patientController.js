@@ -36,7 +36,7 @@ export async function patientAddEntry(req, response) {
     
     let connection = create_connection()
 
-    let seedQuery = `INSERT INTO patient VALUES (?)`
+    let seedQuery = `INSERT INTO Patient VALUES (?)`
     let values = [accountID, firstName, lastName, dateOfBirth, gender]
 
     connection.query(seedQuery, [values], (err, res) => {
@@ -66,19 +66,36 @@ export async function patientAddEntry(req, response) {
 }
 
 export async function patientUpdateEntry(req, response) {
-    let patient_ID = req.body.patient_ID
-    let column_name = req.body.column_name
-    let new_value = req.body.new_value
 
-    let update_query = `UPDATE patient SET ? = ? WHERE Patient_ID = ?`
-    let values = [column_name, new_value, patient_ID]
+    let patientID = req.body.patientID
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let dateOfBirth = req.body.dateOfBirth
+    let gender = req.body.gender
 
+    let updatePatient = `UPDATE Patient SET firstName = ?, lastName = ?, dateOfBirth = ?, gender = ? WHERE accountID = ?`
+    let values = [firstName, lastName, dateOfBirth, gender, patientID]
+
+    console.log(req.body)
     let connection = create_connection()
-    connection.query(update_query, [values], (err, res) => {
+    connection.query(updatePatient, values, (err, res) => {
         if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not update patient record"
+            }
+            response.send(returnMessage)
+            connection.end()
+
             console.log(err)
+
         } else {
-            console.log(res)
+            console.log("success")
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
         }
     })
 
@@ -87,7 +104,7 @@ export async function patientUpdateEntry(req, response) {
 
 export async function patientGetInfo(req, response) {
     let accountID = req.body.accountID
-
+    console.log(req)
     let findPatient = `SELECT * FROM Patient WHERE accountID = ?`
     let values = [accountID]
 
@@ -100,20 +117,35 @@ export async function patientGetInfo(req, response) {
             }
 
             response.send(returnMessage)
+            connection.end()
             console.log(err)
         } else {
 
-            let data = res[0]
+            if (res.length == 0) {
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "No such patient exists"
+                }
+    
+                response.send(returnMessage)
+                connection.end()
+                console.log(err)
+            } else {
+                let data = res[0]
 
-            let returnMessage = {
-                "isSuccessful": true,
-                "firstName": data.firstName,
-                "lastName": data.lastName,
-                "dateOfBirth": data.dateOfBirth,
-                "gender": data.gender
+                let returnMessage = {
+                    "isSuccessful": true,
+                    "firstName": data.firstName,
+                    "lastName": data.lastName,
+                    "dateOfBirth": data.dateOfBirth,
+                    "gender": data.gender
+                }
+    
+                response.send(returnMessage)
+                connection.end()
             }
 
-            response.send(returnMessage)
+            
         }
     })
 
