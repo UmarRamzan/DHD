@@ -4,6 +4,7 @@ import { Link,useLocation, useNavigate } from "react-router-dom";
 import { UserState } from "../UserState";
 import { useState } from "react";
 import { getRecords } from "../API/api";
+import { Card } from "reactstrap";
 
 const ViewRecords = () => {
 
@@ -34,6 +35,7 @@ const ViewRecords = () => {
                     </div>
                 </div>
             ))}
+            
         </div>
 
     );
