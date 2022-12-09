@@ -28,6 +28,7 @@ const Home = () => {
 
         } else {
             let res = await search(searchString, city)
+            console.log(res)
             setDoctorResults(res.data.doctorList)
             setHospitalResults(res.data.hospitalList)
         }

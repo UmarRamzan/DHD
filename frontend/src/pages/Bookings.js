@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { getBookings, cancelBooking, updateBooking } from "../API/api";
+import { getBookings, cancelBooking, updateBooking, patientGetInfo, doctorGetInfo } from "../API/api";
 import { Link } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
@@ -13,6 +13,8 @@ const Bookings = () => {
     const userState = useContext(UserContext)
 
     const [bookings, setBookings] = useState(null)
+    const [patientNames, setPatientNames] = useState({})
+    const [doctorNames, setDoctorNames] = useState({})
 
     const [rescheduling, setRescheduling] = useState(false)
 
@@ -25,9 +27,15 @@ const Bookings = () => {
 
         let data = getBookings(userState.accountID, userState.accountType)
 
-        data.then((res) => {
+        data.then(async (res) => {
+
             if (res.data.isSuccessful) {
-                setBookings(res.data.bookings)
+
+                await res.data.bookings.map(async (item)=>{
+                    item.patientName = await patientName(item.patientID)
+                    item.doctorName = await doctorName(item.doctorID)
+                    setBookings(res.data.bookings)
+                })   
             }
         })
     }, [])
@@ -36,11 +44,18 @@ const Bookings = () => {
 
         let data = getBookings(userState.accountID, userState.accountType)
 
-        data.then((res) => {
+        data.then(async (res) => {
+
             if (res.data.isSuccessful) {
-                setBookings(res.data.bookings)
+
+                await res.data.bookings.map(async (item)=>{
+                    item.patientName = await patientName(item.patientID)
+                    item.doctorName = await doctorName(item.doctorID)
+                    setBookings(res.data.bookings)
+                })   
             }
         })
+
     }, [rescheduling])
 
     const handleReschedule = async (bookingID) => {
@@ -57,20 +72,28 @@ const Bookings = () => {
         setBookings(bookings.filter((item) => item.bookingID != bookingID))
     }
 
+    const patientName = async (patientID) => {
+        let res = await patientGetInfo(patientID)
+        return (res.data.firstName)
+    }
+
+    const doctorName = async (doctorID) => {
+        let res = await doctorGetInfo(doctorID)
+        return (res.data.firstName)
+    }
+
     return ( 
         <div className="bookings" style={{margin:"30px auto"}}>
-            <p className="display-6">Bookings</p>
+            <p className="display-6">{userState.accountType == 'doctor'? 'Appointments': 'Bookings'}</p>
             <hr style={{width:"350px", margin:"20px auto"}}/>
             {bookings && bookings.map((res) => (
                 
                     <div className="bookingTile" key={res.bookingID}>
                         <Card style={{ width: '800px', margin:"15px auto", textAlign:"left" }}>
                             <Card.Body>
-                                <Card.Title>{'Patient: ' + res.patientID + ' Doctor: ' + res.doctorID }</Card.Title>
+                                <Card.Title>{'Patient: ' + res.patientName + (userState.accountType != 'doctor'? ' Doctor: ' + res.doctorName : '') }</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{'Date: ' + res.date.substring(0,10) + ' Time: ' + res.time}</Card.Subtitle>
-                                <Card.Text>
-                               Address
-                                </Card.Text>
+
                                 
                                     <div className="editBooking">
                                         <Button variant="outline-secondary" onClick={()=>{setRescheduling(true); setSelectedBookingID(res.bookingID); setSelectedBookingDate(res.date); setSelectedBookingTime(res.time); setSelectedDoctorID(res.doctorID)}} style={{margin: "10px 2px"}}>Reschedule</Button>

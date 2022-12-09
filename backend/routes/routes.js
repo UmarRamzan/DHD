@@ -27,6 +27,8 @@ router.post('/api/general/getBookings', generalController.getBookings)
 router.post('/api/general/reviewAddEntry', generalController.reviewAddEntry)
 router.post('/api/general/getReviews', generalController.getReviews)
 router.post('/api/general/removeReview', generalController.removeReview)
+router.post('/api/general/getDoctorHospital', generalController.getDoctorHospital)
+router.post('/api/general/getDepartments', generalController.getDepartments)
 
 // patient functions
 router.post('/api/patient/patientAddEntry', patientController.patientAddEntry)

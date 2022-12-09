@@ -357,3 +357,21 @@ export async function removeReview(reviewID) {
 
     return await axios.post(`${url}/general/removeReview`, request)
 }
+
+export async function getDepartments(hospitalID) {
+
+    const request = {
+        "hospitalID": hospitalID,
+    }
+
+    return await axios.post(`${url}/general/getDepartments`, request)
+}
+
+export async function getDoctorHospital(hospitalID) {
+
+    const request = {
+        "hospitalID": hospitalID,
+    }
+
+    return await axios.post(`${url}/general/getDoctorHospital`, request)
+}
