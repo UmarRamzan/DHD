@@ -8,7 +8,8 @@
     "seed_db": "cd backend && npm run seed_db",
     "init_db": "cd backend && npm run create_db && npm run seed_db",
     "server": "cd backend && npm run server",
-    "app": "cd frontend && npm run start"
+    "app": "cd frontend && npm run start",
+    "start": "cd backend && npm run server"
   },
   "repository": {
     "type": "git",
