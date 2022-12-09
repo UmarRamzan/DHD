@@ -4,6 +4,7 @@ import { Link,useLocation, useNavigate } from "react-router-dom";
 import { UserState } from "../UserState";
 import { useState } from "react";
 import { getRecords } from "../API/api";
+import { Card } from "reactstrap";
 
 const ViewRecords = () => {
 
@@ -23,8 +24,9 @@ const ViewRecords = () => {
     }, [])
 
     return ( 
-        <div className="records">
-            <h1>Records</h1>
+        <div className="records" style={{margin:"30px auto"}}>
+            <p className="display-6">Records</p>
+            <hr style={{width:"350px", margin:"20px auto"}}/>
             {records && records.map((res)=>(
                 <div className="record">
                     <div key={res.reviewID}>
@@ -33,6 +35,7 @@ const ViewRecords = () => {
                     </div>
                 </div>
             ))}
+            
         </div>
 
     );

@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { accountGetInfo, hospitalGetInfo, removeAccount, removeHospital, updateAccount, hospitalUpdateEntry } from "../API/api";
+import { accountGetInfo, hospitalGetInfo, removeAccount, removeHospital, updateAccount, hospitalUpdateEntry, getDoctorHospital } from "../API/api";
 import { UserState } from "../UserState";
 import sha1 from 'sha1';
 

@@ -18,6 +18,7 @@ const Bookings = () => {
     const [doctorNames, setDoctorNames] = useState({})
 
     const [rescheduling, setRescheduling] = useState(false)
+    const [deleting, setDeleting] = useState(false);
 
     const [selectedBookingID, setSelectedBookingID] = useState('')
     const [selectedDoctorID, setSelectedDoctorID] = useState('')
@@ -69,8 +70,14 @@ const Bookings = () => {
         }
     }
     const handleCancel = (bookingID) => {
-        cancelBooking(bookingID)
-        setBookings(bookings.filter((item) => item.bookingID != bookingID))
+        setSelectedBookingID(bookingID)
+        setDeleting(true)  
+    }
+
+    const handleDelete = () => {
+        cancelBooking(selectedBookingID)
+        setBookings(bookings.filter((item) => item.bookingID != selectedBookingID))
+        setDeleting(false)  
     }
 
 
@@ -99,7 +106,7 @@ const Bookings = () => {
                             <Card.Body>
                                 <Card.Title>{'Patient: ' + res.patientName + (userState.accountType != 'doctor'? ' Doctor: ' + res.doctorName : '') }</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{'Date: ' + res.date.substring(0,10) + ' Time: ' + res.time}</Card.Subtitle>
-
+                                <Card.Subtitle className="mb-2 text-muted">{res.online? 'Online' : 'In Person'}</Card.Subtitle>
                                 
                                     <div className="editBooking">
                                         <Button variant="outline-secondary" onClick={()=>{setRescheduling(true); setSelectedBookingID(res.bookingID); setSelectedBookingDate(res.date); setSelectedBookingTime(res.time); setSelectedDoctorID(res.doctorID)}} style={{margin: "10px 2px"}}>Reschedule</Button>
@@ -136,6 +143,21 @@ const Bookings = () => {
                     <Button variant="outline-secondary" onClick={()=>{setRescheduling(false)}} style={{margin: "10px 2px"}}>Cancel</Button>
                     <Button variant="outline-success" onClick={()=>{handleReschedule(selectedBookingID)}} style={{margin: "10px 2px"}}>Confirm</Button>
                 </div>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={deleting} onHide={()=>{setDeleting(false)}}>
+                <Modal.Header closeButton>
+                <Modal.Title>Cancel Booking</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you wish to cancel this booking</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={()=>{setDeleting(false)}}>
+                    Close
+                </Button>
+                <Button variant="danger" onClick={handleDelete}>
+                    Cancel
+                </Button>
                 </Modal.Footer>
             </Modal>
         </div>

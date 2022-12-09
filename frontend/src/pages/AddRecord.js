@@ -4,6 +4,10 @@ import { getRecord, patientGetInfo, removeReview, reviewAddEntry } from "../API/
 import { useState } from "react";
 import { UserState } from "../UserState";
 
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+
 const AddRecord = () => {
     const userState = useContext(UserState)
     const location = useLocation()
@@ -68,35 +72,25 @@ const AddRecord = () => {
     }
 
     return ( 
+
         <div className="patientInfo">
-             <h1>Patient: {patientID}</h1>
-             <p>{data.firstName}</p>
-             <p>{data.lastName}</p>
-             <p>{data.dateOfBirth}</p>
-             <p>{data.gender}</p>
-             <form onSubmit={handleSubmit}>
-
-                <p></p>
-                {edit && <p>Previous Record</p>}
+            <Card style={{ width: '400px', margin: "100px auto", textAlign: "left" }}>
+            <Card.Header as="h4">Add Record</Card.Header>
+            <Card.Body>
+                
+                <Card.Text><strong>Patient:</strong> {`${data.firstName} ${data.lastName}`}</Card.Text>
+                {data.dateOfBirth && <Card.Text><strong>Date of Birth:</strong> {data.dateOfBirth.substring(0,10)}</Card.Text>}
+                <Card.Text><b>Gender</b>: {data.gender}</Card.Text>
+                {edit && <p><b>Previous Record:</b></p>}
                 {edit && <p>{prevText}</p>}
-                <p></p>
-
-                <label>Record Description</label>
-                <p></p>
-                <textarea
-                    type="text"
-                    required
-                    value={recordText}
-                    onChange={(e)=>setRecord(e.target.value)}
-                />
-                <p></p>
-                {!isPending && !edit && <button>Add</button>}
-                {!isPending && edit && <button>Edit</button>}
-                {isPending && <button disabled>chotto matte</button>}
-
-             </form>
+                <Form.Control as="textarea" placeholder="New Record" rows={3} onChange={(e)=>{setRecord(e.target.value)}} />
+                {!isPending && !edit && <Button style={{marginTop: "10px"}} onClick={handleSubmit} variant="outline-success">Add Record</Button>}
+                {!isPending && edit && <Button style={{marginTop: "10px"}} onClick={handleSubmit} variant="outline-success">Edit Record</Button>}
+                {isPending && <Button disabled style={{marginTop: "10px"}} onClick={handleSubmit} variant="outline-success">Add Record</Button>}
+                
+            </Card.Body>
+        </Card>
              {error}
-
         </div>
     );
 }

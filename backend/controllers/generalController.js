@@ -352,9 +352,10 @@ export async function createBooking(req, response) {
     let doctorID = req.body.doctorID
     let date = req.body.date
     let time = req.body.time
+    let online = req.body.online
 
-    let insertQuery = `INSERT INTO Booking (patientID, doctorID, date, time) VALUES (?)`
-    let values = [patientID, doctorID, date, time]
+    let insertQuery = `INSERT INTO Booking (patientID, doctorID, date, time, online) VALUES (?)`
+    let values = [patientID, doctorID, date, time, online]
 
     let connection = validateConnection()
     connection.query(insertQuery, [values], (err, res) => {
@@ -389,9 +390,10 @@ export async function updateBooking(req, response) {
     let doctorID = req.body.doctorID
     let date = req.body.date.substring(0,10)
     let time = req.body.time
+    let online = req.body.online
 
-    let updateQuery = `UPDATE Booking SET patientID = ?, doctorID = ?, date = ?, time = ? WHERE bookingID = ?`
-    let values = [patientID, doctorID, date, time, bookingID]
+    let updateQuery = `UPDATE Booking SET patientID = ?, doctorID = ?, date = ?, time = ?, online = ? WHERE bookingID = ?`
+    let values = [patientID, doctorID, date, time, online, bookingID]
 
     let connection = validateConnection()
     connection.query(updateQuery, values, (err, res) => {
@@ -729,6 +731,38 @@ export async function getDoctorHospital(req, response) {
     })
 }
 
+export async function getDoctorHospitalDoctor(req, response) {
+
+    let doctorID = req.body.doctorID
+
+    let getDepartments = `SELECT hospitalID, department, doctorHospitalID FROM doctorHospital WHERE doctorID = ? ORDER BY hospitalID`
+    let values = [doctorID]
+
+    let connection = validateConnection()
+    connection.query(getDepartments, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not get data"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "data": res
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
 export async function doctorHospitalAddEntry(req, response) {
 
     let doctorID = req.body.doctorID
@@ -760,4 +794,34 @@ export async function doctorHospitalAddEntry(req, response) {
     })
 
     connection.end()
+}
+
+export async function removeDoctorHospital(req, response) {
+    let doctorHospitalID = req.body.doctorHospitalID
+
+    let remove = `DELETE FROM DoctorHospital WHERE doctorHospitalID = ?`
+    let values = [doctorHospitalID]
+
+    let connection = validateConnection()
+    connection.query(remove, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not remove doctor-hospital entry"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true,
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
 }

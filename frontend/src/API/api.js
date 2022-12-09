@@ -251,13 +251,14 @@ export async function doctorHospitalAddEntry(doctorID, hospitalID, department) {
 
 // create a new booking for the specified patient and doctor at the specified time
 // returns a json object containing "is_successful" and any possible "error_message"
-export async function createBooking(patientID, doctorID, date, time) {
+export async function createBooking(patientID, doctorID, date, time, online) {
 
     const request = {
         "patientID": patientID,
         "doctorID": doctorID,
         "date": date,
-        "time": time
+        "time": time,
+        "online": online
     }
 
     return await axios.post(`${url}/general/createBooking`, request)
@@ -358,7 +359,6 @@ export async function removeReview(reviewID) {
     return await axios.post(`${url}/general/removeReview`, request)
 }
 
-
 export async function getRecord(patientID) {
 
     const request = {
@@ -376,6 +376,7 @@ export async function getRecords(doctorID) {
 
     return await axios.post(`${url}/general/getRecords`, request)
 }
+
 export async function getDepartments(hospitalID) {
 
     const request = {
@@ -393,4 +394,23 @@ export async function getDoctorHospital(hospitalID) {
 
     return await axios.post(`${url}/general/getDoctorHospital`, request)
 
+}
+
+export async function getDoctorHospitalDoctor(doctorID) {
+
+    const request = {
+        "doctorID": doctorID,
+    }
+
+    return await axios.post(`${url}/general/getDoctorHospitalDoctor`, request)
+
+}
+
+export async function removeDoctorHospital(doctorHospitalID) {
+
+    const request = {
+        "doctorHospitalID": doctorHospitalID,
+    }
+
+    return await axios.post(`${url}/general/removeDoctorHospital`, request)
 }
