@@ -12,6 +12,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const DoctorPublic = () => {
 
@@ -35,6 +37,7 @@ const DoctorPublic = () => {
     const location = useLocation()
 
     let doctorID = location.state.doctorID
+    console.log("State: " + location.state.doctorID)
 
     useEffect(() => {
         let data = doctorGetInfo(doctorID)
@@ -119,7 +122,19 @@ const DoctorPublic = () => {
                                     <Card.Title as="h5" style={{marginTop:"10px"}}>Reviews</Card.Title>
                                 </Col>
                                 <Col xs={3}>
-                                    {!addingReview && <Button style={{marginTop:"3px"}} variant="outline-success" onClick={()=>{setAddingReview(true)}}>Add Review</Button>}
+                                    {userState.accountType!='patient' &&
+                                <OverlayTrigger key="top" placement="bottom"
+                                overlay={
+                                <Tooltip id={`tooltip`}> Only <strong>{"patients"}</strong> can add reviews</Tooltip>
+                                }
+                                >
+                                <span className="d-inline-block">
+                                    {!addingReview && <Button disabled style={{marginTop:"3px"}} variant="outline-success" onClick={()=>{setAddingReview(true)}}>Add Review</Button>}
+                                </span>
+                                </OverlayTrigger>}
+                                {userState.accountType=='patient' && 
+                                !addingReview && <Button style={{marginTop:"3px"}} variant="outline-success" onClick={()=>{setAddingReview(true)}}>Add Review</Button>}
+                                
                                 </Col>
                             </Row>  
                         </Card.Header>
@@ -174,7 +189,20 @@ const DoctorPublic = () => {
                             <option value="online">Online</option>
                             <option value="inPerson">In Person</option>
                         </Form.Select>
-                            <Button onClick={addBooking} style={{margin:"auto"}} variant="outline-success">Confirm Booking</Button>
+                            {userState.accountType!='patient' &&
+                            <OverlayTrigger key="top" placement="bottom"
+                            overlay={
+                                <Tooltip id={`tooltip`}> Only <strong>{"patients"}</strong> can create bookings.</Tooltip>
+                            }
+                            >
+                                <span className="d-inline-block">
+                            <Button disabled={userState.accountType=='patient'?false:true} onClick={addBooking} style={{margin:"auto"}} variant="outline-success">Confirm Booking</Button>
+                            </span>
+                            </OverlayTrigger>}
+                            {userState.accountType=='patient' &&
+                            <Button disabled={userState.accountType=='patient'?false:true} onClick={addBooking} style={{margin:"auto"}} variant="outline-success">Confirm Booking</Button>
+                            }
+
                         <div className="messages" style={{margin:"10px 0px"}}>
                             {error && <Alert variant='danger'>{error}</Alert>}
                             {message && <Alert variant='success'>{message}</Alert>}
