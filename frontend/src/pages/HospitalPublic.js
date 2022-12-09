@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { hospitalGetInfo, doctorHospitalAddEntry, getDepartments, getDoctorHospital } from "../API/api";
+import { hospitalGetInfo, doctorHospitalAddEntry, getDepartments, getDoctorHospital, doctorGetInfo } from "../API/api";
 
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -10,6 +10,8 @@ import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/Form';
 import Tab from 'react-bootstrap/Tab';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import { UserState } from "../UserState";
 
@@ -22,7 +24,7 @@ const HospitalPublic = () => {
     const [hospitalID, setHospitalID] = useState('')
     const [department, setDepartment] = useState('')
 
-    const [departmentList, setDepartmentList] = useState([])
+    const [departmentList, setDepartmentList] = useState({})
     const [doctorDict, setDoctorDict] = useState({})
     
     const [addingHospital, setAddingHospital] = useState(false)
@@ -32,30 +34,39 @@ const HospitalPublic = () => {
             setHospitalID(location.state.hospitalID)
             if (location.state.hospitalID) {
                 localStorage.setItem('hospitalID', location.state.hospitalID)
+
                 let data = hospitalGetInfo(location.state.hospitalID)
                 data.then((res) => {setData(res.data)})
+
                 let departments = getDepartments(location.state.hospitalID)
-                departments.then((res)=>{setDepartmentList(res.data.departments)})
+                departments.then((res)=>{
+                    res.data.departments.forEach((item) => {
+                        departmentList[item.department] = []
+                    })
+                })
+                console.log("List" , departmentList)
+
                 let departmentData = getDoctorHospital(location.state.hospitalID)
                 departmentData.then((res)=>{
-                    setDoctorDict({})
-                    res.data.data.map((item)=>{
-                        if (doctorDict[item.department]) {
-                            doctorDict[item.department].push(item.doctorID)
+                    res.data.data.map(async (item)=>{
+                        if (departmentList[item.department]) {
+                            departmentList[item.department].push([item.doctorID, await doctorName(item.doctorID)])
                         } else {
-                            doctorDict[item.department] = [item.doctorID]
+                            departmentList[item.department] = [[item.doctorID, await doctorName(item.doctorID)]]
                         }
                     })
                 })
-                setDoctorDict(doctorDict) 
-                console.log(doctorDict)
-                for (var key in doctorDict) {
-                    console.log(key)
-                }
+
+                console.log(departmentList)
             }
         }
         setHospitalID(localStorage.getItem('hospitalID'))
     }, [])
+
+    const doctorName = async (doctorID) => {
+        let res = await doctorGetInfo(doctorID)
+        return (res.data.firstName)
+    }
 
     const addHospital = async () => {
         let res = await doctorHospitalAddEntry(userState.accountID, hospitalID, department)
@@ -66,47 +77,39 @@ const HospitalPublic = () => {
         <div className="hospitalPublic">
             <Row style={{marginTop: "50px"}}>
                 <Col >
-                <Card style={{ width: '800px', margin:"50px auto", textAlign: "left" }}>
+                <Card style={{ width: '800px', margin:"35px auto", textAlign: "left" }}>
                     <Card.Header as="h2">{`${data.name}`}</Card.Header>
                 
                     <Card.Body>
-                        <p>{ data.specialization }</p>
                         <p>{ `${data.address} ${data.city}` }</p>
                     </Card.Body>
                 </Card>
                 </Col>
 
-                <Col xs={5} style={{margin: "0px 10px"}}>
-                    <h3>Departements</h3>
+                
 
-                    <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+                <Col xs={4} style={{margin: "0px 50px"}}>
                     <Row>
-                        <Col sm={4}>
-                        <ListGroup>
-                            {departmentList && departmentList.map((item, idx)=>(
-                                <ListGroup.Item action href={"#link" + idx}>
-                                {item.department}
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
+                        <Col xs={8}>
+                        <h3>Departements</h3> 
                         </Col>
-                        <Col sm={8}>
-                        
-                        <Tab.Content>
-                            
-                            <Tab.Pane eventKey="#link1">
-                            Text
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="#link2">
-                            Text
-                            </Tab.Pane>
-                        </Tab.Content>
+                        <Col>
+                        {userState.accountType!='doctor' &&
+                        <OverlayTrigger key="top" placement="bottom"
+                                overlay={
+                                <Tooltip id={`tooltip`}> Only <strong>{"doctors"}</strong> can link with a hospital</Tooltip>
+                                }
+                                >
+                                <span className="d-inline-block">
+                        <Button disabled variant="outline-success" onClick={()=>{setAddingHospital(true)}}>Link with hospital</Button>
+                        </span>
+                        </OverlayTrigger>
+                        }
+                        {userState.accountType=='doctor' && 
+                        <Button variant="outline-success" onClick={()=>{setAddingHospital(true)}}>Link with hospital</Button>
+                        }
                         </Col>
                     </Row>
-                    </Tab.Container>
-                    
-                    <Button variant="outline-success" onClick={()=>{setAddingHospital(true)}}>Add</Button>
-                    
 
                     { addingHospital &&
                     <Card style={{ width: '300px', margin: '20px auto',textAlign: "left" }}>
@@ -122,6 +125,35 @@ const HospitalPublic = () => {
                         </Card.Body>
                     </Card>
                     }
+                    
+                    <hr/>
+                    <Tab.Container id="list-group-tabs-example">
+                    <Row>
+                        <Col sm={4}>
+                        <ListGroup>
+                            {departmentList && Object.entries(departmentList).map(([key, value]) => (
+                                <ListGroup.Item action href={`#${key}`}>
+                                {key}
+                                </ListGroup.Item>
+                            ) )}
+                        </ListGroup>
+                        </Col>
+                        <Col sm={8}>
+                        <Tab.Content>
+                            {departmentList && Object.entries(departmentList).map(([key, value]) => (
+                                <Tab.Pane eventKey={`#${key}`}>
+                                    <ListGroup>
+                                        {value.map((item) => (
+                                            <ListGroup.Item>{item[1]}</ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                                </Tab.Pane>
+                            ) )}
+                            
+                        </Tab.Content>
+                        </Col>
+                    </Row>
+                    </Tab.Container>
                 </Col>
             </Row>
 
