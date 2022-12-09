@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
+import { getBookings, cancelBooking, updateBooking } from "../API/api";
 import { getBookings, cancelBooking, updateBooking, patientGetInfo, doctorGetInfo } from "../API/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 import Card from 'react-bootstrap/Card';
@@ -11,6 +12,7 @@ import { Input} from 'reactstrap';
 const Bookings = () => {
 
     const userState = useContext(UserContext)
+    const navigate = useNavigate()
 
     const [bookings, setBookings] = useState(null)
     const [patientNames, setPatientNames] = useState({})
@@ -72,6 +74,11 @@ const Bookings = () => {
         setBookings(bookings.filter((item) => item.bookingID != bookingID))
     }
 
+
+    const handleAddRecord = (patient_ID) =>{
+        navigate("/addRecord",{state:{patientID:patient_ID}})
+    }
+    
     const patientName = async (patientID) => {
         let res = await patientGetInfo(patientID)
         return (res.data.firstName)
@@ -97,6 +104,7 @@ const Bookings = () => {
                                 
                                     <div className="editBooking">
                                         <Button variant="outline-secondary" onClick={()=>{setRescheduling(true); setSelectedBookingID(res.bookingID); setSelectedBookingDate(res.date); setSelectedBookingTime(res.time); setSelectedDoctorID(res.doctorID)}} style={{margin: "10px 2px"}}>Reschedule</Button>
+                                        {userState.accountType === 'doctor' && <Button variant="outline-secondary"  onClick={() =>{handleAddRecord(res.patientID)}} style={{margin: "10px 2px"}}>Record</Button>}
                                         <Button variant="outline-danger" onClick={() =>{handleCancel(res.bookingID)}} style={{margin: "10px 2px"}}>Cancel</Button>
                                     </div>
                                 </Card.Body>

@@ -123,7 +123,7 @@ export async function doctorGetInfo(req, response) {
 
     let accountID = req.body.accountID
 
-    let getInfo = `SELECT * FROM doctor WHERE accountID = ?`
+    let getInfo = `SELECT * FROM Doctor WHERE accountID = ?`
     let values = [accountID]
 
     let connection = validateConnection()

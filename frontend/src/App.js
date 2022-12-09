@@ -22,6 +22,9 @@ import ViewRecords from './pages/ViewRecords';
 
 import { UserContext } from './UserContext';
 import { UserState } from './UserState';
+
+import AddRecord from './pages/AddRecord';
+import ViewRecords from './pages/ViewRecords';
 import Profile from './pages/Profile';
 
 
@@ -86,6 +89,8 @@ function App() {
                 <Route exact path="/patientSettings" element={<PatientSettings/>}></Route>
                 <Route exact path="/doctorSettings" element={<DoctorSettings/>}></Route>
                 <Route exact path="/hospitalSettings" element={<HospitalSettings/>}></Route>
+                <Route exact path="/addRecord" element={<AddRecord/>}></Route>
+                <Route exact path="/viewRecords" element={<ViewRecords/>}></Route>
 
                 <Route exact path="/addRecord" element={<AddRecord/>}></Route>
                 <Route exact path="/viewRecords" element={<ViewRecords/>}></Route>

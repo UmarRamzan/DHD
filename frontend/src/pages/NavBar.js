@@ -12,6 +12,7 @@ const NavBar = () => {
     const userState = useContext(UserState)
     const accountID = userState.accountID
     const accountName = userState.accountName
+    const accountType = userState.accountType
 
     const navigate = useNavigate()
 
@@ -33,6 +34,7 @@ const NavBar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
+                        <Nav.Link as={NavLink} to="/bookings">Bookings</Nav.Link>
                         {userState.accountType != 'hospital' && <Nav.Link as={NavLink} to="/bookings">{userState.accountType == 'doctor'? 'Appointments' : 'Bookings'}</Nav.Link>}
                         {accountType === "doctor" && <Nav.Link as={NavLink} to="/viewRecords">Records</Nav.Link>}
                     </Nav>

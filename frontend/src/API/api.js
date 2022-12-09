@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let url = `http://localhost:3000/api`
+let url = `http://localhost:3001/api`
 
 // for all functions the resulting data can be accessed by using .data on the returned object
 
@@ -358,6 +358,24 @@ export async function removeReview(reviewID) {
     return await axios.post(`${url}/general/removeReview`, request)
 }
 
+
+export async function getRecord(patientID) {
+
+    const request = {
+        "patientID":patientID,
+    }
+
+    return await axios.post(`${url}/general/getRecord`, request)
+}
+
+export async function getRecords(doctorID) {
+
+    const request = {
+        "doctorID":doctorID,
+    }
+
+    return await axios.post(`${url}/general/getRecords`, request)
+}
 export async function getDepartments(hospitalID) {
 
     const request = {
@@ -374,4 +392,5 @@ export async function getDoctorHospital(hospitalID) {
     }
 
     return await axios.post(`${url}/general/getDoctorHospital`, request)
+
 }

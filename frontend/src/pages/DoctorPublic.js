@@ -160,6 +160,7 @@ const DoctorPublic = () => {
                             }
 
                             {reviewList && reviewList.map((review)=> (
+                                review.rating != -1 && 
                                 <Card style={{ width: '700px', margin: '20px auto',textAlign: "left" }}>
                                 <Card.Body>
                                     <Card.Title>{review.patientID}</Card.Title>
