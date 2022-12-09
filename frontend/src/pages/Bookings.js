@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from "react";
-import { getBookings, cancelBooking, updateBooking } from "../API/api";
 import { getBookings, cancelBooking, updateBooking, patientGetInfo, doctorGetInfo } from "../API/api";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
