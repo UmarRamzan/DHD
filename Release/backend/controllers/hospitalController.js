@@ -1,0 +1,206 @@
+import { createConnection } from 'mysql2';
+import { config } from 'dotenv';
+
+config({path:".env"});
+
+// Create a connection to the sql server
+function validateConnection() {
+
+    let connection = createConnection({
+        host: process.env.HOST,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE,
+        port:process.env.DB_PORT,
+        multipleStatements: false
+    })
+
+    connection.connect((err) => {
+        if (err) {
+            console.log("Connection Failed")
+        } else {
+            console.log("Connected")
+        }
+    })
+
+    return connection
+}
+
+export async function hospitalAddEntry(req, response) {
+
+    let accountID = req.body.accountID
+    let name = req.body.name
+    let city = req.body.city
+    let address = req.body.address
+    
+    let connection = validateConnection()
+
+    let seedQuery = `INSERT INTO Hospital (accountID, name, city, address) VALUES (?)`
+    let values = [accountID, name, city, address]
+
+    connection.query(seedQuery, [values], (err, res) => {
+
+        if (err) {
+
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not create a new hospital entry",
+            }
+
+            response.send(returnMessage)
+            console.log(err)
+
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true,
+            }
+
+            response.send(returnMessage)
+        }
+    })
+
+    connection.end()
+}
+
+export async function hospitalUpdateEntry(req, response) {
+
+    let hospitalID = req.body.hospitalID
+    let name = req.body.name
+    let city = req.body.city
+    let address = req.body.address
+
+    let updateHospital = `UPDATE Hospital SET name = ?, city = ?, address = ? WHERE accountID = ?`
+    let values = [name, city, address, hospitalID]
+
+    console.log(req.body)
+    let connection = validateConnection()
+    connection.query(updateHospital, values, (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not update hospital record"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+            console.log(err)
+
+        } else {
+
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+
+    connection.end()
+}
+
+export async function hospitalGetInfo(req, response) {
+
+    let accountID = req.body.accountID
+
+    let getInfo = `SELECT * FROM Hospital WHERE accountID = ?`
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(getInfo, [values], (err, res) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            let data = res[0]
+
+            let returnMessage = {
+                "isSuccessful": true,
+                "name": data.name,
+                "city": data.city,
+                "address": data.address,
+            }
+
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
+export async function searchHospitalByCity(req, response) {
+
+}
+
+export async function removeHospital(req, response) {
+
+    let accountID = req.body.accountID
+
+    let connection = validateConnection()
+
+    let deleteAccount = `DELETE FROM Hospital WHERE accountID = ?`
+    let values = [accountID]
+
+    connection.query(deleteAccount, values, (err, res) => {
+
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not delete the account"
+            }
+            response.send(returnMessage)
+            connection.end()
+
+        } else {
+            let returnMessage = {
+                "isSuccessful": true
+            }
+            response.send(returnMessage)
+            connection.end()
+        }
+    })
+}
+
+export async function getHospitalName(req, response) {
+    let accountID = req.body.accountID
+    let findHospital = `SELECT name FROM Hospital WHERE accountID = ?`
+    let values = [accountID]
+
+    let connection = validateConnection()
+    connection.query(findHospital, [values], (err, res) => {
+        if (err) {
+            let returnMessage = {
+                "isSuccessful": false,
+                "errorMessage": "Could not process information request"
+            }
+
+            response.send(returnMessage)
+            connection.end()
+            console.log(err)
+        } else {
+
+            if (res.length == 0) {
+                let returnMessage = {
+                    "isSuccessful": false,
+                    "errorMessage": "No such hospital exists"
+                }
+    
+                response.send(returnMessage)
+                connection.end()
+                console.log(err)
+            } else {
+                let data = res[0]
+
+                let returnMessage = {
+                    "isSuccessful": true,
+                    "name": data.name
+                }
+    
+                response.send(returnMessage)
+                connection.end()
+            }
+
+            
+        }
+    })
+
+}

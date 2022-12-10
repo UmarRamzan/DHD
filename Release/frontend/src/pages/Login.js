@@ -1,0 +1,122 @@
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { login, patientGetInfo, doctorGetInfo, hospitalGetInfo } from "../API/api";
+import { UserContext } from "../UserContext";
+import { UserState } from "../UserState";
+
+import Stack from 'react-bootstrap/Stack';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+
+const Login = () => {
+
+    const userState = useContext(UserState)
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const [pending, setPending] = useState(false)
+
+    useEffect(() => {
+        console.log(location.state)
+        if (location.state) {setError(location.state.message)}
+    }, [])
+
+    useEffect(() => {
+        if (location.state) {setError(location.state.message)}
+    }, [location.state])
+
+    useEffect(() => {
+        setError('')
+    }, [email, password])
+
+    const handleSubmit = async (e) => {
+        setPending(true)
+        e.preventDefault()
+        let res = await login(email, password)
+        console.log(res)
+        if (res.data.isSuccessful) {
+            let accountType = res.data.accountType
+
+            let userData = null;
+            if (accountType == 'patient') {userData = await patientGetInfo(res.data.accountID)}
+            else if (accountType == 'doctor') {userData = await doctorGetInfo(res.data.accountID)}
+            else if (accountType == 'hospital') {userData = await hospitalGetInfo(res.data.accountID)}
+
+            console.log(userData)
+            
+            if (userData.data.isSuccessful) {
+                userState.setAccountID(res.data.accountID)
+                userState.setAccountType(accountType)
+                
+                userState["accountID"] = res.data.accountID
+                userState["accountType"] = res.data.accountType
+
+                if (accountType == 'hospital') {
+                    userState.setAccountName(userData.data.name)
+                    userState["accountName"] = userData.data.name
+                } else {
+                    userState.setAccountName(userData.data.firstName)
+                    userState["accountName"] = userData.data.firstName
+                }
+                
+                localStorage.setItem('userState', JSON.stringify(userState))
+
+                navigate('/home')
+
+            } else {
+                setError(res.data.errorMessage)
+            }
+
+        } else {
+            setError(res.data.errorMessage)
+        }
+        setPending(false)
+    }
+
+    return ( 
+        <div className="form" style={{width:"400px", margin:"150px auto"}}>
+            <Container>
+                <Form onSubmit={handleSubmit}>
+
+                    <p className="display-6">Login</p>
+
+                    <hr style={{width:"350px", margin:"20px auto"}}/>
+
+                    <Stack gap={1} className="col-12 mx-auto">
+
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Control type="email" placeholder="Email" value={email} onChange={(e)=>{setEmail(e.target.value)}} required/>
+                    </Form.Group>
+                
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Control type="password" placeholder="Password" value={password} onChange={(e)=>{setPassword(e.target.value)}} required/>
+                    </Form.Group>
+
+                    {!pending && <Button variant="outline-success" type="submit" className="my-2">Next</Button>}
+                    {pending && <Button variant="outline-success" type="submit" className="my-2"><Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    /></Button>}
+
+                    {error && <Alert variant='danger'>{error}</Alert>}
+
+                    </Stack>
+
+                </Form>    
+            </Container>
+        </div>
+     );
+}
+ 
+export default Login;
